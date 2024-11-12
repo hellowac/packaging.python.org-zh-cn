@@ -1,41 +1,32 @@
-Python Packaging User Guide
+Python 打包用户指南
 ===========================
 
 http://packaging.python.org
 
-The "Python Packaging User Guide" (PyPUG) aims to be the authoritative resource on
-how to package and install distributions in Python using current tools.
+“Python 打包用户指南”（PyPUG）旨在成为关于如何使用当前工具在 Python 中打包和安装分发版的权威资源。
 
-To follow the development of Python packaging, see the `Python
-Packaging Authority <https://www.pypa.io/en/latest/>`_.
+要跟踪 Python 打包的发展，请访问 `Python Packaging Authority <https://www.pypa.io/en/latest/>`_。
 
-Code of Conduct
+行为准则
 ---------------
 
-Everyone interacting in the Python Packaging User Guide project's codebases,
-issue trackers, chat rooms, and mailing lists are expected to follow the
-`PSF Code of Conduct`_.
+所有在 Python 打包用户指南项目的代码库、问题跟踪器、聊天室和邮件列表中互动的人员，都应遵循 `PSF 行为准则`_ 。
 
-.. _PSF Code of Conduct: https://github.com/pypa/.github/blob/main/CODE_OF_CONDUCT.md
+.. _PSF 行为准则: https://github.com/pypa/.github/blob/main/CODE_OF_CONDUCT.md
 
-Contributing
+贡献
 ------------
 
-This guide is community-maintained and contributions are welcome! Please see the
-`contributing guide`_ for details on our writing style guide and how to build
-the guide locally to test your changes.
+本指南由社区维护，欢迎贡献！请参阅 `贡献指南`_ 以了解我们的写作风格指南以及如何在本地构建指南以测试您的更改。
 
-.. _contributing guide: https://packaging.python.org/contribute
+.. _贡献指南: https://packaging.python.org/contribute
 
-License
+许可证
 -------
 
-The Python Packaging User Guide is licensed under a Creative Commons
-Attribution-ShareAlike license: http://creativecommons.org/licenses/by-sa/3.0 .
+Python 打包用户指南采用 Creative Commons Attribution-ShareAlike 许可证： http://creativecommons.org/licenses/by-sa/3.0 。
 
-History
+历史
 -------
 
-This Guide was forked from the “Hitchhiker's Guide to Packaging” in March 2013,
-which was maintained by Tarek Ziadé. Thank you Tarek for all your efforts in
-Python packaging.
+本指南于 2013 年 3 月从《打包指南》（Hitchhiker's Guide to Packaging）分叉，该指南由 Tarek Ziadé 维护。感谢 Tarek 为 Python 打包所做的所有努力。
