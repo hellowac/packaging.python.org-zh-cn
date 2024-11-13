@@ -5,6 +5,12 @@
 Externally Managed Environments
 ===============================
 
+.. tab:: 中文
+
+
+
+.. tab:: 英文
+
 While some Python installations are entirely managed by the user that installed
 Python, others may be provided and managed by another means (such as the
 operating system package manager in a Linux distribution, or as a bundled

@@ -6,6 +6,12 @@
 Direct URL Data Structure
 =========================
 
+.. tab:: 中文
+
+
+
+.. tab:: 英文
+
 This document specifies a JSON-serializable abstract data structure that can represent
 URLs to python projects and distribution artifacts such as VCS source trees, local
 source trees, source distributions and wheels.

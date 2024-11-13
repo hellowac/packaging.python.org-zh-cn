@@ -4,6 +4,12 @@
 Entry points specification
 ==========================
 
+.. tab:: 中文
+
+
+
+.. tab:: 英文
+
 *Entry points* are a mechanism for an installed distribution to advertise
 components it provides to be discovered and used by other code. For
 example:

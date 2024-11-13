@@ -1,6 +1,8 @@
 =======
-Hosting
+托管
 =======
+
+**Hosting**
 
 .. toctree::
    :titlesonly:

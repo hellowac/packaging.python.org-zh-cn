@@ -5,6 +5,12 @@
 Source distribution format
 ==========================
 
+.. tab:: 中文
+
+
+
+.. tab:: 英文
+
 The current standard format of source distribution format is identified by the
 presence of a :file:`pyproject.toml` file in the distribution archive.  The layout
 of such a distribution was originally specified in :pep:`517` and is formally

@@ -5,6 +5,12 @@
 The :file:`.pypirc` file
 ========================
 
+.. tab:: 中文
+
+
+
+.. tab:: 英文
+
 A :file:`.pypirc` file allows you to define the configuration for :term:`package
 indexes <Package Index>` (referred to here as "repositories"), so that you don't
 have to enter the URL, username, or password whenever you upload a package with

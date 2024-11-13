@@ -187,7 +187,7 @@ intersphinx_mapping = {
     "pybind11": ("https://pybind11.readthedocs.io/en/stable/", None),
     "pynsist": ("https://pynsist.readthedocs.io/en/latest/", None),
     "pypa": ("https://www.pypa.io/en/latest/", None),
-    "python": ("https://docs.python.org/3", None),
+    "python": ("https://docs.python.org/zh-cn/3", None),
     "python-guide": ("https://docs.python-guide.org", None),
     "setuptools": ("https://setuptools.pypa.io/en/latest/", None),
     "spack": ("https://spack.readthedocs.io/en/latest/", None),

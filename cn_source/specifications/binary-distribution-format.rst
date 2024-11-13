@@ -6,6 +6,12 @@
 Binary distribution format
 ==========================
 
+.. tab:: 中文
+
+
+
+.. tab:: 英文
+
 This page specifies the binary distribution format for Python packages,
 also called the wheel format.
 

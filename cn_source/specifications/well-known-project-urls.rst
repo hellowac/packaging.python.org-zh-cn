@@ -4,6 +4,12 @@
 Well-known Project URLs in Metadata
 ===================================
 
+.. tab:: 中文
+
+
+
+.. tab:: 英文
+
 .. important::
 
     This document is primarily of interest to metadata *consumers*,

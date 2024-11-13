@@ -5,6 +5,12 @@
 Python Virtual Environments
 ===========================
 
+.. tab:: 中文
+
+
+
+.. tab:: 英文
+
 For Python 3.3 and later versions, :pep:`405` introduced interpreter level support
 for the concept of "Python Virtual Environments". Each virtual environment has
 its own Python binary (allowing creation of environments with various Python

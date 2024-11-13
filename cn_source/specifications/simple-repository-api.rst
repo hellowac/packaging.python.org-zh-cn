@@ -5,6 +5,12 @@
 Simple repository API
 =====================
 
+.. tab:: 中文
+
+
+
+.. tab:: 英文
+
 The interface for querying available package versions and
 retrieving packages from an index server comes in two forms:
 HTML and JSON.

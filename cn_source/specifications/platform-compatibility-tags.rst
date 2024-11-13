@@ -5,6 +5,12 @@
 Platform compatibility tags
 ===========================
 
+.. tab:: 中文
+
+
+
+.. tab:: 英文
+
 Platform compatibility tags allow build tools to mark distributions as being
 compatible with specific platforms, and allows installers to understand which
 distributions are compatible with the system they are running on.

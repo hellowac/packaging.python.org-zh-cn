@@ -1,77 +1,101 @@
 .. _inline-script-metadata:
 
 ======================
-Inline script metadata
+内联脚本元数据
 ======================
 
-This specification defines a metadata format that can be embedded in single-file
-Python scripts to assist launchers, IDEs and other external tools which may need
-to interact with such scripts.
+**Inline script metadata**
+
+.. tab:: 中文
+
+    该规范定义了一种元数据格式，可以嵌入到单文件 Python 脚本中，以帮助启动器、集成开发环境（IDE）和其他可能需要与此类脚本交互的外部工具。
+
+.. tab:: 英文
+
+    This specification defines a metadata format that can be embedded in single-file
+    Python scripts to assist launchers, IDEs and other external tools which may need
+    to interact with such scripts.
 
 
-Specification
+规范
 =============
 
-This specification defines a metadata comment block format (loosely inspired by
-`reStructuredText Directives`__).
+**Specification**
 
-__ https://docutils.sourceforge.io/docs/ref/rst/directives.html
+.. tab:: 中文
 
-Any Python script may have top-level comment blocks that MUST start with the
-line ``# /// TYPE`` where ``TYPE`` determines how to process the content. That
-is: a single ``#``, followed by a single space, followed by three forward
-slashes, followed by a single space, followed by the type of metadata. Block
-MUST end with the line ``# ///``. That is: a single ``#``, followed by a single
-space, followed by three forward slashes. The ``TYPE`` MUST only consist of
-ASCII letters, numbers and hyphens.
 
-Every line between these two lines (``# /// TYPE`` and ``# ///``) MUST be a
-comment starting with ``#``. If there are characters after the ``#`` then the
-first character MUST be a space. The embedded content is formed by taking away
-the first two characters of each line if the second character is a space,
-otherwise just the first character (which means the line consists of only a
-single ``#``).
 
-Precedence for an ending line ``# ///`` is given when the next line is not
-a valid embedded content line as described above. For example, the following
-is a single fully valid block:
+.. tab:: 英文
 
-.. code:: python
+    This specification defines a metadata comment block format (loosely inspired by
+    `reStructuredText Directives`__).
 
-    # /// some-toml
-    # embedded-csharp = """
-    # /// <summary>
-    # /// text
-    # ///
-    # /// </summary>
-    # public class MyClass { }
-    # """
-    # ///
+    __ https://docutils.sourceforge.io/docs/ref/rst/directives.html
 
-A starting line MUST NOT be placed between another starting line and its ending
-line. In such cases tools MAY produce an error. Unclosed blocks MUST be ignored.
+    Any Python script may have top-level comment blocks that MUST start with the
+    line ``# /// TYPE`` where ``TYPE`` determines how to process the content. That
+    is: a single ``#``, followed by a single space, followed by three forward
+    slashes, followed by a single space, followed by the type of metadata. Block
+    MUST end with the line ``# ///``. That is: a single ``#``, followed by a single
+    space, followed by three forward slashes. The ``TYPE`` MUST only consist of
+    ASCII letters, numbers and hyphens.
 
-When there are multiple comment blocks of the same ``TYPE`` defined, tools MUST
-produce an error.
+    Every line between these two lines (``# /// TYPE`` and ``# ///``) MUST be a
+    comment starting with ``#``. If there are characters after the ``#`` then the
+    first character MUST be a space. The embedded content is formed by taking away
+    the first two characters of each line if the second character is a space,
+    otherwise just the first character (which means the line consists of only a
+    single ``#``).
 
-Tools reading embedded metadata MAY respect the standard Python encoding
-declaration. If they choose not to do so, they MUST process the file as UTF-8.
+    Precedence for an ending line ``# ///`` is given when the next line is not
+    a valid embedded content line as described above. For example, the following
+    is a single fully valid block:
 
-This is the canonical regular expression that MAY be used to parse the
-metadata:
+    .. code:: python
 
-.. code:: text
+        # /// some-toml
+        # embedded-csharp = """
+        # /// <summary>
+        # /// text
+        # ///
+        # /// </summary>
+        # public class MyClass { }
+        # """
+        # ///
 
-    (?m)^# /// (?P<type>[a-zA-Z0-9-]+)$\s(?P<content>(^#(| .*)$\s)+)^# ///$
+    A starting line MUST NOT be placed between another starting line and its ending
+    line. In such cases tools MAY produce an error. Unclosed blocks MUST be ignored.
 
-In circumstances where there is a discrepancy between the text specification
-and the regular expression, the text specification takes precedence.
+    When there are multiple comment blocks of the same ``TYPE`` defined, tools MUST
+    produce an error.
 
-Tools MUST NOT read from metadata blocks with types that have not been
-standardized by this specification.
+    Tools reading embedded metadata MAY respect the standard Python encoding
+    declaration. If they choose not to do so, they MUST process the file as UTF-8.
 
-script type
+    This is the canonical regular expression that MAY be used to parse the
+    metadata:
+
+    .. code:: text
+
+        (?m)^# /// (?P<type>[a-zA-Z0-9-]+)$\s(?P<content>(^#(| .*)$\s)+)^# ///$
+
+    In circumstances where there is a discrepancy between the text specification
+    and the regular expression, the text specification takes precedence.
+
+    Tools MUST NOT read from metadata blocks with types that have not been
+    standardized by this specification.
+
+脚本类型
 -----------
+
+**script type**
+
+.. tab:: 中文
+
+
+
+.. tab:: 英文
 
 The first type of metadata block is named ``script``, which contains
 script metadata (dependency data and tool configuration).
@@ -96,8 +120,16 @@ Script runners MUST error if the specified ``dependencies`` cannot be provided.
 Script runners SHOULD error if no version of Python that satisfies the specified
 ``requires-python`` can be provided.
 
-Example
+示例
 -------
+
+**Example**
+
+.. tab:: 中文
+
+
+
+.. tab:: 英文
 
 The following is an example of a script with embedded metadata:
 
@@ -119,8 +151,16 @@ The following is an example of a script with embedded metadata:
     pprint([(k, v["title"]) for k, v in data.items()][:10])
 
 
-Reference Implementation
+参考实现
 ========================
+
+**Reference Implementation**
+
+.. tab:: 中文
+
+
+
+.. tab:: 英文
 
 The following is an example of how to read the metadata on Python 3.11 or
 higher.
@@ -201,16 +241,32 @@ blocks.
            )
 
 
-Recommendations
+建议
 ===============
+
+**Recommendations**
+
+.. tab:: 中文
+
+
+
+.. tab:: 英文
 
 Tools that support managing different versions of Python should attempt to use
 the highest available version of Python that is compatible with the script's
 ``requires-python`` metadata, if defined.
 
 
-History
+历史
 =======
+
+**History**
+
+.. tab:: 中文
+
+
+
+.. tab:: 英文
 
 - October 2023: This specification was conditionally approved through :pep:`723`.
 - January 2024: Through amendments to :pep:`723`, the ``pyproject`` metadata

@@ -2,6 +2,12 @@
 Package Installation Metadata
 =============================
 
+.. tab:: 中文
+
+
+
+.. tab:: 英文
+
 .. toctree::
    :titlesonly:
 

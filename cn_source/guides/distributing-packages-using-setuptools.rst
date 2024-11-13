@@ -7,7 +7,7 @@
 **Packaging and distributing projects**
 
 :页面状态: 过时(Outdated)
-:最后查看: 2023-12-14
+:最后更新: 2023-12-14
 
 .. tab:: 中文
 
@@ -726,33 +726,51 @@ Wheels
 
 .. tab:: 中文
 
-    
+  **纯 Python Wheel** 不包含任何编译扩展，因此只需要一个单独的 Python Wheel。
+
+  要构建 Wheel 包：
+
+  .. tab:: Unix/macOS
+
+      .. code-block:: bash
+
+          python3 -m build --wheel
+
+  .. tab:: Windows
+
+      .. code-block:: bat
+
+          py -m build --wheel
+
+  `wheel` 包将会检测到代码是纯 Python，并构建一个名为可以在任何 Python 3 安装上使用的 Wheel 包。有关 Wheel 文件命名的详细信息，请参见 :pep:`425`。
+
+  如果你在没有指定 `--wheel` 或 `--sdist` 的情况下运行 `build`，它将同时为你构建这两个文件；这在你不需要多个 Wheel 包时很有用。
 
 .. tab:: 英文
 
-*Pure Python Wheels* contain no compiled extensions, and therefore only require a
-single Python wheel.
+  *Pure Python Wheels* contain no compiled extensions, and therefore only require a
+  single Python wheel.
 
-To build the wheel:
+  To build the wheel:
 
-.. tab:: Unix/macOS
+  .. tab:: Unix/macOS
 
-    .. code-block:: bash
+      .. code-block:: bash
 
-        python3 -m build --wheel
+          python3 -m build --wheel
 
-.. tab:: Windows
+  .. tab:: Windows
 
-    .. code-block:: bat
+      .. code-block:: bat
 
-        py -m build --wheel
+          py -m build --wheel
 
-The ``wheel`` package will detect that the code is pure Python, and build a
-wheel that's named such that it's usable on any Python 3 installation.  For
-details on the naming of wheel files, see :pep:`425`.
+  The ``wheel`` package will detect that the code is pure Python, and build a
+  wheel that's named such that it's usable on any Python 3 installation.  For
+  details on the naming of wheel files, see :pep:`425`.
 
-If you run ``build`` without ``--wheel`` or ``--sdist``, it will build both
-files for you; this is useful when you don't need multiple wheels.
+  If you run ``build`` without ``--wheel`` or ``--sdist``, it will build both
+  files for you; this is useful when you don't need multiple wheels.
 
 .. _`Platform Wheels`:
 
@@ -763,37 +781,57 @@ files for you; this is useful when you don't need multiple wheels.
 
 .. tab:: 中文
 
-    
+  **平台 Wheel** 是针对特定平台（如 Linux、macOS 或 Windows）的 Wheel，通常由于包含编译扩展而与平台相关。
+
+  要构建平台特定的 Wheel：
+
+  .. tab:: Unix/macOS
+
+      .. code-block:: bash
+
+          python3 -m build --wheel
+
+  .. tab:: Windows
+
+      .. code-block:: bat
+
+          py -m build --wheel
+
+  `wheel` 包将检测到代码不是纯 Python，并构建一个平台特定的 Wheel 文件，其命名方式使得它只能在构建时使用的平台上安装。有关 Wheel 文件命名的详细信息，请参见 :pep:`425`。
+
+  .. note::
+
+    当前， **PyPI**（Python 包索引）支持上传 Windows、macOS 和多发行版的 `manylinux*` ABI 平台 Wheel。关于 `manylinux*` 的详细内容，请参见 :pep:`513`。
 
 .. tab:: 英文
 
-*Platform Wheels* are wheels that are specific to a certain platform like Linux,
-macOS, or Windows, usually due to containing compiled extensions.
+  *Platform Wheels* are wheels that are specific to a certain platform like Linux,
+  macOS, or Windows, usually due to containing compiled extensions.
 
-To build the wheel:
+  To build the wheel:
 
-.. tab:: Unix/macOS
+  .. tab:: Unix/macOS
 
-    .. code-block:: bash
+      .. code-block:: bash
 
-        python3 -m build --wheel
+          python3 -m build --wheel
 
-.. tab:: Windows
+  .. tab:: Windows
 
-    .. code-block:: bat
+      .. code-block:: bat
 
-        py -m build --wheel
+          py -m build --wheel
 
 
-The ``wheel`` package will detect that the code is not pure Python, and build
-a wheel that's named such that it's only usable on the platform that it was
-built on. For details on the naming of wheel files, see :pep:`425`.
+  The ``wheel`` package will detect that the code is not pure Python, and build
+  a wheel that's named such that it's only usable on the platform that it was
+  built on. For details on the naming of wheel files, see :pep:`425`.
 
-.. note::
+  .. note::
 
-  :term:`PyPI <Python Package Index (PyPI)>` currently supports uploads of
-  platform wheels for Windows, macOS, and the multi-distro ``manylinux*`` ABI.
-  Details of the latter are defined in :pep:`513`.
+    :term:`PyPI <Python Package Index (PyPI)>` currently supports uploads of
+    platform wheels for Windows, macOS, and the multi-distro ``manylinux*`` ABI.
+    Details of the latter are defined in :pep:`513`.
 
 
 .. _`Uploading your Project to PyPI`:
@@ -805,41 +843,61 @@ built on. For details on the naming of wheel files, see :pep:`425`.
 
 .. tab:: 中文
 
+  当你运行命令创建分发包时，一个新的目录 ``dist/`` 会在你的项目根目录下创建。你可以在这个目录中找到你的分发文件，以便上传。
+
+  .. note:: 
     
+    这些文件只有在你运行创建分发包的命令时才会生成。这意味着，每次你更改项目源代码或更新 ``setup.py`` 文件中的配置时，都需要重新生成这些文件，才能将更改分发到 PyPI。
+
+  .. note:: 
+    
+    在将包发布到主 PyPI 仓库之前，你可以先在 `PyPI 测试站点 <https://test.pypi.org/>`_ 上进行测试，该站点会定期清理。请参见 :ref:`using-test-pypi` 了解如何配置以使用该站点。
+
+  .. warning:: 
+    
+    在其他资源中，你可能会看到使用 ``python setup.py register`` 和 ``python setup.py upload`` 的方法。这些注册和上传包的方式 **强烈不推荐**，因为在某些 Python 版本中，这些方法可能会使用明文 HTTP 或未验证的 HTTPS 连接，从而在传输过程中让你的用户名和密码受到拦截。
+
+  .. tip:: 
+    
+    PyPI 使用的 reStructuredText 解析器 **不是** Sphinx！此外，为了确保用户安全，某些类型的 URL 和指令被禁止或会被删除（例如 ``.. raw::``  指令）。 **在** 尝试上传你的分发包之前，你应该检查在 ``setup.py`` 中提供的简短描述和长描述是否有效。你可以通过运行以下命令检查包文件：
+
+    .. code-block:: bash
+
+      twine check dist/*
 
 .. tab:: 英文
 
-When you ran the command to create your distribution, a new directory ``dist/``
-was created under your project's root directory. That's where you'll find your
-distribution file(s) to upload.
+  When you ran the command to create your distribution, a new directory ``dist/``
+  was created under your project's root directory. That's where you'll find your
+  distribution file(s) to upload.
 
-.. note:: These files are only created when you run the command to create your
-  distribution. This means that any time you change the source of your project
-  or the configuration in your :file:`setup.py` file, you will need to rebuild
-  these files again before you can distribute the changes to PyPI.
+  .. note:: These files are only created when you run the command to create your
+    distribution. This means that any time you change the source of your project
+    or the configuration in your :file:`setup.py` file, you will need to rebuild
+    these files again before you can distribute the changes to PyPI.
 
-.. note:: Before releasing on main PyPI repo, you might prefer
-  training with the `PyPI test site <https://test.pypi.org/>`_ which
-  is cleaned on a semi regular basis. See :ref:`using-test-pypi` on
-  how to setup your configuration in order to use it.
+  .. note:: Before releasing on main PyPI repo, you might prefer
+    training with the `PyPI test site <https://test.pypi.org/>`_ which
+    is cleaned on a semi regular basis. See :ref:`using-test-pypi` on
+    how to setup your configuration in order to use it.
 
-.. warning:: In other resources you may encounter references to using
-  ``python setup.py register`` and ``python setup.py upload``. These methods
-  of registering and uploading a package are **strongly discouraged** as it may
-  use a plaintext HTTP or unverified HTTPS connection on some Python versions,
-  allowing your username and password to be intercepted during transmission.
+  .. warning:: In other resources you may encounter references to using
+    ``python setup.py register`` and ``python setup.py upload``. These methods
+    of registering and uploading a package are **strongly discouraged** as it may
+    use a plaintext HTTP or unverified HTTPS connection on some Python versions,
+    allowing your username and password to be intercepted during transmission.
 
-.. tip:: The reStructuredText parser used on PyPI is **not** Sphinx!
-  Furthermore, to ensure safety of all users, certain kinds of URLs and
-  directives are forbidden or stripped out (e.g., the ``.. raw::``
-  directive). **Before** trying to upload your distribution, you should check
-  to see if your brief / long descriptions provided in :file:`setup.py` are
-  valid.  You can do this by running :std:doc:`twine check <index>` on
-  your package files:
+  .. tip:: The reStructuredText parser used on PyPI is **not** Sphinx!
+    Furthermore, to ensure safety of all users, certain kinds of URLs and
+    directives are forbidden or stripped out (e.g., the ``.. raw::``
+    directive). **Before** trying to upload your distribution, you should check
+    to see if your brief / long descriptions provided in :file:`setup.py` are
+    valid.  You can do this by running :std:doc:`twine check <index>` on
+    your package files:
 
-  .. code-block:: bash
+    .. code-block:: bash
 
-     twine check dist/*
+      twine check dist/*
 
 创建帐户
 -----------------
@@ -848,36 +906,54 @@ distribution file(s) to upload.
 
 .. tab:: 中文
 
-    
+  首先，你需要一个 :term:`PyPI <Python Package Index (PyPI)>` 用户账户。你可以通过 `PyPI 网站上的注册表单 <https://pypi.org/account/register/>`_ 创建一个账户。
+
+  接下来，你需要创建一个 PyPI `API 令牌 <API token_>`_ 以便能够安全地上传你的项目。
+
+  访问 https://pypi.org/manage/account/#api-tokens 并创建一个新的 `API 令牌 <API token_>`_ ；不要将其范围限制为某个特定项目，因为你正在创建一个新的项目。
+
+  **在复制和保存令牌之前不要关闭页面——令牌仅显示一次，无法再次查看。**
+
+  .. 注意:: 为避免每次上传时都需要复制和粘贴令牌，你可以创建一个 :file:`$HOME/.pypirc` 文件：
+
+    .. code-block:: text
+
+      [pypi]
+      username = __token__
+      password = <令牌值，包括 `pypi-` 前缀>
+
+    **请注意，这会将你的令牌以明文方式存储。**
+
+    有关更多详细信息，请参阅 :file:`.pypirc` 的 :ref:`规范 <pypirc>`。
 
 .. tab:: 英文
 
-First, you need a :term:`PyPI <Python Package Index (PyPI)>` user account. You
-can create an account
-`using the form on the PyPI website <https://pypi.org/account/register/>`_.
+  First, you need a :term:`PyPI <Python Package Index (PyPI)>` user account. You
+  can create an account
+  `using the form on the PyPI website <https://pypi.org/account/register/>`_.
 
-Now you'll create a PyPI `API token`_ so you will be able to securely upload
-your project.
+  Now you'll create a PyPI `API token`_ so you will be able to securely upload
+  your project.
 
-Go to https://pypi.org/manage/account/#api-tokens and create a new
-`API token`_; don't limit its scope to a particular project, since you
-are creating a new project.
+  Go to https://pypi.org/manage/account/#api-tokens and create a new
+  `API token`_; don't limit its scope to a particular project, since you
+  are creating a new project.
 
-**Don't close the page until you have copied and saved the token — you
-won't see that token again.**
+  **Don't close the page until you have copied and saved the token — you
+  won't see that token again.**
 
-.. Note:: To avoid having to copy and paste the token every time you
-  upload, you can create a :file:`$HOME/.pypirc` file:
+  .. Note:: To avoid having to copy and paste the token every time you
+    upload, you can create a :file:`$HOME/.pypirc` file:
 
-  .. code-block:: text
+    .. code-block:: text
 
-    [pypi]
-    username = __token__
-    password = <the token value, including the `pypi-` prefix>
+      [pypi]
+      username = __token__
+      password = <the token value, including the `pypi-` prefix>
 
-  **Be aware that this stores your token in plaintext.**
+    **Be aware that this stores your token in plaintext.**
 
-  For more details, see the :ref:`specification <pypirc>` for :file:`.pypirc`.
+    For more details, see the :ref:`specification <pypirc>` for :file:`.pypirc`.
 
 .. _register-your-project:
 .. _API token: https://pypi.org/help/#apitoken
@@ -889,28 +965,38 @@ won't see that token again.**
 
 .. tab:: 中文
 
-    
+  一旦你拥有了一个账户，你可以使用 :ref:`twine` 将你的分发包上传到 :term:`PyPI <Python Package Index (PyPI)>`。
+
+  上传发布的过程对于是否已经在 PyPI 上存在该项目是相同的——如果项目尚不存在，它将在第一次上传发布时自动创建。
+
+  对于第二次及之后的发布，PyPI 只要求新发布的版本号与任何先前的版本不同。
+
+  .. code-block:: bash
+
+      twine upload dist/*
+
+  你可以通过访问网址 ``https://pypi.org/project/<sampleproject>`` 来查看你的包是否已成功上传，其中 ``sampleproject`` 是你上传的项目名称。可能需要一两分钟，项目才会出现在网站上。
 
 .. tab:: 英文
 
-Once you have an account you can upload your distributions to
-:term:`PyPI <Python Package Index (PyPI)>` using :ref:`twine`.
+  Once you have an account you can upload your distributions to
+  :term:`PyPI <Python Package Index (PyPI)>` using :ref:`twine`.
 
-The process for uploading a release is the same regardless of whether
-or not the project already exists on PyPI - if it doesn't exist yet,
-it will be automatically created when the first release is uploaded.
+  The process for uploading a release is the same regardless of whether
+  or not the project already exists on PyPI - if it doesn't exist yet,
+  it will be automatically created when the first release is uploaded.
 
-For the second and subsequent releases, PyPI only requires that the
-version number of the new release differ from any previous releases.
+  For the second and subsequent releases, PyPI only requires that the
+  version number of the new release differ from any previous releases.
 
-.. code-block:: bash
+  .. code-block:: bash
 
-    twine upload dist/*
+      twine upload dist/*
 
-You can see if your package has successfully uploaded by navigating to the URL
-``https://pypi.org/project/<sampleproject>`` where ``sampleproject`` is
-the name of your project that you uploaded. It may take a minute or two for
-your project to appear on the site.
+  You can see if your package has successfully uploaded by navigating to the URL
+  ``https://pypi.org/project/<sampleproject>`` where ``sampleproject`` is
+  the name of your project that you uploaded. It may take a minute or two for
+  your project to appear on the site.
 
 ----
 

@@ -1,6 +1,8 @@
 =============================
-Package Distribution Metadata
+包分发元数据
 =============================
+
+**Package Distribution Metadata**
 
 .. toctree::
    :titlesonly:
