@@ -152,9 +152,9 @@
 
 ---------------------------
 
-.. [#non-identifier-mod-name] 虽然从技术上讲，可以使用 :doc:`importlib <python:library/importlib>` 导入没有有效 Python 标识符名称的包/模块，但这种情况极为罕见，并且强烈不推荐这样做。
+.. [#non-identifier-mod-name1] 虽然从技术上讲，可以使用 :doc:`importlib <python:library/importlib>` 导入没有有效 Python 标识符名称的包/模块，但这种情况极为罕见，并且强烈不推荐这样做。
 
-.. [#non-identifier-mod-name] Although it is technically possible to import packages/modules that do not have a valid Python identifier as their name, using :doc:`importlib <python:library/importlib>`, this is vanishingly rare and strongly discouraged.
+.. [#non-identifier-mod-name2] Although it is technically possible to import packages/modules that do not have a valid Python identifier as their name, using :doc:`importlib <python:library/importlib>`, this is vanishingly rare and strongly discouraged.
 
 
 .. _distro: https://en.wikipedia.org/wiki/Linux_distribution

@@ -303,7 +303,7 @@
         section on :doc:`entry points <setuptools:userguide/entry_point>` .
 
     .. note:: Since this specification is part of the :doc:`standard library
-    <python:library/importlib.metadata>`, most packaging tools other than setuptools
-    provide support for defining entry points.
+        <python:library/importlib.metadata>`, most packaging tools other than setuptools
+        provide support for defining entry points.
 
 .. _backport: https://importlib-metadata.readthedocs.io/en/latest/

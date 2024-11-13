@@ -50,12 +50,13 @@
 
         .. code-block:: bash
 
-            python3 -m pip install twine
+           python3 -m pip install twine
 
      .. tab:: Windows
-        
+
         .. code-block:: bat
-            py -m pip install twine
+           
+           py -m pip install twine
 
      您需要安装这个工具来将您的项目 :term:`分发包 <Distribution Package>` 上传到 :term:`PyPI <Python Package Index (PyPI)>` （参见 :ref:`下面的内容 <Uploading your Project to PyPI>` ）。
 
@@ -73,6 +74,7 @@
      .. tab:: Windows
         
         .. code-block:: bat
+            
             py -m pip install twine
 
      You'll need this to upload your project :term:`distributions <Distribution Package>` to :term:`PyPI <Python Package Index (PyPI)>` (see :ref:`below <Uploading your Project to PyPI>`).
@@ -801,7 +803,7 @@ Wheels
 
   .. note::
 
-    当前， **PyPI**（Python 包索引）支持上传 Windows、macOS 和多发行版的 `manylinux*` ABI 平台 Wheel。关于 `manylinux*` 的详细内容，请参见 :pep:`513`。
+    当前， **PyPI** （Python 包索引）支持上传 Windows、macOS 和多发行版的 `manylinux*` ABI 平台 Wheel。关于 `manylinux*` 的详细内容，请参见 :pep:`513`。
 
 .. tab:: 英文
 

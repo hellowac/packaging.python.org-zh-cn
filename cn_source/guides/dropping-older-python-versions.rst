@@ -79,8 +79,8 @@
 
     .. hint::
 
-    Regarding :ref:`deprecated <setup-py-deprecated>` direct ``setup.py`` invocations,
-    passing the ``--universal`` flag on the command line could override this setting.
+        Regarding :ref:`deprecated <setup-py-deprecated>` direct ``setup.py`` invocations,
+        passing the ``--universal`` flag on the command line could override this setting.
 
 定义所需的 Python 版本
 ------------------------------------
