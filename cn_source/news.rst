@@ -1,8 +1,15 @@
-News
+新闻
 ====
 
-.. note:: This document is not currently updated. Previously, the document
-  highlighted changes in Python packaging.
+**News**
+
+.. tab:: 中文
+
+  .. note:: 本文档目前尚未更新。此前，该文档重点介绍了 Python 打包方面的变化。
+
+.. tab:: 英文
+
+  .. note:: This document is not currently updated. Previously, the document highlighted changes in Python packaging.
 
 
 September 2019

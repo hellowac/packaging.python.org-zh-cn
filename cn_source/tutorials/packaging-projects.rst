@@ -403,33 +403,33 @@
         Issues = "https://github.com/pypa/sampleproject/issues"
 
     - ``name`` is the *distribution name* of your package. This can be any name as
-    long as it only contains letters, numbers, ``.``, ``_`` , and ``-``. It also
-    must not already be taken on PyPI. **Be sure to update this with your
-    username** for this tutorial, as this ensures you won't try to upload a
-    package with the same name as one which already exists.
+      long as it only contains letters, numbers, ``.``, ``_`` , and ``-``. It also
+      must not already be taken on PyPI. **Be sure to update this with your
+      username** for this tutorial, as this ensures you won't try to upload a
+      package with the same name as one which already exists.
     - ``version`` is the package version. (Some build backends allow it to be
-    specified another way, such as from a file or Git tag.)
+      specified another way, such as from a file or Git tag.)
     - ``authors`` is used to identify the author of the package; you specify a name
-    and an email for each author. You can also list ``maintainers`` in the same
-    format.
+      and an email for each author. You can also list ``maintainers`` in the same
+      format.
     - ``description`` is a short, one-sentence summary of the package.
     - ``readme`` is a path to a file containing a detailed description of the
-    package. This is shown on the package detail page on PyPI.
-    In this case, the description is loaded from :file:`README.md` (which is a
-    common pattern). There also is a more advanced table form described in the
-    :ref:`pyproject.toml guide <writing-pyproject-toml>`.
+      package. This is shown on the package detail page on PyPI.
+      In this case, the description is loaded from :file:`README.md` (which is a
+      common pattern). There also is a more advanced table form described in the
+      :ref:`pyproject.toml guide <writing-pyproject-toml>`.
     - ``requires-python`` gives the versions of Python supported by your
-    project. An installer like :ref:`pip` will look back through older versions of
-    packages until it finds one that has a matching Python version.
+      project. An installer like :ref:`pip` will look back through older versions of
+      packages until it finds one that has a matching Python version.
     - ``classifiers`` gives the index and :ref:`pip` some additional metadata
-    about your package. In this case, the package is only compatible with Python
-    3, is licensed under the MIT license, and is OS-independent. You should
-    always include at least which version(s) of Python your package works on,
-    which license your package is available under, and which operating systems
-    your package will work on. For a complete list of classifiers, see
-    https://pypi.org/classifiers/.
+      about your package. In this case, the package is only compatible with Python
+      3, is licensed under the MIT license, and is OS-independent. You should
+      always include at least which version(s) of Python your package works on,
+      which license your package is available under, and which operating systems
+      your package will work on. For a complete list of classifiers, see
+      https://pypi.org/classifiers/.
     - ``urls`` lets you list any number of extra links to show on PyPI.
-    Generally this could be to the source, documentation, issue trackers, etc.
+      Generally this could be to the source, documentation, issue trackers, etc.
 
     See the :ref:`pyproject.toml guide <writing-pyproject-toml>` for details
     on these and other fields that can be defined in the ``[project]``
@@ -621,7 +621,7 @@
             py -m pip install --upgrade build
 
     .. tip:: If you have trouble installing these, see the
-    :doc:`installing-packages` tutorial.
+        :doc:`installing-packages` tutorial.
 
     Now run this command from the same directory where :file:`pyproject.toml` is located:
 
@@ -865,11 +865,11 @@
         Successfully installed example_package_YOUR_USERNAME_HERE-0.0.1
 
     .. note:: This example uses ``--index-url`` flag to specify TestPyPI instead of
-    live PyPI. Additionally, it specifies ``--no-deps``. Since TestPyPI doesn't
-    have the same packages as the live PyPI, it's possible that attempting to
-    install dependencies may fail or install something unexpected. While our
-    example package doesn't have any dependencies, it's a good practice to avoid
-    installing dependencies when using TestPyPI.
+        live PyPI. Additionally, it specifies ``--no-deps``. Since TestPyPI doesn't
+        have the same packages as the live PyPI, it's possible that attempting to
+        install dependencies may fail or install something unexpected. While our
+        example package doesn't have any dependencies, it's a good practice to avoid
+        installing dependencies when using TestPyPI.
 
     You can test that it was installed correctly by importing the package.
     Make sure you're still in your virtual environment, then run Python:
