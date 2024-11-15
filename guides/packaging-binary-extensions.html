@@ -1,0 +1,1059 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="next" title="打包命名空间包" href="packaging-namespace-packages.html" /><link rel="prev" title="放弃对旧版 Python 的支持" href="dropping-older-python-versions.html" />
+
+    <link rel="shortcut icon" href="../_static/py.png"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>打包二进制扩展 - Python Packaging User Guide</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Python Packaging User Guide</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">Python Packaging User Guide</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow.html">打包流程</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/installing-packages.html">安装软件包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/managing-dependencies.html">管理依赖项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/packaging-projects.html">打包Python项目</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">指南</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-install.html">安装</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 安装</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="installing-using-pip-and-virtual-environments.html">使用 pip 和 venv 在虚拟环境中安装软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installing-using-virtualenv.html">使用虚拟环境安装包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installing-stand-alone-command-line-tools.html">安装独立的命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installing-using-linux-tools.html">使用 Linux 包管理器安装 pip/setuptools/wheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installing-scientific-packages.html">安装科学软件包</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="section-build-and-publish.html">构建和发布</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 构建和发布</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="writing-pyproject-toml.html">编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="distributing-packages-using-setuptools.html">打包和分发项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dropping-older-python-versions.html">放弃对旧版 Python 的支持</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">打包二进制扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packaging-namespace-packages.html">打包命名空间包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="creating-command-line-tools.html">创建和打包命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="creating-and-discovering-plugins.html">创建和发现插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-testpypi.html">使用 TestPyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making-a-pypi-friendly-readme.html">制作适合 PyPI 的 README</a></li>
+<li class="toctree-l3"><a class="reference internal" href="publishing-package-distribution-releases-using-github-actions-ci-cd-workflows.html">使用 GitHub Actions CI/CD 工作流发布软件包分发版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modernize-setup-py-project.html">如何使基于 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 的项目现代化？</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-hosting.html">托管</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of 托管</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="index-mirrors-and-caches.html">包索引镜像和缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hosting-your-own-index.html">托管您自己的简单存储库</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tool-recommendations.html">工具推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyzing-pypi-package-downloads.html">分析 PyPI 软件包下载</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discussions/index.html">讨论</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 讨论</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/versioning.html">版本控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/deploying-python-applications.html">部署 Python 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/pip-vs-easy-install.html">pip vs easy_install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/install-requires-vs-requirements.html">install_requires 与需求文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/distribution-package-vs-import-package.html">分发包与导入包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/package-formats.html">软件包格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/src-layout-vs-flat-layout.html">src 布局与平面布局</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/setup-py-deprecated.html"><code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 已被弃用吗？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/single-source-version.html">单一来源项目版本</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../specifications/index.html">PyPA 规范</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of PyPA 规范</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-distribution-metadata.html">包分发元数据</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 包分发元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/name-normalization.html">名称和规范化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/core-metadata.html">核心元数据规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/version-specifiers.html">版本标识符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/dependency-specifiers.html">依赖说明符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/pyproject-toml.html"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/inline-script-metadata.html">内联脚本元数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/platform-compatibility-tags.html">平台兼容性标签</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/well-known-project-urls.html">元数据中的知名项目 URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-installation-metadata.html">包安装元数据</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 包安装元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/recording-installed-packages.html">记录已安装的项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/entry-points.html">入口点规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/direct-url.html">记录已安装发行版的直接 URL 来源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/direct-url-data-structure.html">直接 URL 数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/virtual-environments.html">Python 虚拟环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/externally-managed-environments.html">外部管理环境</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-distribution-formats.html">包分发文件格式</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 包分发文件格式</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/source-distribution-format.html">源分发格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/binary-distribution-format.html">二进制分发格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-package-indices.html">包索引接口</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of 包索引接口</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/pypirc.html"><code class="file docutils literal notranslate"><span class="pre">.pypirc</span></code> 文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/simple-repository-api.html">Simple 仓库 API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../key_projects.html">项目摘要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">如何获取支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">为本指南做出贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">新闻</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/guides/packaging-binary-extensions.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="binary-extensions">
+<span id="id1"></span><h1>打包二进制扩展<a class="headerlink" href="#binary-extensions" title="Link to this heading">¶</a></h1>
+<p><strong>Packaging binary extensions</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<dl class="field-list simple">
+<dt class="field-odd">页面状态<span class="colon">:</span></dt>
+<dd class="field-odd"><p>不完整(Incomplete)</p>
+</dd>
+<dt class="field-even">最后更新<span class="colon">:</span></dt>
+<dd class="field-even"><p>2013-12-08</p>
+</dd>
+</dl>
+<p>CPython 参考解释器的一个特点是，除了允许执行 Python 代码外，它还提供了一个丰富的 C API，供其他软件使用。这个 C API 的最常见用途之一是创建可导入的 C 扩展，允许实现一些在纯 Python 代码中不容易实现的功能。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<dl class="field-list simple">
+<dt class="field-odd">Page Status<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Incomplete</p>
+</dd>
+<dt class="field-even">Last Reviewed<span class="colon">:</span></dt>
+<dd class="field-even"><p>2013-12-08</p>
+</dd>
+</dl>
+<p>One of the features of the CPython reference interpreter is that, in
+addition to allowing the execution of Python code, it also exposes a rich
+C API for use by other software. One of the most common uses of this C API
+is to create importable C extensions that allow things which aren't
+always easy to achieve in pure Python code.</p>
+</div>
+</div>
+<section id="id2">
+<h2>二进制扩展概述<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<p><strong>An overview of binary extensions</strong></p>
+<section id="id3">
+<h3>用例<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<p><strong>Use cases</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>二进制扩展的典型用例可以分为以下三类：</p>
+<ul class="simple">
+<li><p><strong>加速模块</strong>：这些模块是完全自包含的，专门创建用于比等效的纯 Python 代码在 CPython 中运行得更快。理想情况下，加速模块总是应该有一个纯 Python 版本，作为备选方案，以便在给定系统上没有加速版本时使用。CPython 标准库广泛使用加速模块。
+<em>示例</em>：当导入 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/datetime.html#module-datetime" title="（在 Python v3.13）"><code class="xref any docutils literal notranslate"><span class="pre">datetime</span></code></a> 时，如果 C 实现（<code class="xref any docutils literal notranslate"><span class="pre">_datetimemodule.c</span></code>）不可用，Python 会回退到 <a class="reference external" href="https://github.com/python/cpython/blob/main/Lib/datetime.py">datetime.py</a> 模块。</p></li>
+<li><p><strong>包装模块</strong>：这些模块是为了将现有的 C 接口暴露给 Python 代码而创建的。它们可以直接暴露底层的 C 接口，或者暴露一个更“Pythonic”的 API，利用 Python 的语言特性使 API 更易于使用。CPython 标准库广泛使用包装模块。
+<em>示例</em>：<a class="reference external" href="https://github.com/python/cpython/blob/main/Lib/functools.py">functools.py</a> 是一个 Python 模块包装器，用于包装 <a class="reference external" href="https://github.com/python/cpython/blob/main/Modules/_functoolsmodule.c">_functoolsmodule.c</a>。</p></li>
+<li><p><strong>低级系统访问</strong>：这些模块是为了访问 CPython 运行时、操作系统或底层硬件的低级特性而创建的。通过平台特定的代码，扩展模块可以实现纯 Python 代码无法实现的功能。许多 CPython 标准库模块是用 C 编写的，以便访问解释器内部的内容，这些内容在语言层面上无法暴露。
+<em>示例</em>：<a class="reference external" href="https://docs.python.org/zh-cn/3/library/sys.html#module-sys" title="（在 Python v3.13）"><code class="xref any docutils literal notranslate"><span class="pre">sys</span></code></a> 模块来自 <a class="reference external" href="https://github.com/python/cpython/blob/main/Python/sysmodule.c">sysmodule.c</a>。</p></li>
+</ul>
+<p>一个特别显著的 C 扩展特点是，当它们不需要回调到解释器运行时时，它们可以释放 CPython 的全局解释器锁，进行长时间运行的操作（无论这些操作是 CPU 绑定还是 IO 绑定）。</p>
+<p>并非所有扩展模块都能完美地归入上述类别。例如，NumPy 包含的扩展模块涉及所有三种用例——它们为了加速将内部循环移动到 C，包装了用 C、FORTRAN 和其他语言编写的外部库，并利用 CPython 和底层操作系统的低级系统接口支持向量化操作的并发执行，同时紧密控制创建对象的内存布局。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>The typical use cases for binary extensions break down into just three
+conventional categories:</p>
+<ul>
+<li><p><strong>accelerator modules</strong>: these modules are completely self-contained, and
+are created solely to run faster than the equivalent pure Python code
+runs in CPython. Ideally, accelerator modules will always have a pure
+Python equivalent to use as a fallback if the accelerated version isn't
+available on a given system. The CPython standard library makes extensive
+use of accelerator modules.
+<em>Example</em>: When importing <code class="docutils literal notranslate"><span class="pre">datetime</span></code>, Python falls back to the
+<a class="reference external" href="https://github.com/python/cpython/blob/main/Lib/datetime.py">datetime.py</a>
+module if the C implementation (
+<a class="reference external" href="https://github.com/python/cpython/blob/main/Modules/_datetimemodule.c">_datetimemodule.c</a>)
+is not available.</p></li>
+<li><p><strong>wrapper modules</strong>: these modules are created to expose existing C interfaces
+to Python code. They may either expose the underlying C interface directly,
+or else expose a more &quot;Pythonic&quot; API that makes use of Python language
+features to make the API easier to use. The CPython standard library makes
+extensive use of wrapper modules.
+<em>Example</em>: <a class="reference external" href="https://github.com/python/cpython/blob/main/Lib/functools.py">functools.py</a>
+is a Python module wrapper for
+<a class="reference external" href="https://github.com/python/cpython/blob/main/Modules/_functoolsmodule.c">_functoolsmodule.c</a>.</p></li>
+<li><p><strong>low-level system access</strong>: these modules are created to access lower level
+features of the CPython runtime, the operating system, or the underlying
+hardware. Through platform specific code, extension modules may achieve
+things that aren't possible in pure Python code. A number of CPython
+standard library modules are written in C in order to access interpreter
+internals that aren't exposed at the language level.
+<em>Example</em>: <code class="docutils literal notranslate"><span class="pre">sys</span></code>, which comes from
+<a class="reference external" href="https://github.com/python/cpython/blob/main/Python/sysmodule.c">sysmodule.c</a>.</p>
+<p>One particularly notable feature of C extensions is that, when they don't
+need to call back into the interpreter runtime, they can release CPython's
+global interpreter lock around long-running operations (regardless of
+whether those operations are CPU or IO bound).</p>
+</li>
+</ul>
+<p>Not all extension modules will fit neatly into the above categories. The
+extension modules included with NumPy, for example, span all three use cases
+- they move inner loops to C for speed reasons, wrap external libraries
+written in C, FORTRAN and other languages, and use low level system
+interfaces for both CPython and the underlying operation system to support
+concurrent execution of vectorised operations and to tightly control the
+exact memory layout of created objects.</p>
+</div>
+</div>
+</section>
+<section id="id8">
+<h3>缺点<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<p><strong>Disadvantages</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>使用二进制扩展的主要缺点是，它使得软件的后续分发变得更加困难。使用 Python 的一个优势是它在多个平台上都能运行，而用来编写扩展模块的语言（通常是 C 或 C++，但实际上任何可以绑定到 CPython C API 的语言都可以）通常要求为不同的平台创建自定义的二进制文件。</p>
+<p>这意味着二进制扩展：</p>
+<ul class="simple">
+<li><p>需要最终用户能够从源代码构建它们，或者需要有人为常见平台发布预编译的二进制文件。</p></li>
+<li><p>可能与 CPython 参考解释器的不同构建不兼容。</p></li>
+<li><p>通常无法与其他解释器（如 PyPy、IronPython 或 Jython）正常工作。</p></li>
+<li><p>如果是手工编码的，会使维护变得更加困难，因为维护人员不仅需要熟悉 Python，还需要熟悉用于创建二进制扩展的语言，以及 CPython C API 的细节。</p></li>
+<li><p>如果提供了纯 Python 备用实现，维护起来会更加困难，因为需要在两个地方实施更改，并且需要在测试套件中引入额外的复杂性，以确保两个版本始终被执行。</p></li>
+</ul>
+<p>依赖二进制扩展的另一个缺点是，替代的导入机制（例如直接从 zip 文件导入模块的能力）通常无法用于扩展模块（因为大多数平台的动态加载机制只能从磁盘加载库）。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>The main disadvantage of using binary extensions is the fact that it makes
+subsequent distribution of the software more difficult. One of the
+advantages of using Python is that it is largely cross platform, and the
+languages used to write extension modules (typically C or C++, but really
+any language that can bind to the CPython C API) typically require that
+custom binaries be created for different platforms.</p>
+<p>This means that binary extensions:</p>
+<ul class="simple">
+<li><p>require that end users be able to either build them from source, or else
+that someone publish pre-built binaries for common platforms</p></li>
+<li><p>may not be compatible with different builds of the CPython reference
+interpreter</p></li>
+<li><p>often will not work correctly with alternative interpreters such as PyPy,
+IronPython or Jython</p></li>
+<li><p>if handcoded, make maintenance more difficult by requiring that
+maintainers be familiar not only with Python, but also with the language
+used to create the binary extension, as well as with the details of the
+CPython C API.</p></li>
+<li><p>if a pure Python fallback implementation is provided, make maintenance
+more difficult by requiring that changes be implemented in two places,
+and introducing additional complexity in the test suite to ensure both
+versions are always executed.</p></li>
+</ul>
+<p>Another disadvantage of relying on binary extensions is that alternative
+import mechanisms (such as the ability to import modules directly from
+zipfiles) often won't work for extension modules (as the dynamic loading
+mechanisms on most platforms can only load libraries from disk).</p>
+</div>
+</div>
+</section>
+<section id="id9">
+<h3>手工编码加速器模块的替代方案<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<p><strong>Alternatives to handcoded accelerator modules</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>当扩展模块仅用于加速代码运行时（在分析确定某些代码的速度提升值得额外的维护工作后），还应考虑以下几种替代方案：</p>
+<ul class="simple">
+<li><p>寻找现有的优化替代方案。CPython 标准库包含了许多优化过的数据结构和算法（特别是在内建函数和 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/collections.html#module-collections" title="（在 Python v3.13）"><code class="xref any docutils literal notranslate"><span class="pre">collections</span></code></a>、 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/itertools.html#module-itertools" title="（在 Python v3.13）"><code class="xref any docutils literal notranslate"><span class="pre">itertools</span></code></a> 模块中）。Python 包索引也提供了额外的替代方案。有时，选择合适的标准库或第三方模块可以避免创建自己的加速器模块。</p></li>
+<li><p>对于长时间运行的应用程序，JIT 编译的 <a class="reference external" href="https://www.pypy.org/">PyPy 解释器</a> 可能是标准 CPython 运行时的合适替代方案。采用 PyPy 的主要障碍通常是依赖其他二进制扩展模块——虽然 PyPy 会模拟 CPython C API，但依赖此 API 的模块会给 PyPy JIT 带来问题，模拟层通常会暴露出扩展模块中 CPython 目前容忍的潜在缺陷（通常是引用计数错误——一个对象拥有一个有效引用而不是两个通常不会破坏任何东西，但没有引用而是一个有效引用则是一个重大问题）。</p></li>
+<li><p><a class="reference external" href="https://cython.org/">Cython</a> 是一个成熟的静态编译器，可以将大部分 Python 代码编译为 C 扩展模块。初步编译提供了一些速度提升（通过绕过 CPython 解释器层），而 Cython 的可选静态类型特性可以提供额外的速度提升机会。使用 Cython 仍然存在使用二进制扩展的 <a class="reference internal" href="#id8">缺点</a>，但相比于 C 或 C++ 等语言，它具有较低的入门门槛，适合 Python 程序员。</p></li>
+<li><p><a class="reference external" href="http://numba.pydata.org/">Numba</a> 是一个较新的工具，由科学 Python 社区的成员创建，旨在利用 LLVM 允许在运行时选择性地将 Python 应用程序的部分代码编译为本地机器代码。它要求系统上有 LLVM 支持，但可以显著提升速度，尤其对于能够进行向量化的操作。</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>When extension modules are just being used to make code run faster (after
+profiling has identified the code where the speed increase is worth
+additional maintenance effort), a number of other alternatives should
+also be considered:</p>
+<ul class="simple">
+<li><p>look for existing optimised alternatives. The CPython standard library
+includes a number of optimised data structures and algorithms (especially
+in the builtins and the <code class="docutils literal notranslate"><span class="pre">collections</span></code> and <code class="docutils literal notranslate"><span class="pre">itertools</span></code> modules). The
+Python Package Index also offers additional alternatives. Sometimes, the
+appropriate choice of standard library or third party module can avoid the
+need to create your own accelerator module.</p></li>
+<li><p>for long running applications, the JIT compiled <a class="reference external" href="https://www.pypy.org/">PyPy interpreter</a> may offer a suitable alternative to the standard
+CPython runtime. The main barrier to adopting PyPy is typically reliance
+on other binary extension modules - while PyPy does emulate the CPython
+C API, modules that rely on that cause problems for the PyPy JIT, and the
+emulation layer can often expose latent defects in extension modules that
+CPython currently tolerates (frequently around reference counting errors -
+an object having one live reference instead of two often won't break
+anything, but no references instead of one is a major problem).</p></li>
+<li><p><a class="reference external" href="https://cython.org/">Cython</a> is a mature static compiler that can
+compile most Python code to C extension modules. The initial compilation
+provides some speed increases (by bypassing the CPython interpreter layer),
+and Cython's optional static typing features can offer additional
+opportunities for speed increases. Using Cython still carries the
+<a href="#id27"><span class="problematic" id="id28">`disadvantages`_</span></a> associated with using binary extensions,
+but has the benefit of having a reduced barrier to entry for Python
+programmers (relative to other languages like C or C++).</p></li>
+<li><p><a class="reference external" href="http://numba.pydata.org/">Numba</a> is a newer tool, created by members
+of the scientific Python community, that aims to leverage LLVM to allow
+selective compilation of pieces of a Python application to native
+machine code at runtime. It requires that LLVM be available on the
+system where the code is running, but can provide significant speed
+increases, especially for operations that are amenable to vectorisation.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="id10">
+<h3>手工编码包装器模块的替代方案<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
+<p><strong>Alternatives to handcoded wrapper modules</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>C ABI（应用二进制接口）是一个共享功能的通用标准，允许多个应用程序之间互操作。CPython C API（应用程序编程接口）的一大优势是它允许 Python 用户利用这些功能。然而，手动包装模块是相当繁琐的，因此应该考虑一些其他替代方法。</p>
+<p>下面描述的方法虽然并没有简化分发过程，但它们 <em>可以</em> 显著减少维护包装模块的工作量。</p>
+<ul>
+<li><p>除了用于创建加速器模块，<a class="reference external" href="https://cython.org/">Cython</a> 也广泛用于为 C 或 C++ API 创建包装模块。它涉及手动包装接口，这为设计和优化包装代码提供了很大的灵活性，但可能不适合快速包装非常大的 API。查看 <a class="reference external" href="https://github.com/cython/cython/wiki/AutoPxd">第三方工具列表</a> 了解如何使用 Cython 自动包装。它还支持一些面向性能的 Python 实现，这些实现提供了类似 CPython 的 C API，比如 PyPy 和 Pyston。</p></li>
+<li><p><a class="reference external" href="https://pybind11.readthedocs.io/en/stable/index.html" title="（在 pybind11 v2.13.6）"><span class="xref std std-doc">pybind11</span></a> 是一个纯 C++11 库，提供了一个干净的 C++ 接口来访问 CPython（和 PyPy）C API。它不需要预处理步骤；它完全用模板化的 C++ 编写。它还包括一些辅助工具，用于 Setuptools 或 CMake 构建。它基于 <a class="reference external" href="https://www.boost.org/doc/libs/1_76_0/libs/python/doc/html/index.html">Boost.Python</a>，但不需要 Boost 库或 BJam。</p></li>
+<li><p><a class="reference external" href="https://cffi.readthedocs.io/en/latest/index.html" title="（在 CFFI v1.18）"><span class="xref std std-doc">cffi</span></a> 是一个由一些 PyPy 开发者创建的项目，旨在让已经熟悉 Python 和 C 的开发者能够轻松地将他们的 C 模块暴露给 Python 应用程序。它也使得即使你自己不懂 C，基于头文件包装 C 模块变得相对简单。</p>
+<p><code class="docutils literal notranslate"><span class="pre">cffi</span></code> 的一个关键优势是它与 PyPy JIT 兼容，允许 CFFI 包装模块完全参与 PyPy 的追踪 JIT 优化。</p>
+</li>
+<li><p><a class="reference external" href="http://www.swig.org/">SWIG</a> 是一个包装接口生成器，允许多种编程语言（包括 Python）与 C 和 C++ 代码进行接口交互。</p></li>
+<li><p>标准库的 <code class="docutils literal notranslate"><span class="pre">ctypes</span></code> 模块，虽然在没有头文件信息时可以方便地访问 C 层接口，但它的缺点是仅在 C ABI 层操作，因此不能自动检查库导出的接口和 Python 代码中声明的接口之间的一致性。与此不同，以上替代方案都能够在 C <em>API</em> 层操作，使用 C 头文件确保库导出的接口与 Python 包装模块所期望的接口一致。虽然 <code class="docutils literal notranslate"><span class="pre">cffi</span></code> <em>也可以</em> 直接在 C ABI 层操作，但当这样使用时，它和 <code class="docutils literal notranslate"><span class="pre">ctypes</span></code> 一样会面临接口一致性问题。</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>The C ABI (Application Binary Interface) is a common standard for sharing
+functionality between multiple applications. One of the strengths of the
+CPython C API (Application Programming Interface) is allowing Python users
+to tap into that functionality. However, wrapping modules by hand is quite
+tedious, so a number of other alternative approaches should be considered.</p>
+<p>The approaches described below don't simplify the distribution case at all,
+but they <em>can</em> significantly reduce the maintenance burden of keeping
+wrapper modules up to date.</p>
+<ul>
+<li><p>In addition to being useful for the creation of accelerator modules,
+<a class="reference external" href="https://cython.org/">Cython</a> is also widely used for creating wrapper
+modules for C or C++ APIs. It involves wrapping the interfaces by
+hand, which gives a wide range of freedom in designing and optimising
+the wrapper code, but may not be a good choice for wrapping very
+large APIs quickly. See the
+<a class="reference external" href="https://github.com/cython/cython/wiki/AutoPxd">list of third-party tools</a>
+for automatic wrapping with Cython. It also supports performance-oriented
+Python implementations that provide a CPython-like C-API, such as PyPy
+and Pyston.</p></li>
+<li><p><a class="reference external" href="https://pybind11.readthedocs.io/en/stable/index.html" title="（在 pybind11 v2.13.6）"><span class="xref std std-doc">pybind11</span></a> is a pure C++11 library
+that provides a clean C++ interface to the CPython (and PyPy) C API. It
+does not require a pre-processing step; it is written entirely in
+templated C++. Helpers are included for Setuptools or CMake builds. It
+was based on <a class="reference external" href="https://www.boost.org/doc/libs/1_76_0/libs/python/doc/html/index.html">Boost.Python</a>,
+but doesn't require the Boost libraries or BJam.</p></li>
+<li><p><a class="reference external" href="https://cffi.readthedocs.io/en/latest/index.html" title="（在 CFFI v1.18）"><span class="xref std std-doc">cffi</span></a> is a project created by some of the PyPy
+developers to make it straightforward for developers that already know
+both Python and C to expose their C modules to Python applications. It
+also makes it relatively straightforward to wrap a C module based on its
+header files, even if you don't know C yourself.</p>
+<p>One of the key advantages of <code class="docutils literal notranslate"><span class="pre">cffi</span></code> is that it is compatible with the
+PyPy JIT, allowing CFFI wrapper modules to participate fully in PyPy's
+tracing JIT optimisations.</p>
+</li>
+<li><p><a class="reference external" href="http://www.swig.org/">SWIG</a> is a wrapper interface generator that
+allows a variety of programming languages, including Python, to interface
+with C and C++ code.</p></li>
+<li><p>The standard library's <code class="docutils literal notranslate"><span class="pre">ctypes</span></code> module, while useful for getting access
+to C level interfaces when header information isn't available, suffers
+from the fact that it operates solely at the C ABI level, and thus has
+no automatic consistency checking between the interface actually being
+exported by the library and the one declared in the Python code. By
+contrast, the above alternatives are all able to operate at the C <em>API</em>
+level, using C header files to ensure consistency between the interface
+exported by the library being wrapped and the one expected by the Python
+wrapper module. While <code class="docutils literal notranslate"><span class="pre">cffi</span></code> <em>can</em> operate directly at the C ABI level,
+it suffers from the same interface inconsistency problems as <code class="docutils literal notranslate"><span class="pre">ctypes</span></code>
+when it is used that way.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="id12">
+<h3>低级系统访问的替代方案<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<p><strong>Alternatives for low level system access</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>对于需要低级系统访问的应用程序（无论原因如何），二进制扩展模块通常是最合适的选择。这尤其适用于需要低级访问 CPython 运行时本身的情况，因为一些操作（如释放全局解释器锁）在解释器执行代码时是无效的，即使使用像 <code class="docutils literal notranslate"><span class="pre">ctypes</span></code> 或 <code class="docutils literal notranslate"><span class="pre">cffi</span></code> 这样的模块来访问相关的 C API 接口也无法绕过这些限制。</p>
+<p>对于那些扩展模块操作的是底层操作系统或硬件（而不是 CPython 运行时）的情况，有时更好的做法是直接编写一个普通的 C 库（或使用其他系统编程语言如 C++ 或 Rust 编写的库，这些语言能够导出兼容 C 的 ABI），然后使用上述描述的包装技术之一将接口暴露为可导入的 Python 模块。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>For applications that need low level system access (regardless of the
+reason), a binary extension module often <em>is</em> the best way to go about it.
+This is particularly true for low level access to the CPython runtime
+itself, since some operations (like releasing the Global Interpreter Lock)
+are simply invalid when the interpreter is running code, even if a module
+like <code class="docutils literal notranslate"><span class="pre">ctypes</span></code> or <code class="docutils literal notranslate"><span class="pre">cffi</span></code> is used to obtain access to the relevant C
+API interfaces.</p>
+<p>For cases where the extension module is manipulating the underlying
+operating system or hardware (rather than the CPython runtime), it may
+sometimes be better to just write an ordinary C library (or a library in
+another systems programming language like C++ or Rust that can export a C
+compatible ABI), and then use one of the wrapping techniques described
+above to make the interface available as an importable Python module.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id13">
+<h2>实现二进制扩展<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h2>
+<p><strong>Implementing binary extensions</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>CPython <a class="reference external" href="https://docs.python.org/zh-cn/3/extending/index.html" title="（在 Python v3.13）"><span class="xref std std-doc">扩展和嵌入</span></a> 指南包括了如何编写
+<a class="reference external" href="https://docs.python.org/zh-cn/3/extending/extending.html" title="（在 Python v3.13）"><span class="xref std std-doc">自定义 C 扩展模块</span></a> 的介绍。</p>
+<p>FIXME: 需要进一步说明，所有这些正是为什么你可能 <em>不</em> 想手工编写扩展模块的原因之一 :)</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>The CPython <a class="reference external" href="https://docs.python.org/zh-cn/3/extending/index.html" title="（在 Python v3.13）"><span class="xref std std-doc">Extending and Embedding</span></a>
+guide includes an introduction to writing a
+<a class="reference external" href="https://docs.python.org/zh-cn/3/extending/extending.html" title="（在 Python v3.13）"><span class="xref std std-doc">custom extension module in C</span></a>.</p>
+<p>FIXME: Elaborate that all this is one of the reasons why you probably
+<em>don't</em> want to handcode your extension modules :)</p>
+</div>
+</div>
+<section id="id14">
+<h3>扩展模块生命周期<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
+<p><strong>Extension module lifecycle</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>FIXME: 此部分需要充实。</p>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>FIXME: This section needs to be fleshed out.</p>
+</div>
+</div>
+</section>
+<section id="id15">
+<h3>共享静态状态和子解释器的含义<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<p><strong>Implications of shared static state and subinterpreters</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>FIXME: 此部分需要充实。</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>FIXME: This section needs to be fleshed out.</p>
+</div>
+</div>
+</section>
+<section id="gil">
+<h3>GIL 的含义<a class="headerlink" href="#gil" title="Link to this heading">¶</a></h3>
+<p><strong>Implications of the GIL</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>FIXME: 此部分需要充实。</p>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>FIXME: This section needs to be fleshed out.</p>
+</div>
+</div>
+</section>
+<section id="api">
+<h3>内存分配 API<a class="headerlink" href="#api" title="Link to this heading">¶</a></h3>
+<p><strong>Memory allocation APIs</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>FIXME: 此部分需要充实。</p>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<p>FIXME: This section needs to be fleshed out.</p>
+</div>
+</div>
+</section>
+<section id="abi">
+<span id="cpython-stable-abi"></span><h3>ABI 兼容性<a class="headerlink" href="#abi" title="Link to this heading">¶</a></h3>
+<p><strong>ABI Compatibility</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">中文</label><div class="tab-content docutils container">
+<p>CPython C API 不保证在次要版本之间（如 3.2、3.3、3.4 等）保持 ABI 的稳定性。这意味着，通常情况下，如果你针对某个版本的 Python 构建了一个扩展模块，那么该模块只会在相同的次要版本的 Python 中正常工作，而不能在其他次要版本中使用。</p>
+<p>Python 3.2 引入了有限 API（Limited API），这是 Python C API 的一个明确定义的子集。有限 API 所需的符号组成了“稳定的 ABI”，该 ABI 保证在所有 Python 3.x 版本中都是兼容的。使用针对稳定 ABI 构建的扩展的 wheel 文件，使用 <code class="docutils literal notranslate"><span class="pre">abi3</span></code> ABI 标签，以表示它们与所有 Python 3.x 版本兼容。</p>
+<p>CPython 的 <a class="reference external" href="https://docs.python.org/zh-cn/3/c-api/stable.html" title="（在 Python v3.13）"><span class="xref std std-doc">C API 稳定性</span></a> 页面提供了关于 API / ABI 稳定性保证、如何使用有限 API 以及“有限 API”具体内容的详细信息。</p>
+</div>
+<input class="tab-input" id="tab-set--11-input--2" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--2">英文</label><div class="tab-content docutils container">
+<p>The CPython C API does not guarantee ABI stability between minor releases
+(3.2, 3.3, 3.4, etc.). This means that, typically, if you build an
+extension module against one version of Python, it is only guaranteed to
+work with the same minor version of Python and not with any other minor
+versions.</p>
+<p>Python 3.2 introduced the Limited API, with is a well-defined subset of
+Python's C API. The symbols needed for the Limited API form the
+&quot;Stable ABI&quot; which is guaranteed to be compatible across all Python 3.x
+versions. Wheels containing extensions built against the stable ABI use
+the <code class="docutils literal notranslate"><span class="pre">abi3</span></code> ABI tag, to reflect that they're compatible with all Python
+3.x versions.</p>
+<p>CPython's <a class="reference external" href="https://docs.python.org/zh-cn/3/c-api/stable.html" title="（在 Python v3.13）"><span class="xref std std-doc">C API stability</span></a> page provides
+detailed information about the API / ABI stability guarantees, how to use
+the Limited API and the exact contents of the &quot;Limited API&quot;.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id16">
+<h2>构建二进制扩展<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h2>
+<p><strong>Building binary extensions</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">中文</label><div class="tab-content docutils container">
+<p>FIXME: 涵盖可用于构建扩展的构建后端。</p>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">英文</label><div class="tab-content docutils container">
+<p>FIXME: Cover the build-backends available for building extensions.</p>
+</div>
+</div>
+<section id="id17">
+<h3>为多个平台构建扩展<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h3>
+<p><strong>Building extensions for multiple platforms</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--13-input--1" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--1">中文</label><div class="tab-content docutils container">
+<p>如果你计划分发你的扩展模块，你应该为你打算支持的所有平台提供 <a class="reference internal" href="../glossary.html#term-Wheel"><span class="xref std std-term">wheels</span></a> 文件。这些通常是在持续集成（CI）系统上构建的。也有一些工具可以帮助你从 CI 构建高度可重分发的二进制文件，这些工具包括 <a class="reference internal" href="../key_projects.html#cibuildwheel"><span class="std std-ref">cibuildwheel</span></a> 和 <a class="reference internal" href="../key_projects.html#multibuild"><span class="std std-ref">multibuild</span></a>。</p>
+<p>对于大多数扩展模块，你需要为你打算支持的所有平台构建 wheels 文件。这意味着你需要构建的 wheels 数量是以下各项的乘积：</p>
+<blockquote>
+<div><p>count(Python 次版本) * count(操作系统) * count(架构)</p>
+</div></blockquote>
+<p>使用 CPython 的 <a class="reference internal" href="#cpython-stable-abi"><span class="std std-ref">稳定 ABI</span></a> 可以显著减少你需要提供的 wheels 数量，因为在一个平台上构建的单个 wheel 可以与所有 Python 次版本兼容，从而消除矩阵中的一个维度。这也避免了为每个新的 Python 次版本生成新的 wheels 文件的需求。</p>
+</div>
+<input class="tab-input" id="tab-set--13-input--2" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--2">英文</label><div class="tab-content docutils container">
+<p>If you plan to distribute your extension, you should provide
+<a class="reference internal" href="../glossary.html#term-Wheel"><span class="xref std std-term">wheels</span></a> for all the platforms you intend to support. These
+are usually built on continuous integration (CI) systems. There are tools
+to help you build highly redistributable binaries from CI; these include
+<a class="reference internal" href="../key_projects.html#cibuildwheel"><span class="std std-ref">cibuildwheel</span></a> and <a class="reference internal" href="../key_projects.html#multibuild"><span class="std std-ref">multibuild</span></a>.</p>
+<p>For most extensions, you will need to build wheels for all the platforms
+you intend to support. This means that the number of wheels you need to
+build is the product of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">count</span><span class="p">(</span><span class="n">Python</span> <span class="n">minor</span> <span class="n">versions</span><span class="p">)</span> <span class="o">*</span> <span class="n">count</span><span class="p">(</span><span class="n">OS</span><span class="p">)</span> <span class="o">*</span> <span class="n">count</span><span class="p">(</span><span class="n">architectures</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using CPython's <a class="reference internal" href="#cpython-stable-abi"><span class="std std-ref">Stable ABI</span></a> can help significantly
+reduce the number of wheels you need to provide, since a single wheel on a
+platform can be used with all Python minor versions; eliminating one dimension
+of the matrix. It also removes the need to generate new wheels for each new
+minor version of Python.</p>
+</div>
+</div>
+</section>
+<section id="windows">
+<h3>适用于 Windows 的二进制扩展<a class="headerlink" href="#windows" title="Link to this heading">¶</a></h3>
+<p><strong>Binary extensions for Windows</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--14-input--1" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--1">中文</label><div class="tab-content docutils container">
+<p>在构建二进制扩展之前，必须确保你有合适的编译器可用。在 Windows 上，官方的 CPython 解释器是使用 Visual C 构建的，因此构建兼容的二进制扩展时也应该使用 Visual C。为了设置构建环境，安装 <a class="reference external" href="https://visualstudio.microsoft.com/downloads/">Visual Studio Community Edition</a> 即可，任何较新的版本都可以。</p>
+<p>有一个需要注意的地方：如果你使用的是 Visual Studio 2019 或更高版本，你的扩展将除了依赖于所有早期版本（从 2015 年开始）都依赖的 <code class="docutils literal notranslate"><span class="pre">VCRUNTIME140.dll</span></code> 外，还需要依赖一个“额外的”文件， <code class="docutils literal notranslate"><span class="pre">VCRUNTIME140_1.dll</span></code>。这将增加一个额外的要求，即在不包含这个额外文件的 CPython 版本中使用你的扩展时会遇到问题。为了避免这种情况，你可以添加编译时参数 <code class="docutils literal notranslate"><span class="pre">/d2FH4-</span></code>。一些较新的 Python 版本可能会包含这个文件。</p>
+<p>不推荐为 3.5 之前的 Python 版本构建扩展，因为 Microsoft 已经不再提供旧版本的 Visual Studio。如果你确实需要为旧版本构建扩展，你可以设置 <code class="docutils literal notranslate"><span class="pre">DISTUTILS_USE_SDK=1</span></code> 和 <code class="docutils literal notranslate"><span class="pre">MSSdk=1</span></code>，强制找到当前激活的 MSVC 版本，并且在设计扩展时应小心避免在不同的库之间进行 malloc/free 操作，避免依赖已更改的数据结构等。用于生成扩展模块的工具通常会为你避免这些问题。</p>
+</div>
+<input class="tab-input" id="tab-set--14-input--2" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--2">英文</label><div class="tab-content docutils container">
+<p>Before it is possible to build a binary extension, it is necessary to ensure
+that you have a suitable compiler available. On Windows, Visual C is used to
+build the official CPython interpreter, and should be used to build compatible
+binary extensions.  To set up a build environment for binary extensions, install
+<a class="reference external" href="https://visualstudio.microsoft.com/downloads/">Visual Studio Community Edition</a>
+- any recent version is fine.</p>
+<p>One caveat: if you use Visual Studio 2019 or later, your extension will depend
+on an &quot;extra&quot; file, <code class="docutils literal notranslate"><span class="pre">VCRUNTIME140_1.dll</span></code>, in addition to the
+<code class="docutils literal notranslate"><span class="pre">VCRUNTIME140.dll</span></code> that all previous versions back to 2015 depend on. This
+will add an extra requirement to using your extension on versions of CPython
+that do not include this extra file. To avoid this, you can add the
+compile-time argument <code class="docutils literal notranslate"><span class="pre">/d2FH4-</span></code>. Recent versions of Python may include this
+file.</p>
+<p>Building for Python prior to 3.5 is discouraged, because older versions of
+Visual Studio are no longer available from Microsoft. If you do need to build
+for older versions, you can set <code class="docutils literal notranslate"><span class="pre">DISTUTILS_USE_SDK=1</span></code> and <code class="docutils literal notranslate"><span class="pre">MSSdk=1</span></code> to
+force a the currently activated version of MSVC to be found, and you should
+exercise care when designing your extension not to malloc/free memory across
+different libraries, avoid relying on changed data structures, and so on. Tools
+for generating extension modules usually avoid these things for you.</p>
+</div>
+</div>
+</section>
+<section id="linux">
+<h3>适用于 Linux 的二进制扩展<a class="headerlink" href="#linux" title="Link to this heading">¶</a></h3>
+<p><strong>Binary extensions for Linux</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--15-input--1" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--1">中文</label><div class="tab-content docutils container">
+<p>Linux 二进制文件必须使用足够旧的 glibc 版本，以确保与旧版发行版的兼容性。 <a class="reference external" href="https://github.com/pypa/manylinux">manylinux</a> Docker 镜像提供了一个构建环境，包含足够旧的 glibc 版本，能够支持大多数当前 Linux 发行版在常见架构上的兼容性。</p>
+</div>
+<input class="tab-input" id="tab-set--15-input--2" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--2">英文</label><div class="tab-content docutils container">
+<p>Linux binaries must use a sufficiently old glibc to be compatible with older
+distributions. The <a class="reference external" href="https://github.com/pypa/manylinux">manylinux</a> Docker
+images provide a build environment with a glibc old enough to support most
+current Linux distributions on common architectures.</p>
+</div>
+</div>
+</section>
+<section id="macos">
+<h3>适用于 macOS 的二进制扩展<a class="headerlink" href="#macos" title="Link to this heading">¶</a></h3>
+<p><strong>Binary extensions for macOS</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--16-input--1" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--1">中文</label><div class="tab-content docutils container">
+<p>在 macOS 上的二进制兼容性由目标最小部署系统决定，例如 <em>10.9</em>，通常在 macOS 上构建二进制文件时，通过 <code class="docutils literal notranslate"><span class="pre">MACOSX_DEPLOYMENT_TARGET</span></code> 环境变量来指定。当使用 setuptools / distutils 构建时，部署目标通过标志 <code class="docutils literal notranslate"><span class="pre">--plat-name</span></code> 指定，例如 <code class="docutils literal notranslate"><span class="pre">macosx-10.9-x86_64</span></code>。有关 macOS Python 发行版的常见部署目标，请参阅 <a class="reference external" href="https://github.com/MacPython/wiki/wiki/Spinning-wheels">MacPython Spinning Wheels wiki</a> 。</p>
+</div>
+<input class="tab-input" id="tab-set--16-input--2" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--2">英文</label><div class="tab-content docutils container">
+<p>Binary compatibility on macOS is determined by the target minimum deployment
+system, e.g. <em>10.9</em>, which is often specified with the
+<code class="docutils literal notranslate"><span class="pre">MACOSX_DEPLOYMENT_TARGET</span></code> environmental variable when building binaries on
+macOS. When building with setuptools / distutils, the deployment target is
+specified with the flag <code class="docutils literal notranslate"><span class="pre">--plat-name</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">macosx-10.9-x86_64</span></code>. For
+common deployment targets for macOS Python distributions, see the <a class="reference external" href="https://github.com/MacPython/wiki/wiki/Spinning-wheels">MacPython
+Spinning Wheels wiki</a>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id20">
+<h2>发布二进制扩展<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h2>
+<p><strong>Publishing binary extensions</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--17-input--1" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--1">中文</label><div class="tab-content docutils container">
+<p>通过 PyPI 发布二进制扩展使用与发布纯 Python 包相同的上传机制。你可以使用构建后端为你的扩展构建一个 wheel 文件，并通过 <a class="reference external" href="https://twine.readthedocs.io/en/stable/index.html" title="（在 twine v5.1）"><span class="xref std std-doc">twine</span></a> 将其上传到 PyPI。</p>
+</div>
+<input class="tab-input" id="tab-set--17-input--2" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--2">英文</label><div class="tab-content docutils container">
+<p>Publishing binary extensions through PyPI uses the same upload mechanisms as
+publishing pure Python packages. You build a wheel file for your extension
+using the build-backend and upload it to PyPI using
+<a class="reference external" href="https://twine.readthedocs.io/en/stable/index.html" title="（在 twine v5.1）"><span class="xref std std-doc">twine</span></a>.</p>
+</div>
+</div>
+<section id="id21">
+<h3>避免仅发布二进制版本<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
+<p><strong>Avoid binary-only releases</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--18-input--1" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--1">中文</label><div class="tab-content docutils container">
+<p>强烈建议你发布二进制扩展文件以及用于构建它们的源代码。这使得用户在需要时可以从源代码构建扩展。特别是，对于某些 Linux 发行版，它们在自己的构建系统中从源代码构建扩展，以便将其纳入发行版的软件包仓库，这是必需的。</p>
+</div>
+<input class="tab-input" id="tab-set--18-input--2" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--2">英文</label><div class="tab-content docutils container">
+<p>It is strongly recommended that you publish your binary extensions as
+well as the source code that was used to build them. This allows users to
+build the extension from source if they need to. Notably, this is required
+for certain Linux distributions that build from source within their
+own build systems for the distro package repositories.</p>
+</div>
+</div>
+</section>
+<section id="id22">
+<h3>弱链接<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h3>
+<p><strong>Weak linking</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--19-input--1" name="tab-set--19" type="radio"><label class="tab-label" for="tab-set--19-input--1">中文</label><div class="tab-content docutils container">
+<p>FIXME: 此部分需要充实。</p>
+</div>
+<input class="tab-input" id="tab-set--19-input--2" name="tab-set--19" type="radio"><label class="tab-label" for="tab-set--19-input--2">英文</label><div class="tab-content docutils container">
+<p>FIXME: This section needs to be fleshed out.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id23">
+<h2>其他资源<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h2>
+<p><strong>Additional resources</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--20-input--1" name="tab-set--20" type="radio"><label class="tab-label" for="tab-set--20-input--1">中文</label><div class="tab-content docutils container">
+<p>跨平台开发和分发扩展模块是一个复杂的话题，因此本指南主要集中在提供指向各种自动化处理底层技术挑战的工具的建议。本节中的附加资源旨在帮助开发者深入了解这些系统在运行时所依赖的底层二进制接口。</p>
+</div>
+<input class="tab-input" id="tab-set--20-input--2" name="tab-set--20" type="radio"><label class="tab-label" for="tab-set--20-input--2">英文</label><div class="tab-content docutils container">
+<p>Cross-platform development and distribution of extension modules is a complex topic,
+so this guide focuses primarily on providing pointers to various tools that automate
+dealing with the underlying technical challenges. The additional resources in this
+section are instead intended for developers looking to understand more about the
+underlying binary interfaces that those systems rely on at runtime.</p>
+</div>
+</div>
+<section id="scikit-build-wheel">
+<h3>使用 scikit-build 生成跨平台 wheel<a class="headerlink" href="#scikit-build-wheel" title="Link to this heading">¶</a></h3>
+<p><strong>Cross-platform wheel generation with scikit-build</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--21-input--1" name="tab-set--21" type="radio"><label class="tab-label" for="tab-set--21-input--1">中文</label><div class="tab-content docutils container">
+<p><a class="reference external" href="https://scikit-build.readthedocs.io/en/latest/">scikit-build</a> 包帮助抽象化跨平台构建操作，并在创建二进制扩展包时提供额外的功能。关于 Python 二进制扩展模块的 C 运行时、编译器和构建系统生成器的更多文档，也可以在以下链接中找到： <a class="reference external" href="https://scikit-build.readthedocs.io/en/latest/generators.html">C 运行时, 编译, 以及构建系统生成器</a>。</p>
+</div>
+<input class="tab-input" id="tab-set--21-input--2" name="tab-set--21" type="radio"><label class="tab-label" for="tab-set--21-input--2">英文</label><div class="tab-content docutils container">
+<p>The <a class="reference external" href="https://scikit-build.readthedocs.io/en/latest/">scikit-build</a> package
+helps abstract cross-platform build operations and provides additional capabilities
+when creating binary extension packages. Additional documentation is also available on
+the <a class="reference external" href="https://scikit-build.readthedocs.io/en/latest/generators.html">C runtime, compiler, and build system generator</a> for Python
+binary extension modules.</p>
+</div>
+</div>
+</section>
+<section id="c-c">
+<h3>C/C++ 扩展模块简介<a class="headerlink" href="#c-c" title="Link to this heading">¶</a></h3>
+<p><strong>Introduction to C/C++ extension modules</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--22-input--1" name="tab-set--22" type="radio"><label class="tab-label" for="tab-set--22-input--1">中文</label><div class="tab-content docutils container">
+<p>有关在 Debian 系统上 CPython 如何使用扩展模块的更深入解释，请参阅以下文章：</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://thomasnyberg.com/what_are_extension_modules.html">什么是 (c)python 扩展模块？</a></p></li>
+<li><p><a class="reference external" href="https://thomasnyberg.com/releasing_the_gil.html">释放 GIL</a></p></li>
+<li><p><a class="reference external" href="https://thomasnyberg.com/cpp_extension_modules.html">使用 C++ 编写 CPython 扩展模块</a></p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--22-input--2" name="tab-set--22" type="radio"><label class="tab-label" for="tab-set--22-input--2">英文</label><div class="tab-content docutils container">
+<p>For a more in depth explanation of how extension modules are used by CPython on
+a Debian system, see the following articles:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://thomasnyberg.com/what_are_extension_modules.html">What are (c)python extension modules?</a></p></li>
+<li><p><a class="reference external" href="https://thomasnyberg.com/releasing_the_gil.html">Releasing the gil</a></p></li>
+<li><p><a class="reference external" href="https://thomasnyberg.com/cpp_extension_modules.html">Writing cpython extension modules using C++</a></p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="wheel">
+<h3>二进制 wheel 的其他注意事项<a class="headerlink" href="#wheel" title="Link to this heading">¶</a></h3>
+<p><strong>Additional considerations for binary wheels</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--23-input--1" name="tab-set--23" type="radio"><label class="tab-label" for="tab-set--23-input--1">中文</label><div class="tab-content docutils container">
+<p><a class="reference external" href="https://pypackaging-native.github.io/">pypackaging-native</a> 网站提供了有关使用本地代码打包 Python 包的更多内容。它旨在概述此类项目中最重要的打包问题，并提供深入的解释和参考资料。</p>
+<p>涵盖的主题示例包括非 Python 编译依赖项（“本地依赖项”）、本地代码的 ABI（应用程序二进制接口）重要性、对 SIMD 代码的依赖以及交叉编译等。</p>
+</div>
+<input class="tab-input" id="tab-set--23-input--2" name="tab-set--23" type="radio"><label class="tab-label" for="tab-set--23-input--2">英文</label><div class="tab-content docutils container">
+<p>The <a class="reference external" href="https://pypackaging-native.github.io/">pypackaging-native</a> website has
+additional coverage of packaging Python packages with native code. It aims to
+provide an overview of the most important packaging issues for such projects,
+with in-depth explanations and references.</p>
+<p>Examples of topics covered are non-Python compiled dependencies (&quot;native
+dependencies&quot;), the importance of the ABI (Application Binary Interface) of
+native code, dependency on SIMD code and cross compilation.</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="packaging-namespace-packages.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">打包命名空间包</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="dropping-older-python-versions.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">放弃对旧版 Python 的支持</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2013–2020, PyPA
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2024 年 11 月 15 日</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">打包二进制扩展</a><ul>
+<li><a class="reference internal" href="#id2">二进制扩展概述</a><ul>
+<li><a class="reference internal" href="#id3">用例</a></li>
+<li><a class="reference internal" href="#id8">缺点</a></li>
+<li><a class="reference internal" href="#id9">手工编码加速器模块的替代方案</a></li>
+<li><a class="reference internal" href="#id10">手工编码包装器模块的替代方案</a></li>
+<li><a class="reference internal" href="#id12">低级系统访问的替代方案</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id13">实现二进制扩展</a><ul>
+<li><a class="reference internal" href="#id14">扩展模块生命周期</a></li>
+<li><a class="reference internal" href="#id15">共享静态状态和子解释器的含义</a></li>
+<li><a class="reference internal" href="#gil">GIL 的含义</a></li>
+<li><a class="reference internal" href="#api">内存分配 API</a></li>
+<li><a class="reference internal" href="#abi">ABI 兼容性</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id16">构建二进制扩展</a><ul>
+<li><a class="reference internal" href="#id17">为多个平台构建扩展</a></li>
+<li><a class="reference internal" href="#windows">适用于 Windows 的二进制扩展</a></li>
+<li><a class="reference internal" href="#linux">适用于 Linux 的二进制扩展</a></li>
+<li><a class="reference internal" href="#macos">适用于 macOS 的二进制扩展</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id20">发布二进制扩展</a><ul>
+<li><a class="reference internal" href="#id21">避免仅发布二进制版本</a></li>
+<li><a class="reference internal" href="#id22">弱链接</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id23">其他资源</a><ul>
+<li><a class="reference internal" href="#scikit-build-wheel">使用 scikit-build 生成跨平台 wheel</a></li>
+<li><a class="reference internal" href="#c-c">C/C++ 扩展模块简介</a></li>
+<li><a class="reference internal" href="#wheel">二进制 wheel 的其他注意事项</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=cb5fb026"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    </body>
+</html>

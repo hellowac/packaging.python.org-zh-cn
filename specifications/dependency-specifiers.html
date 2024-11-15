@@ -1,0 +1,1294 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="next" title="pyproject.toml 规范" href="pyproject-toml.html" /><link rel="prev" title="版本标识符" href="version-specifiers.html" />
+
+    <link rel="shortcut icon" href="../_static/py.png"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>依赖说明符 - Python Packaging User Guide</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Python Packaging User Guide</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">Python Packaging User Guide</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow.html">打包流程</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/installing-packages.html">安装软件包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/managing-dependencies.html">管理依赖项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/packaging-projects.html">打包Python项目</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../guides/index.html">指南</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-install.html">安装</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 安装</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-pip-and-virtual-environments.html">使用 pip 和 venv 在虚拟环境中安装软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-virtualenv.html">使用虚拟环境安装包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-stand-alone-command-line-tools.html">安装独立的命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-linux-tools.html">使用 Linux 包管理器安装 pip/setuptools/wheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-scientific-packages.html">安装科学软件包</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-build-and-publish.html">构建和发布</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 构建和发布</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/writing-pyproject-toml.html">编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/distributing-packages-using-setuptools.html">打包和分发项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/dropping-older-python-versions.html">放弃对旧版 Python 的支持</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/packaging-binary-extensions.html">打包二进制扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/packaging-namespace-packages.html">打包命名空间包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/creating-command-line-tools.html">创建和打包命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/creating-and-discovering-plugins.html">创建和发现插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/using-testpypi.html">使用 TestPyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/making-a-pypi-friendly-readme.html">制作适合 PyPI 的 README</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows.html">使用 GitHub Actions CI/CD 工作流发布软件包分发版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/modernize-setup-py-project.html">如何使基于 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 的项目现代化？</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-hosting.html">托管</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of 托管</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/index-mirrors-and-caches.html">包索引镜像和缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/hosting-your-own-index.html">托管您自己的简单存储库</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/tool-recommendations.html">工具推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/analyzing-pypi-package-downloads.html">分析 PyPI 软件包下载</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discussions/index.html">讨论</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 讨论</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/versioning.html">版本控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/deploying-python-applications.html">部署 Python 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/pip-vs-easy-install.html">pip vs easy_install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/install-requires-vs-requirements.html">install_requires 与需求文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/distribution-package-vs-import-package.html">分发包与导入包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/package-formats.html">软件包格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/src-layout-vs-flat-layout.html">src 布局与平面布局</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/setup-py-deprecated.html"><code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 已被弃用吗？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/single-source-version.html">单一来源项目版本</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">PyPA 规范</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of PyPA 规范</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="section-distribution-metadata.html">包分发元数据</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 包分发元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="name-normalization.html">名称和规范化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core-metadata.html">核心元数据规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="version-specifiers.html">版本标识符</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">依赖说明符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyproject-toml.html"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inline-script-metadata.html">内联脚本元数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="platform-compatibility-tags.html">平台兼容性标签</a></li>
+<li class="toctree-l3"><a class="reference internal" href="well-known-project-urls.html">元数据中的知名项目 URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-installation-metadata.html">包安装元数据</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 包安装元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="recording-installed-packages.html">记录已安装的项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entry-points.html">入口点规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="direct-url.html">记录已安装发行版的直接 URL 来源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="direct-url-data-structure.html">直接 URL 数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="virtual-environments.html">Python 虚拟环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="externally-managed-environments.html">外部管理环境</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-distribution-formats.html">包分发文件格式</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 包分发文件格式</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="source-distribution-format.html">源分发格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binary-distribution-format.html">二进制分发格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-package-indices.html">包索引接口</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of 包索引接口</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypirc.html"><code class="file docutils literal notranslate"><span class="pre">.pypirc</span></code> 文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple-repository-api.html">Simple 仓库 API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../key_projects.html">项目摘要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">如何获取支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">为本指南做出贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">新闻</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/specifications/dependency-specifiers.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="dependency-specifiers">
+<span id="id1"></span><h1>依赖说明符<a class="headerlink" href="#dependency-specifiers" title="Link to this heading">¶</a></h1>
+<p><strong>Dependency specifiers</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>本文档描述了依赖规范的格式，最初在 <span class="target" id="index-0"></span><a class="pep reference external" href="https://peps.python.org/pep-0508/"><strong>PEP 508</strong></a> 中进行了规定。</p>
+<p>依赖的作用是使像 pip <a class="footnote-reference brackets" href="#pip1" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> 这样的工具能够找到正确的包进行安装。有时这非常宽松——仅指定一个名称，而有时则非常具体——指向一个特定的文件进行安装。有时依赖仅在某个平台上相关，或者只有某些版本是可接受的，因此该语言允许描述所有这些情况。</p>
+<p>该语言定义了一种简洁的基于行的格式，已经在 pip 的需求文件中得到了广泛应用，尽管我们并没有规定这些文件允许的命令行选项处理方式。有一个例外——在 <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">Versioning specifier specification</span></a> 中规定的 URL 引用形式，实际上并未在 pip 中实现，但我们使用该格式，而不是 pip 当前的本地格式。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>This document describes the dependency specifiers format as originally specified
+in <span class="target" id="index-1"></span><a class="pep reference external" href="https://peps.python.org/pep-0508/"><strong>PEP 508</strong></a>.</p>
+<p>The job of a dependency is to enable tools like pip <a class="footnote-reference brackets" href="#pip" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> to find the right
+package to install. Sometimes this is very loose - just specifying a name, and
+sometimes very specific - referring to a specific file to install. Sometimes
+dependencies are only relevant in one platform, or only some versions are
+acceptable, so the language permits describing all these cases.</p>
+<p>The language defined is a compact line based format which is already in
+widespread use in pip requirements files, though we do not specify the command
+line option handling that those files permit. There is one caveat - the
+URL reference form, specified in <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">Versioning specifier specification</span></a>
+is not actually implemented in pip, but we use that format rather
+than pip's current native format.</p>
+</div>
+</div>
+<section id="id4">
+<h2>规范<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<p><strong>Specification</strong></p>
+<section id="id5">
+<h3>示例<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<p><strong>Examples</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>语言中所有带名称查找的特性如下所示:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>requests [security,tests] &gt;= 2.8.1, == 2.8.* ; python_version &lt; &quot;2.7&quot;
+</pre></div>
+</div>
+<p>最小的基于 URL 的查找:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pip @ https://github.com/pypa/pip/archive/1.3.1.zip#sha1=da9234ee9982d4bbb3c72346a6de940a148ea686
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>All features of the language shown with a name based lookup:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>requests [security,tests] &gt;= 2.8.1, == 2.8.* ; python_version &lt; &quot;2.7&quot;
+</pre></div>
+</div>
+<p>A minimal URL based lookup:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pip @ https://github.com/pypa/pip/archive/1.3.1.zip#sha1=da9234ee9982d4bbb3c72346a6de940a148ea686
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id6">
+<h3>概念<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<p><strong>Concepts</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>依赖规范始终指定一个分发名称。它可以包含额外的功能（extras），通过扩展指定分发的依赖关系来启用可选功能。可以通过版本限制来控制安装的版本，或者指定要安装的特定工件的 URL。最后，依赖关系可以通过环境标记来设定条件。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>A dependency specification always specifies a distribution name. It may
+include extras, which expand the dependencies of the named distribution to
+enable optional features. The version installed can be controlled using
+version limits, or giving the URL to a specific artifact to install. Finally
+the dependency can be made conditional using environment markers.</p>
+</div>
+</div>
+</section>
+<section id="id7">
+<h3>语法<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<p><strong>Grammar</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>我们首先简要介绍语法，然后稍后详细讨论每个部分的语义。</p>
+<p>分发规范以 ASCII 文本形式编写。我们使用 parsley <a class="footnote-reference brackets" href="#parsley1" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> 语法来提供精确的语法。预计该规范将嵌入到一个更大的系统中，该系统提供诸如注释、多行支持（通过续行）或其他类似功能的框架。</p>
+<p>包含用于构建有用解析树的注释的完整语法位于本文档的末尾。</p>
+<p>版本可以按照 <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">版本规范</span></a> 的规则指定。（注意：URI 在 <span class="target" id="index-2"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc3986.html"><strong>std-66</strong></a> 中定义）:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>version_cmp   = wsp* &#39;&lt;&#39; | &#39;&lt;=&#39; | &#39;!=&#39; | &#39;==&#39; | &#39;&gt;=&#39; | &#39;&gt;&#39; | &#39;~=&#39; | &#39;===&#39;
+version       = wsp* ( letterOrDigit | &#39;-&#39; | &#39;_&#39; | &#39;.&#39; | &#39;*&#39; | &#39;+&#39; | &#39;!&#39; )+
+version_one   = version_cmp version wsp*
+version_many  = version_one (&#39;,&#39; version_one)* (&#39;,&#39; wsp*)?
+versionspec   = ( &#39;(&#39; version_many &#39;)&#39; ) | version_many
+urlspec       = &#39;@&#39; wsp* &lt;URI_reference&gt;
+</pre></div>
+</div>
+<p>环境标记允许仅在某些环境中生效的规范:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>marker_op     = version_cmp | (wsp+ &#39;in&#39; wsp+) | (wsp+ &#39;not&#39; wsp+ &#39;in&#39; wsp+)
+python_str_c  = (wsp | letter | digit | &#39;(&#39; | &#39;)&#39; | &#39;.&#39; | &#39;{&#39; | &#39;}&#39; |
+                &#39;-&#39; | &#39;_&#39; | &#39;*&#39; | &#39;#&#39; | &#39;:&#39; | &#39;;&#39; | &#39;,&#39; | &#39;/&#39; | &#39;?&#39; |
+                &#39;[&#39; | &#39;]&#39; | &#39;!&#39; | &#39;~&#39; | &#39;`&#39; | &#39;@&#39; | &#39;$&#39; | &#39;%&#39; | &#39;^&#39; |
+                &#39;&amp;&#39; | &#39;=&#39; | &#39;+&#39; | &#39;|&#39; | &#39;&lt;&#39; | &#39;&gt;&#39; )
+dquote        = &#39;&quot;&#39;
+squote        = &#39;\\&#39;&#39;
+python_str    = (squote (python_str_c | dquote)* squote |
+                dquote (python_str_c | squote)* dquote)
+env_var       = (&#39;python_version&#39; | &#39;python_full_version&#39; |
+                &#39;os_name&#39; | &#39;sys_platform&#39; | &#39;platform_release&#39; |
+                &#39;platform_system&#39; | &#39;platform_version&#39; |
+                &#39;platform_machine&#39; | &#39;platform_python_implementation&#39; |
+                &#39;implementation_name&#39; | &#39;implementation_version&#39; |
+                &#39;extra&#39; # ONLY when defined by a containing layer
+                )
+marker_var    = wsp* (env_var | python_str)
+marker_expr   = marker_var marker_op marker_var
+              | wsp* &#39;(&#39; marker wsp* &#39;)&#39;
+marker_and    = marker_expr wsp* &#39;and&#39; marker_expr
+              | marker_expr
+marker_or     = marker_and wsp* &#39;or&#39; marker_and
+                  | marker_and
+marker        = marker_or
+quoted_marker = &#39;;&#39; wsp* marker
+</pre></div>
+</div>
+<p>分发的可选组件可以使用 extras 字段指定:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>identifier_end = letterOrDigit | ((&#39;-&#39; | &#39;_&#39; | &#39;.&#39; )* letterOrDigit)
+identifier    = letterOrDigit identifier_end*
+name          = identifier
+extras_list   = identifier (wsp* &#39;,&#39; wsp* identifier)*
+extras        = &#39;[&#39; wsp* extras_list? wsp* &#39;]&#39;
+</pre></div>
+</div>
+<p>关于 extras 名称的限制在 <span class="target" id="index-3"></span><a class="pep reference external" href="https://peps.python.org/pep-0685/"><strong>PEP 685</strong></a> 中定义。</p>
+<p>给出名称为基础的要求规则:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>name_req      = name wsp* extras? wsp* versionspec? wsp* quoted_marker?
+</pre></div>
+</div>
+<p>以及直接引用规范规则:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>url_req       = name wsp* extras? wsp* urlspec (wsp+ quoted_marker?)?
+</pre></div>
+</div>
+<p>最终得出统一规则，指定一个依赖项。:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>specification = wsp* ( url_req | name_req ) wsp*
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>We first cover the grammar briefly and then drill into the semantics of each
+section later.</p>
+<p>A distribution specification is written in ASCII text. We use a parsley
+<a class="footnote-reference brackets" href="#parsley" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a> grammar to provide a precise grammar. It is expected that the
+specification will be embedded into a larger system which offers framing such
+as comments, multiple line support via continuations, or other such features.</p>
+<p>The full grammar including annotations to build a useful parse tree is
+included at the end of this document.</p>
+<p>Versions may be specified according to the rules of the
+<a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">Version specifier specification</span></a>. (Note:
+URI is defined in <span class="target" id="index-4"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc3986.html"><strong>std-66</strong></a>):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>version_cmp   = wsp* &#39;&lt;&#39; | &#39;&lt;=&#39; | &#39;!=&#39; | &#39;==&#39; | &#39;&gt;=&#39; | &#39;&gt;&#39; | &#39;~=&#39; | &#39;===&#39;
+version       = wsp* ( letterOrDigit | &#39;-&#39; | &#39;_&#39; | &#39;.&#39; | &#39;*&#39; | &#39;+&#39; | &#39;!&#39; )+
+version_one   = version_cmp version wsp*
+version_many  = version_one (&#39;,&#39; version_one)* (&#39;,&#39; wsp*)?
+versionspec   = ( &#39;(&#39; version_many &#39;)&#39; ) | version_many
+urlspec       = &#39;@&#39; wsp* &lt;URI_reference&gt;
+</pre></div>
+</div>
+<p>Environment markers allow making a specification only take effect in some
+environments:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>marker_op     = version_cmp | (wsp+ &#39;in&#39; wsp+) | (wsp+ &#39;not&#39; wsp+ &#39;in&#39; wsp+)
+python_str_c  = (wsp | letter | digit | &#39;(&#39; | &#39;)&#39; | &#39;.&#39; | &#39;{&#39; | &#39;}&#39; |
+                &#39;-&#39; | &#39;_&#39; | &#39;*&#39; | &#39;#&#39; | &#39;:&#39; | &#39;;&#39; | &#39;,&#39; | &#39;/&#39; | &#39;?&#39; |
+                &#39;[&#39; | &#39;]&#39; | &#39;!&#39; | &#39;~&#39; | &#39;`&#39; | &#39;@&#39; | &#39;$&#39; | &#39;%&#39; | &#39;^&#39; |
+                &#39;&amp;&#39; | &#39;=&#39; | &#39;+&#39; | &#39;|&#39; | &#39;&lt;&#39; | &#39;&gt;&#39; )
+dquote        = &#39;&quot;&#39;
+squote        = &#39;\\&#39;&#39;
+python_str    = (squote (python_str_c | dquote)* squote |
+                dquote (python_str_c | squote)* dquote)
+env_var       = (&#39;python_version&#39; | &#39;python_full_version&#39; |
+                &#39;os_name&#39; | &#39;sys_platform&#39; | &#39;platform_release&#39; |
+                &#39;platform_system&#39; | &#39;platform_version&#39; |
+                &#39;platform_machine&#39; | &#39;platform_python_implementation&#39; |
+                &#39;implementation_name&#39; | &#39;implementation_version&#39; |
+                &#39;extra&#39; # ONLY when defined by a containing layer
+                )
+marker_var    = wsp* (env_var | python_str)
+marker_expr   = marker_var marker_op marker_var
+              | wsp* &#39;(&#39; marker wsp* &#39;)&#39;
+marker_and    = marker_expr wsp* &#39;and&#39; marker_expr
+              | marker_expr
+marker_or     = marker_and wsp* &#39;or&#39; marker_and
+                  | marker_and
+marker        = marker_or
+quoted_marker = &#39;;&#39; wsp* marker
+</pre></div>
+</div>
+<p>Optional components of a distribution may be specified using the extras
+field:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>identifier_end = letterOrDigit | ((&#39;-&#39; | &#39;_&#39; | &#39;.&#39; )* letterOrDigit)
+identifier    = letterOrDigit identifier_end*
+name          = identifier
+extras_list   = identifier (wsp* &#39;,&#39; wsp* identifier)*
+extras        = &#39;[&#39; wsp* extras_list? wsp* &#39;]&#39;
+</pre></div>
+</div>
+<p>Restrictions on names for extras is defined in <span class="target" id="index-5"></span><a class="pep reference external" href="https://peps.python.org/pep-0685/"><strong>PEP 685</strong></a>.</p>
+<p>Giving us a rule for name based requirements:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>name_req      = name wsp* extras? wsp* versionspec? wsp* quoted_marker?
+</pre></div>
+</div>
+<p>And a rule for direct reference specifications:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>url_req       = name wsp* extras? wsp* urlspec (wsp+ quoted_marker?)?
+</pre></div>
+</div>
+<p>Leading to the unified rule that can specify a dependency.:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>specification = wsp* ( url_req | name_req ) wsp*
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id10">
+<h3>空格<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
+<p><strong>Whitespace</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>非换行空白字符大多是可选的，且没有语义意义。唯一的例外是用于检测 URL 需求的结束。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>Non line-breaking whitespace is mostly optional with no semantic meaning. The sole exception is detecting the end of a URL requirement.</p>
+</div>
+</div>
+</section>
+<section id="id11">
+<h3>名称<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<p><strong>Names</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>Python 分发名称当前在 <span class="target" id="index-6"></span><a class="pep reference external" href="https://peps.python.org/pep-0345/"><strong>PEP 345</strong></a> 中定义。名称作为分发的主要标识符。它们出现在所有依赖规范中，并且足以作为独立的规范。然而，PyPI 对名称有严格的限制——它们必须匹配一个不区分大小写的正则表达式，否则将不被接受。因此，在本文档中，我们将标识符的可接受值限制为该正则表达式。名称的完整重新定义可能会在未来的元数据 PEP 中进行。该正则表达式（使用 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/re.html#re.IGNORECASE" title="（在 Python v3.13）"><code class="xref any docutils literal notranslate"><span class="pre">re.IGNORECASE</span></code></a> 运行）为:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>^([A-Z0-9]|[A-Z0-9][A-Z0-9._-]*[A-Z0-9])$
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Python distribution names are currently defined in <span class="target" id="index-7"></span><a class="pep reference external" href="https://peps.python.org/pep-0345/"><strong>PEP 345</strong></a>. Names
+act as the primary identifier for distributions. They are present in all
+dependency specifications, and are sufficient to be a specification on their
+own. However, PyPI places strict restrictions on names - they must match a
+case insensitive regex or they won't be accepted. Accordingly, in this
+document we limit the acceptable values for identifiers to that regex. A full
+redefinition of name may take place in a future metadata PEP. The regex (run
+with re.IGNORECASE) is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>^([A-Z0-9]|[A-Z0-9][A-Z0-9._-]*[A-Z0-9])$
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id12">
+<h3>附加内容<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<p><strong>Extras</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>额外（extra）是分发的一个可选部分。分发可以指定任意数量的额外功能，并且每个额外功能都会在 <strong>使用</strong> 该额外功能的依赖规范中声明额外的依赖。例如:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>requests[security,tests]
+</pre></div>
+</div>
+<p>额外功能在它们定义的依赖项中与它们所附加的分发的依赖项进行联合。上面的例子将导致安装 <code class="xref any docutils literal notranslate"><span class="pre">requests</span></code> 及其自身的依赖项，并且还会安装 <code class="xref any docutils literal notranslate"><span class="pre">requests</span></code> 的 &quot;security&quot; 额外功能中列出的所有依赖项。</p>
+<p>如果列出了多个额外功能，所有的依赖项都会被联合在一起。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>An extra is an optional part of a distribution. Distributions can specify as
+many extras as they wish, and each extra results in the declaration of
+additional dependencies of the distribution <strong>when</strong> the extra is used in a
+dependency specification. For instance:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>requests[security,tests]
+</pre></div>
+</div>
+<p>Extras union in the dependencies they define with the dependencies of the
+distribution they are attached to. The example above would result in requests
+being installed, and requests own dependencies, and also any dependencies that
+are listed in the &quot;security&quot; extra of requests.</p>
+<p>If multiple extras are listed, all the dependencies are unioned together.</p>
+</div>
+</div>
+</section>
+<section id="id13">
+<h3>版本<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
+<p><strong>Versions</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>有关版本号和版本比较的更多细节，请参见 <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">Version specifier specification</span></a>。版本规范限制了可使用的分发版本。它们仅适用于通过名称查找的分发，而不是通过 URL 查找的分发。版本比较也用于标记（markers）功能。版本周围的可选括号是为了与 <span class="target" id="index-8"></span><a class="pep reference external" href="https://peps.python.org/pep-0345/"><strong>PEP 345</strong></a> 兼容，但不应生成，只应接受。</p>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>See the <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">Version specifier specification</span></a> for
+more detail on both version numbers and version comparisons. Version
+specifications limit the versions of a distribution that can be
+used. They only apply to distributions looked up by name, rather than
+via a URL. Version comparison are also used in the markers feature. The
+optional brackets around a version are present for compatibility with
+<span class="target" id="index-9"></span><a class="pep reference external" href="https://peps.python.org/pep-0345/"><strong>PEP 345</strong></a> but should not be generated, only accepted.</p>
+</div>
+</div>
+</section>
+<section id="id14">
+<h3>环境标记<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
+<p><strong>Environment Markers</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>环境标记允许依赖规范提供一个规则，用于描述何时使用该依赖。例如，考虑一个需要 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/argparse.html#module-argparse" title="（在 Python v3.13）"><code class="xref any docutils literal notranslate"><span class="pre">argparse</span></code></a> 的包。在 Python 2.7 中，<a class="reference external" href="https://docs.python.org/zh-cn/3/library/argparse.html#module-argparse" title="（在 Python v3.13）"><code class="xref any docutils literal notranslate"><span class="pre">argparse</span></code></a> 始终存在。而在较旧的 Python 版本中，它需要作为一个依赖安装。这可以这样表达:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>argparse;python_version&lt;&quot;2.7&quot;
+</pre></div>
+</div>
+<p>一个标记表达式的结果为 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/constants.html#True" title="（在 Python v3.13）"><code class="xref any docutils literal notranslate"><span class="pre">True</span></code></a> 或 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/constants.html#False" title="（在 Python v3.13）"><code class="xref any docutils literal notranslate"><span class="pre">False</span></code></a>。当其结果为 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/constants.html#False" title="（在 Python v3.13）"><code class="xref any docutils literal notranslate"><span class="pre">False</span></code></a> 时，应忽略该依赖规范。</p>
+<p>标记语言的灵感来源于 Python 本身，选择它是因为可以安全地评估它，而无需运行可能成为安全漏洞的任意代码。标记最初在 <span class="target" id="index-10"></span><a class="pep reference external" href="https://peps.python.org/pep-0345/"><strong>PEP 345</strong></a> 中标准化。本文件修正了在 <span class="target" id="index-11"></span><a class="pep reference external" href="https://peps.python.org/pep-0426/"><strong>PEP 426</strong></a> 中描述的设计中观察到的一些问题。</p>
+<p>标记表达式中的比较由比较运算符确定类型。&lt;marker_op&gt; 运算符中不在 &lt;version_cmp&gt; 中的运算符与 Python 中的字符串比较方式相同。&lt;version_cmp&gt; 运算符在定义了版本比较规则时，使用 <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">版本说明符规范</span></a> 中的版本比较规则（即当两边都有有效的版本规范时）。如果该规范没有定义行为，并且该运算符在 Python 中存在，则该运算符回退到 Python 的行为。否则，应引发错误。例如，以下代码将会引发错误:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;dog&quot; ~= &quot;fred&quot;
+python_version ~= &quot;surprise&quot;
+</pre></div>
+</div>
+<p>用户提供的常量始终作为字符串编码，可以使用 <code class="docutils literal notranslate"><span class="pre">'</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&quot;</span></code> 引号标记。请注意，反斜杠转义并未定义，但现有实现支持它们。由于它们增加了复杂性，并且当前没有明显的需求，因此没有在本规范中包括它们。同样，我们也没有定义非 ASCII 字符支持：我们引用的所有运行时变量预计都是 ASCII 字符。</p>
+<p>标记语法中的变量，如 &quot;os_name&quot;，会解析为在 Python 运行时查找的值。除了 &quot;extra&quot; 外，所有值在今天的所有 Python 版本中都已定义——如果某个值未定义，则视为标记实现中的错误。</p>
+<p>未知变量必须引发错误，而不是导致评估为 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/constants.html#True" title="（在 Python v3.13）"><code class="xref any docutils literal notranslate"><span class="pre">True</span></code></a> 或 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/constants.html#False" title="（在 Python v3.13）"><code class="xref any docutils literal notranslate"><span class="pre">False</span></code></a> 的比较。</p>
+<p>在给定的 Python 实现上无法计算其值的变量，应评估为 <code class="docutils literal notranslate"><span class="pre">0</span></code> （对于版本）和空字符串（对于所有其他变量）。</p>
+<p>&quot;extra&quot; 变量是特殊的。它被 wheel 用来指示在 wheel 的 <code class="docutils literal notranslate"><span class="pre">METADATA</span></code> 文件中适用于给定额外项的规范，但由于 <code class="docutils literal notranslate"><span class="pre">METADATA</span></code> 文件基于 <span class="target" id="index-12"></span><a class="pep reference external" href="https://peps.python.org/pep-0426/"><strong>PEP 426</strong></a> 的草案版本，因此目前对此没有规范。无论如何，在没有这种特殊处理的上下文中，&quot;extra&quot; 变量应像所有其他未知变量一样引发错误。</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Marker</p></th>
+<th class="head"><p>Python 等效</p></th>
+<th class="head"><p>示例值</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">os_name</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/os.html#os.name" title="（在 Python v3.13）"><code class="xref py py-data docutils literal notranslate"><span class="pre">os.name</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">posix</span></code>，<code class="docutils literal notranslate"><span class="pre">java</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sys_platform</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/sys.html#sys.platform" title="（在 Python v3.13）"><code class="xref py py-data docutils literal notranslate"><span class="pre">sys.platform</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">linux</span></code>，<code class="docutils literal notranslate"><span class="pre">linux2</span></code>，<code class="docutils literal notranslate"><span class="pre">darwin</span></code>，<code class="docutils literal notranslate"><span class="pre">java1.8.0_51</span></code> （注意，&quot;linux&quot; 来自 Python3，而 &quot;linux2&quot; 来自 Python2）</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">platform_machine</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/platform.html#platform.machine" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">platform.machine()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">x86_64</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">platform_python_implementation</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/platform.html#platform.python_implementation" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">platform.python_implementation()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CPython</span></code>，<code class="docutils literal notranslate"><span class="pre">Jython</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">platform_release</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/platform.html#platform.release" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">platform.release()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3.14.1-x86_64-linode39</span></code>，<code class="docutils literal notranslate"><span class="pre">14.5.0</span></code>，<code class="docutils literal notranslate"><span class="pre">1.8.0_51</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">platform_system</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/platform.html#platform.system" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">platform.system()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Linux</span></code>，<code class="docutils literal notranslate"><span class="pre">Windows</span></code>，<code class="docutils literal notranslate"><span class="pre">Java</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">platform_version</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/platform.html#platform.version" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">platform.version()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">#1</span> <span class="pre">SMP</span> <span class="pre">Fri</span> <span class="pre">Apr</span> <span class="pre">25</span> <span class="pre">13:07:35</span> <span class="pre">EDT</span> <span class="pre">2014</span></code>
+<code class="docutils literal notranslate"><span class="pre">Java</span> <span class="pre">HotSpot(TM)</span> <span class="pre">64-Bit</span> <span class="pre">Server</span> <span class="pre">VM,</span> <span class="pre">25.51-b03,</span> <span class="pre">Oracle</span> <span class="pre">Corporation</span></code>
+<code class="docutils literal notranslate"><span class="pre">Darwin</span> <span class="pre">Kernel</span> <span class="pre">Version</span> <span class="pre">14.5.0:</span> <span class="pre">Wed</span> <span class="pre">Jul</span> <span class="pre">29</span> <span class="pre">02:18:53</span> <span class="pre">PDT</span> <span class="pre">2015;</span> <span class="pre">root:xnu-2782.40.9~2/RELEASE_X86_64</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">python_version</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'.'.join(platform.python_version_tuple()[:2])</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3.4</span></code>，<code class="docutils literal notranslate"><span class="pre">2.7</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">python_full_version</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/platform.html#platform.python_version" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">platform.python_version()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3.4.0</span></code>，<code class="docutils literal notranslate"><span class="pre">3.5.0b1</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">implementation_name</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/sys.html#sys.implementation" title="（在 Python v3.13）"><code class="xref py py-data docutils literal notranslate"><span class="pre">sys.implementation.name</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cpython</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">implementation_version</span></code></p></td>
+<td><p>见下定义</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3.4.0</span></code>，<code class="docutils literal notranslate"><span class="pre">3.5.0b1</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">extra</span></code></p></td>
+<td><p>除非由解释规范的上下文定义，否则为错误。</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">test</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">implementation_version</span></code> 标记变量来源于 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/sys.html#sys.implementation" title="（在 Python v3.13）"><code class="xref py py-data docutils literal notranslate"><span class="pre">sys.implementation.version</span></code></a>：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">format_full_version</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0.major}</span><span class="s1">.</span><span class="si">{0.minor}</span><span class="s1">.</span><span class="si">{0.micro}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">releaselevel</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">!=</span> <span class="s1">&#39;final&#39;</span><span class="p">:</span>
+        <span class="n">version</span> <span class="o">+=</span> <span class="n">kind</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">serial</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">version</span>
+
+<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;implementation&#39;</span><span class="p">):</span>
+    <span class="n">implementation_version</span> <span class="o">=</span> <span class="n">format_full_version</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">implementation</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">implementation_version</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+</pre></div>
+</div>
+<p>本节的环境标记，最初通过 <span class="target" id="index-13"></span><a class="pep reference external" href="https://peps.python.org/pep-0508/"><strong>PEP 508</strong></a> 定义，取代了 <span class="target" id="index-14"></span><a class="pep reference external" href="https://peps.python.org/pep-0345/"><strong>PEP 345</strong></a> 中的环境标记部分。</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>Environment markers allow a dependency specification to provide a rule that
+describes when the dependency should be used. For instance, consider a package
+that needs argparse. In Python 2.7 argparse is always present. On older Python
+versions it has to be installed as a dependency. This can be expressed as so:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>argparse;python_version&lt;&quot;2.7&quot;
+</pre></div>
+</div>
+<p>A marker expression evaluates to either True or False. When it evaluates to
+False, the dependency specification should be ignored.</p>
+<p>The marker language is inspired by Python itself, chosen for the ability to
+safely evaluate it without running arbitrary code that could become a security
+vulnerability. Markers were first standardised in <span class="target" id="index-15"></span><a class="pep reference external" href="https://peps.python.org/pep-0345/"><strong>PEP 345</strong></a>. This document
+fixes some issues that were observed in the design described in <span class="target" id="index-16"></span><a class="pep reference external" href="https://peps.python.org/pep-0426/"><strong>PEP 426</strong></a>.</p>
+<p>Comparisons in marker expressions are typed by the comparison operator.  The
+&lt;marker_op&gt; operators that are not in &lt;version_cmp&gt; perform the same as they
+do for strings in Python. The &lt;version_cmp&gt; operators use the version comparison
+rules of the <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">Version specifier specification</span></a>
+when those are defined (that is when both sides have a valid
+version specifier). If there is no defined behaviour of this specification
+and the operator exists in Python, then the operator falls back to
+the Python behaviour. Otherwise an error should be raised. e.g. the following
+will result in  errors:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;dog&quot; ~= &quot;fred&quot;
+python_version ~= &quot;surprise&quot;
+</pre></div>
+</div>
+<p>User supplied constants are always encoded as strings with either <code class="docutils literal notranslate"><span class="pre">'</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;</span></code> quote marks. Note that backslash escapes are not defined, but existing
+implementations do support them. They are not included in this
+specification because they add complexity and there is no observable need for
+them today. Similarly we do not define non-ASCII character support: all the
+runtime variables we are referencing are expected to be ASCII-only.</p>
+<p>The variables in the marker grammar such as &quot;os_name&quot; resolve to values looked
+up in the Python runtime. With the exception of &quot;extra&quot; all values are defined
+on all Python versions today - it is an error in the implementation of markers
+if a value is not defined.</p>
+<p>Unknown variables must raise an error rather than resulting in a comparison
+that evaluates to True or False.</p>
+<p>Variables whose value cannot be calculated on a given Python implementation
+should evaluate to <code class="docutils literal notranslate"><span class="pre">0</span></code> for versions, and an empty string for all other
+variables.</p>
+<p>The &quot;extra&quot; variable is special. It is used by wheels to signal which
+specifications apply to a given extra in the wheel <code class="docutils literal notranslate"><span class="pre">METADATA</span></code> file, but
+since the <code class="docutils literal notranslate"><span class="pre">METADATA</span></code> file is based on a draft version of <span class="target" id="index-17"></span><a class="pep reference external" href="https://peps.python.org/pep-0426/"><strong>PEP 426</strong></a>, there is
+no current specification for this. Regardless, outside of a context where this
+special handling is taking place, the &quot;extra&quot; variable should result in an
+error like all other unknown variables.</p>
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Marker</p></th>
+<th class="head"><p>Python equivalent</p></th>
+<th class="head"><p>Sample values</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">os_name</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/os.html#os.name" title="（在 Python v3.13）"><code class="xref py py-data docutils literal notranslate"><span class="pre">os.name</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">posix</span></code>, <code class="docutils literal notranslate"><span class="pre">java</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sys_platform</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/sys.html#sys.platform" title="（在 Python v3.13）"><code class="xref py py-data docutils literal notranslate"><span class="pre">sys.platform</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">linux</span></code>, <code class="docutils literal notranslate"><span class="pre">linux2</span></code>, <code class="docutils literal notranslate"><span class="pre">darwin</span></code>, <code class="docutils literal notranslate"><span class="pre">java1.8.0_51</span></code> (note that &quot;linux&quot;
+is from Python3 and &quot;linux2&quot; from Python2)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">platform_machine</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/platform.html#platform.machine" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">platform.machine()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">x86_64</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">platform_python_implementation</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/platform.html#platform.python_implementation" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">platform.python_implementation()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">CPython</span></code>, <code class="docutils literal notranslate"><span class="pre">Jython</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">platform_release</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/platform.html#platform.release" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">platform.release()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3.14.1-x86_64-linode39</span></code>, <code class="docutils literal notranslate"><span class="pre">14.5.0</span></code>, <code class="docutils literal notranslate"><span class="pre">1.8.0_51</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">platform_system</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/platform.html#platform.system" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">platform.system()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Linux</span></code>, <code class="docutils literal notranslate"><span class="pre">Windows</span></code>, <code class="docutils literal notranslate"><span class="pre">Java</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">platform_version</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/platform.html#platform.version" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">platform.version()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">#1</span> <span class="pre">SMP</span> <span class="pre">Fri</span> <span class="pre">Apr</span> <span class="pre">25</span> <span class="pre">13:07:35</span> <span class="pre">EDT</span> <span class="pre">2014</span></code>
+<code class="docutils literal notranslate"><span class="pre">Java</span> <span class="pre">HotSpot(TM)</span> <span class="pre">64-Bit</span> <span class="pre">Server</span> <span class="pre">VM,</span> <span class="pre">25.51-b03,</span> <span class="pre">Oracle</span> <span class="pre">Corporation</span></code>
+<code class="docutils literal notranslate"><span class="pre">Darwin</span> <span class="pre">Kernel</span> <span class="pre">Version</span> <span class="pre">14.5.0:</span> <span class="pre">Wed</span> <span class="pre">Jul</span> <span class="pre">29</span> <span class="pre">02:18:53</span> <span class="pre">PDT</span> <span class="pre">2015;</span> <span class="pre">root:xnu-2782.40.9~2/RELEASE_X86_64</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">python_version</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'.'.join(platform.python_version_tuple()[:2])</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3.4</span></code>, <code class="docutils literal notranslate"><span class="pre">2.7</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">python_full_version</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/platform.html#platform.python_version" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">platform.python_version()</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3.4.0</span></code>, <code class="docutils literal notranslate"><span class="pre">3.5.0b1</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">implementation_name</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/sys.html#sys.implementation" title="（在 Python v3.13）"><code class="xref py py-data docutils literal notranslate"><span class="pre">sys.implementation.name</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cpython</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">implementation_version</span></code></p></td>
+<td><p>see definition below</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3.4.0</span></code>, <code class="docutils literal notranslate"><span class="pre">3.5.0b1</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">extra</span></code></p></td>
+<td><p>An error except when defined by the context interpreting the
+specification.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">test</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">implementation_version</span></code> marker variable is derived from
+<a class="reference external" href="https://docs.python.org/zh-cn/3/library/sys.html#sys.implementation" title="（在 Python v3.13）"><code class="xref py py-data docutils literal notranslate"><span class="pre">sys.implementation.version</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">format_full_version</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0.major}</span><span class="s1">.</span><span class="si">{0.minor}</span><span class="s1">.</span><span class="si">{0.micro}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">releaselevel</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">!=</span> <span class="s1">&#39;final&#39;</span><span class="p">:</span>
+        <span class="n">version</span> <span class="o">+=</span> <span class="n">kind</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">serial</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">version</span>
+
+<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;implementation&#39;</span><span class="p">):</span>
+    <span class="n">implementation_version</span> <span class="o">=</span> <span class="n">format_full_version</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">implementation</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">implementation_version</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+</pre></div>
+</div>
+<p>This environment markers section, initially defined through <span class="target" id="index-18"></span><a class="pep reference external" href="https://peps.python.org/pep-0508/"><strong>PEP 508</strong></a>, supersedes the environment markers
+section in <span class="target" id="index-19"></span><a class="pep reference external" href="https://peps.python.org/pep-0345/"><strong>PEP 345</strong></a>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id15">
+<h2>完整语法<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h2>
+<p><strong>Complete Grammar</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>完整的欧芹(parsley)语法:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>wsp           = &#39; &#39; | &#39;\t&#39;
+version_cmp   = wsp* &lt;&#39;&lt;=&#39; | &#39;&lt;&#39; | &#39;!=&#39; | &#39;==&#39; | &#39;&gt;=&#39; | &#39;&gt;&#39; | &#39;~=&#39; | &#39;===&#39;&gt;
+version       = wsp* &lt;( letterOrDigit | &#39;-&#39; | &#39;_&#39; | &#39;.&#39; | &#39;*&#39; | &#39;+&#39; | &#39;!&#39; )+&gt;
+version_one   = version_cmp:op version:v wsp* -&gt; (op, v)
+version_many  = version_one:v1 (&#39;,&#39; version_one)*:v2 (&#39;,&#39; wsp*)? -&gt; [v1] + v2
+versionspec   = (&#39;(&#39; version_many:v &#39;)&#39; -&gt;v) | version_many
+urlspec       = &#39;@&#39; wsp* &lt;URI_reference&gt;
+marker_op     = version_cmp | (wsp* &#39;in&#39;) | (wsp* &#39;not&#39; wsp+ &#39;in&#39;)
+python_str_c  = (wsp | letter | digit | &#39;(&#39; | &#39;)&#39; | &#39;.&#39; | &#39;{&#39; | &#39;}&#39; |
+                &#39;-&#39; | &#39;_&#39; | &#39;*&#39; | &#39;#&#39; | &#39;:&#39; | &#39;;&#39; | &#39;,&#39; | &#39;/&#39; | &#39;?&#39; |
+                &#39;[&#39; | &#39;]&#39; | &#39;!&#39; | &#39;~&#39; | &#39;`&#39; | &#39;@&#39; | &#39;$&#39; | &#39;%&#39; | &#39;^&#39; |
+                &#39;&amp;&#39; | &#39;=&#39; | &#39;+&#39; | &#39;|&#39; | &#39;&lt;&#39; | &#39;&gt;&#39; )
+dquote        = &#39;&quot;&#39;
+squote        = &#39;\\&#39;&#39;
+python_str    = (squote &lt;(python_str_c | dquote)*&gt;:s squote |
+                dquote &lt;(python_str_c | squote)*&gt;:s dquote) -&gt; s
+env_var       = (&#39;python_version&#39; | &#39;python_full_version&#39; |
+                &#39;os_name&#39; | &#39;sys_platform&#39; | &#39;platform_release&#39; |
+                &#39;platform_system&#39; | &#39;platform_version&#39; |
+                &#39;platform_machine&#39; | &#39;platform_python_implementation&#39; |
+                &#39;implementation_name&#39; | &#39;implementation_version&#39; |
+                &#39;extra&#39; # ONLY when defined by a containing layer
+                ):varname -&gt; lookup(varname)
+marker_var    = wsp* (env_var | python_str)
+marker_expr   = marker_var:l marker_op:o marker_var:r -&gt; (o, l, r)
+              | wsp* &#39;(&#39; marker:m wsp* &#39;)&#39; -&gt; m
+marker_and    = marker_expr:l wsp* &#39;and&#39; marker_expr:r -&gt; (&#39;and&#39;, l, r)
+              | marker_expr:m -&gt; m
+marker_or     = marker_and:l wsp* &#39;or&#39; marker_and:r -&gt; (&#39;or&#39;, l, r)
+                  | marker_and:m -&gt; m
+marker        = marker_or
+quoted_marker = &#39;;&#39; wsp* marker
+identifier_end = letterOrDigit | ((&#39;-&#39; | &#39;_&#39; | &#39;.&#39; )* letterOrDigit)
+identifier    = &lt; letterOrDigit identifier_end* &gt;
+name          = identifier
+extras_list   = identifier:i (wsp* &#39;,&#39; wsp* identifier)*:ids -&gt; [i] + ids
+extras        = &#39;[&#39; wsp* extras_list?:e wsp* &#39;]&#39; -&gt; e
+name_req      = (name:n wsp* extras?:e wsp* versionspec?:v wsp* quoted_marker?:m
+                -&gt; (n, e or [], v or [], m))
+url_req       = (name:n wsp* extras?:e wsp* urlspec:v (wsp+ | end) quoted_marker?:m
+                -&gt; (n, e or [], v, m))
+specification = wsp* ( url_req | name_req ):s wsp* -&gt; s
+# The result is a tuple - name, list-of-extras,
+# list-of-version-constraints-or-a-url, marker-ast or None
+
+
+URI_reference = &lt;URI | relative_ref&gt;
+URI           = scheme &#39;:&#39; hier_part (&#39;?&#39; query )? ( &#39;#&#39; fragment)?
+hier_part     = (&#39;//&#39; authority path_abempty) | path_absolute | path_rootless | path_empty
+absolute_URI  = scheme &#39;:&#39; hier_part ( &#39;?&#39; query )?
+relative_ref  = relative_part ( &#39;?&#39; query )? ( &#39;#&#39; fragment )?
+relative_part = &#39;//&#39; authority path_abempty | path_absolute | path_noscheme | path_empty
+scheme        = letter ( letter | digit | &#39;+&#39; | &#39;-&#39; | &#39;.&#39;)*
+authority     = ( userinfo &#39;@&#39; )? host ( &#39;:&#39; port )?
+userinfo      = ( unreserved | pct_encoded | sub_delims | &#39;:&#39;)*
+host          = IP_literal | IPv4address | reg_name
+port          = digit*
+IP_literal    = &#39;[&#39; ( IPv6address | IPvFuture) &#39;]&#39;
+IPvFuture     = &#39;v&#39; hexdig+ &#39;.&#39; ( unreserved | sub_delims | &#39;:&#39;)+
+IPv6address   = (
+                  ( h16 &#39;:&#39;){6} ls32
+                  | &#39;::&#39; ( h16 &#39;:&#39;){5} ls32
+                  | ( h16 )?  &#39;::&#39; ( h16 &#39;:&#39;){4} ls32
+                  | ( ( h16 &#39;:&#39;)? h16 )? &#39;::&#39; ( h16 &#39;:&#39;){3} ls32
+                  | ( ( h16 &#39;:&#39;){0,2} h16 )? &#39;::&#39; ( h16 &#39;:&#39;){2} ls32
+                  | ( ( h16 &#39;:&#39;){0,3} h16 )? &#39;::&#39; h16 &#39;:&#39; ls32
+                  | ( ( h16 &#39;:&#39;){0,4} h16 )? &#39;::&#39; ls32
+                  | ( ( h16 &#39;:&#39;){0,5} h16 )? &#39;::&#39; h16
+                  | ( ( h16 &#39;:&#39;){0,6} h16 )? &#39;::&#39; )
+h16           = hexdig{1,4}
+ls32          = ( h16 &#39;:&#39; h16) | IPv4address
+IPv4address   = dec_octet &#39;.&#39; dec_octet &#39;.&#39; dec_octet &#39;.&#39; dec_octet
+nz            = ~&#39;0&#39; digit
+dec_octet     = (
+                  digit # 0-9
+                  | nz digit # 10-99
+                  | &#39;1&#39; digit{2} # 100-199
+                  | &#39;2&#39; (&#39;0&#39; | &#39;1&#39; | &#39;2&#39; | &#39;3&#39; | &#39;4&#39;) digit # 200-249
+                  | &#39;25&#39; (&#39;0&#39; | &#39;1&#39; | &#39;2&#39; | &#39;3&#39; | &#39;4&#39; | &#39;5&#39;) )# %250-255
+reg_name = ( unreserved | pct_encoded | sub_delims)*
+path = (
+        path_abempty # begins with &#39;/&#39; or is empty
+        | path_absolute # begins with &#39;/&#39; but not &#39;//&#39;
+        | path_noscheme # begins with a non-colon segment
+        | path_rootless # begins with a segment
+        | path_empty ) # zero characters
+path_abempty  = ( &#39;/&#39; segment)*
+path_absolute = &#39;/&#39; ( segment_nz ( &#39;/&#39; segment)* )?
+path_noscheme = segment_nz_nc ( &#39;/&#39; segment)*
+path_rootless = segment_nz ( &#39;/&#39; segment)*
+path_empty    = pchar{0}
+segment       = pchar*
+segment_nz    = pchar+
+segment_nz_nc = ( unreserved | pct_encoded | sub_delims | &#39;@&#39;)+
+                # non-zero-length segment without any colon &#39;:&#39;
+pchar         = unreserved | pct_encoded | sub_delims | &#39;:&#39; | &#39;@&#39;
+query         = ( pchar | &#39;/&#39; | &#39;?&#39;)*
+fragment      = ( pchar | &#39;/&#39; | &#39;?&#39;)*
+pct_encoded   = &#39;%&#39; hexdig
+unreserved    = letter | digit | &#39;-&#39; | &#39;.&#39; | &#39;_&#39; | &#39;~&#39;
+reserved      = gen_delims | sub_delims
+gen_delims    = &#39;:&#39; | &#39;/&#39; | &#39;?&#39; | &#39;#&#39; | &#39;(&#39; | &#39;)?&#39; | &#39;@&#39;
+sub_delims    = &#39;!&#39; | &#39;$&#39; | &#39;&amp;&#39; | &#39;\\&#39;&#39; | &#39;(&#39; | &#39;)&#39; | &#39;*&#39; | &#39;+&#39; | &#39;,&#39; | &#39;;&#39; | &#39;=&#39;
+hexdig        = digit | &#39;a&#39; | &#39;A&#39; | &#39;b&#39; | &#39;B&#39; | &#39;c&#39; | &#39;C&#39; | &#39;d&#39; | &#39;D&#39; | &#39;e&#39; | &#39;E&#39; | &#39;f&#39; | &#39;F&#39;
+</pre></div>
+</div>
+<p>测试程序——如果语法在字符串 <code class="docutils literal notranslate"><span class="pre">grammar</span></code> 中:</p>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>The complete parsley grammar:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>wsp           = &#39; &#39; | &#39;\t&#39;
+version_cmp   = wsp* &lt;&#39;&lt;=&#39; | &#39;&lt;&#39; | &#39;!=&#39; | &#39;==&#39; | &#39;&gt;=&#39; | &#39;&gt;&#39; | &#39;~=&#39; | &#39;===&#39;&gt;
+version       = wsp* &lt;( letterOrDigit | &#39;-&#39; | &#39;_&#39; | &#39;.&#39; | &#39;*&#39; | &#39;+&#39; | &#39;!&#39; )+&gt;
+version_one   = version_cmp:op version:v wsp* -&gt; (op, v)
+version_many  = version_one:v1 (&#39;,&#39; version_one)*:v2 (&#39;,&#39; wsp*)? -&gt; [v1] + v2
+versionspec   = (&#39;(&#39; version_many:v &#39;)&#39; -&gt;v) | version_many
+urlspec       = &#39;@&#39; wsp* &lt;URI_reference&gt;
+marker_op     = version_cmp | (wsp* &#39;in&#39;) | (wsp* &#39;not&#39; wsp+ &#39;in&#39;)
+python_str_c  = (wsp | letter | digit | &#39;(&#39; | &#39;)&#39; | &#39;.&#39; | &#39;{&#39; | &#39;}&#39; |
+                &#39;-&#39; | &#39;_&#39; | &#39;*&#39; | &#39;#&#39; | &#39;:&#39; | &#39;;&#39; | &#39;,&#39; | &#39;/&#39; | &#39;?&#39; |
+                &#39;[&#39; | &#39;]&#39; | &#39;!&#39; | &#39;~&#39; | &#39;`&#39; | &#39;@&#39; | &#39;$&#39; | &#39;%&#39; | &#39;^&#39; |
+                &#39;&amp;&#39; | &#39;=&#39; | &#39;+&#39; | &#39;|&#39; | &#39;&lt;&#39; | &#39;&gt;&#39; )
+dquote        = &#39;&quot;&#39;
+squote        = &#39;\\&#39;&#39;
+python_str    = (squote &lt;(python_str_c | dquote)*&gt;:s squote |
+                dquote &lt;(python_str_c | squote)*&gt;:s dquote) -&gt; s
+env_var       = (&#39;python_version&#39; | &#39;python_full_version&#39; |
+                &#39;os_name&#39; | &#39;sys_platform&#39; | &#39;platform_release&#39; |
+                &#39;platform_system&#39; | &#39;platform_version&#39; |
+                &#39;platform_machine&#39; | &#39;platform_python_implementation&#39; |
+                &#39;implementation_name&#39; | &#39;implementation_version&#39; |
+                &#39;extra&#39; # ONLY when defined by a containing layer
+                ):varname -&gt; lookup(varname)
+marker_var    = wsp* (env_var | python_str)
+marker_expr   = marker_var:l marker_op:o marker_var:r -&gt; (o, l, r)
+              | wsp* &#39;(&#39; marker:m wsp* &#39;)&#39; -&gt; m
+marker_and    = marker_expr:l wsp* &#39;and&#39; marker_expr:r -&gt; (&#39;and&#39;, l, r)
+              | marker_expr:m -&gt; m
+marker_or     = marker_and:l wsp* &#39;or&#39; marker_and:r -&gt; (&#39;or&#39;, l, r)
+                  | marker_and:m -&gt; m
+marker        = marker_or
+quoted_marker = &#39;;&#39; wsp* marker
+identifier_end = letterOrDigit | ((&#39;-&#39; | &#39;_&#39; | &#39;.&#39; )* letterOrDigit)
+identifier    = &lt; letterOrDigit identifier_end* &gt;
+name          = identifier
+extras_list   = identifier:i (wsp* &#39;,&#39; wsp* identifier)*:ids -&gt; [i] + ids
+extras        = &#39;[&#39; wsp* extras_list?:e wsp* &#39;]&#39; -&gt; e
+name_req      = (name:n wsp* extras?:e wsp* versionspec?:v wsp* quoted_marker?:m
+                -&gt; (n, e or [], v or [], m))
+url_req       = (name:n wsp* extras?:e wsp* urlspec:v (wsp+ | end) quoted_marker?:m
+                -&gt; (n, e or [], v, m))
+specification = wsp* ( url_req | name_req ):s wsp* -&gt; s
+# The result is a tuple - name, list-of-extras,
+# list-of-version-constraints-or-a-url, marker-ast or None
+
+
+URI_reference = &lt;URI | relative_ref&gt;
+URI           = scheme &#39;:&#39; hier_part (&#39;?&#39; query )? ( &#39;#&#39; fragment)?
+hier_part     = (&#39;//&#39; authority path_abempty) | path_absolute | path_rootless | path_empty
+absolute_URI  = scheme &#39;:&#39; hier_part ( &#39;?&#39; query )?
+relative_ref  = relative_part ( &#39;?&#39; query )? ( &#39;#&#39; fragment )?
+relative_part = &#39;//&#39; authority path_abempty | path_absolute | path_noscheme | path_empty
+scheme        = letter ( letter | digit | &#39;+&#39; | &#39;-&#39; | &#39;.&#39;)*
+authority     = ( userinfo &#39;@&#39; )? host ( &#39;:&#39; port )?
+userinfo      = ( unreserved | pct_encoded | sub_delims | &#39;:&#39;)*
+host          = IP_literal | IPv4address | reg_name
+port          = digit*
+IP_literal    = &#39;[&#39; ( IPv6address | IPvFuture) &#39;]&#39;
+IPvFuture     = &#39;v&#39; hexdig+ &#39;.&#39; ( unreserved | sub_delims | &#39;:&#39;)+
+IPv6address   = (
+                  ( h16 &#39;:&#39;){6} ls32
+                  | &#39;::&#39; ( h16 &#39;:&#39;){5} ls32
+                  | ( h16 )?  &#39;::&#39; ( h16 &#39;:&#39;){4} ls32
+                  | ( ( h16 &#39;:&#39;)? h16 )? &#39;::&#39; ( h16 &#39;:&#39;){3} ls32
+                  | ( ( h16 &#39;:&#39;){0,2} h16 )? &#39;::&#39; ( h16 &#39;:&#39;){2} ls32
+                  | ( ( h16 &#39;:&#39;){0,3} h16 )? &#39;::&#39; h16 &#39;:&#39; ls32
+                  | ( ( h16 &#39;:&#39;){0,4} h16 )? &#39;::&#39; ls32
+                  | ( ( h16 &#39;:&#39;){0,5} h16 )? &#39;::&#39; h16
+                  | ( ( h16 &#39;:&#39;){0,6} h16 )? &#39;::&#39; )
+h16           = hexdig{1,4}
+ls32          = ( h16 &#39;:&#39; h16) | IPv4address
+IPv4address   = dec_octet &#39;.&#39; dec_octet &#39;.&#39; dec_octet &#39;.&#39; dec_octet
+nz            = ~&#39;0&#39; digit
+dec_octet     = (
+                  digit # 0-9
+                  | nz digit # 10-99
+                  | &#39;1&#39; digit{2} # 100-199
+                  | &#39;2&#39; (&#39;0&#39; | &#39;1&#39; | &#39;2&#39; | &#39;3&#39; | &#39;4&#39;) digit # 200-249
+                  | &#39;25&#39; (&#39;0&#39; | &#39;1&#39; | &#39;2&#39; | &#39;3&#39; | &#39;4&#39; | &#39;5&#39;) )# %250-255
+reg_name = ( unreserved | pct_encoded | sub_delims)*
+path = (
+        path_abempty # begins with &#39;/&#39; or is empty
+        | path_absolute # begins with &#39;/&#39; but not &#39;//&#39;
+        | path_noscheme # begins with a non-colon segment
+        | path_rootless # begins with a segment
+        | path_empty ) # zero characters
+path_abempty  = ( &#39;/&#39; segment)*
+path_absolute = &#39;/&#39; ( segment_nz ( &#39;/&#39; segment)* )?
+path_noscheme = segment_nz_nc ( &#39;/&#39; segment)*
+path_rootless = segment_nz ( &#39;/&#39; segment)*
+path_empty    = pchar{0}
+segment       = pchar*
+segment_nz    = pchar+
+segment_nz_nc = ( unreserved | pct_encoded | sub_delims | &#39;@&#39;)+
+                # non-zero-length segment without any colon &#39;:&#39;
+pchar         = unreserved | pct_encoded | sub_delims | &#39;:&#39; | &#39;@&#39;
+query         = ( pchar | &#39;/&#39; | &#39;?&#39;)*
+fragment      = ( pchar | &#39;/&#39; | &#39;?&#39;)*
+pct_encoded   = &#39;%&#39; hexdig
+unreserved    = letter | digit | &#39;-&#39; | &#39;.&#39; | &#39;_&#39; | &#39;~&#39;
+reserved      = gen_delims | sub_delims
+gen_delims    = &#39;:&#39; | &#39;/&#39; | &#39;?&#39; | &#39;#&#39; | &#39;(&#39; | &#39;)?&#39; | &#39;@&#39;
+sub_delims    = &#39;!&#39; | &#39;$&#39; | &#39;&amp;&#39; | &#39;\\&#39;&#39; | &#39;(&#39; | &#39;)&#39; | &#39;*&#39; | &#39;+&#39; | &#39;,&#39; | &#39;;&#39; | &#39;=&#39;
+hexdig        = digit | &#39;a&#39; | &#39;A&#39; | &#39;b&#39; | &#39;B&#39; | &#39;c&#39; | &#39;C&#39; | &#39;d&#39; | &#39;D&#39; | &#39;e&#39; | &#39;E&#39; | &#39;f&#39; | &#39;F&#39;
+</pre></div>
+</div>
+<p>A test program - if the grammar is in a string <code class="docutils literal notranslate"><span class="pre">grammar</span></code>:</p>
+</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">platform</span>
+
+<span class="kn">from</span> <span class="nn">parsley</span> <span class="kn">import</span> <span class="n">makeGrammar</span>
+
+<span class="n">grammar</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    wsp ...</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+<span class="n">tests</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;A&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;A.B-C_D&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;aa&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&lt;=1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&gt;=3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&gt;=3,&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name&gt;=3,&lt;2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name@http://foo.com&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name [fred,bar] @ http://foo.com ; python_version==&#39;2.7&#39;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name[quux, strange];python_version&lt;&#39;2.7&#39; and platform_version==&#39;2&#39;&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name; os_name==&#39;a&#39; or os_name==&#39;b&#39;&quot;</span><span class="p">,</span>
+    <span class="c1"># Should parse as (a and b) or c</span>
+    <span class="s2">&quot;name; os_name==&#39;a&#39; and os_name==&#39;b&#39; or os_name==&#39;c&#39;&quot;</span><span class="p">,</span>
+    <span class="c1"># Overriding precedence -&gt; a and (b or c)</span>
+    <span class="s2">&quot;name; os_name==&#39;a&#39; and (os_name==&#39;b&#39; or os_name==&#39;c&#39;)&quot;</span><span class="p">,</span>
+    <span class="c1"># should parse as a or (b and c)</span>
+    <span class="s2">&quot;name; os_name==&#39;a&#39; or os_name==&#39;b&#39; and os_name==&#39;c&#39;&quot;</span><span class="p">,</span>
+    <span class="c1"># Overriding precedence -&gt; (a or b) and c</span>
+    <span class="s2">&quot;name; (os_name==&#39;a&#39; or os_name==&#39;b&#39;) and os_name==&#39;c&#39;&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">format_full_version</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0.major}</span><span class="s1">.</span><span class="si">{0.minor}</span><span class="s1">.</span><span class="si">{0.micro}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">releaselevel</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">!=</span> <span class="s1">&#39;final&#39;</span><span class="p">:</span>
+        <span class="n">version</span> <span class="o">+=</span> <span class="n">kind</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">serial</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">version</span>
+
+<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="s1">&#39;implementation&#39;</span><span class="p">):</span>
+    <span class="n">implementation_version</span> <span class="o">=</span> <span class="n">format_full_version</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">implementation</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+    <span class="n">implementation_name</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">implementation</span><span class="o">.</span><span class="n">name</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">implementation_version</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+    <span class="n">implementation_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">bindings</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;implementation_name&#39;</span><span class="p">:</span> <span class="n">implementation_name</span><span class="p">,</span>
+    <span class="s1">&#39;implementation_version&#39;</span><span class="p">:</span> <span class="n">implementation_version</span><span class="p">,</span>
+    <span class="s1">&#39;os_name&#39;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+    <span class="s1">&#39;platform_machine&#39;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">machine</span><span class="p">(),</span>
+    <span class="s1">&#39;platform_python_implementation&#39;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_implementation</span><span class="p">(),</span>
+    <span class="s1">&#39;platform_release&#39;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">release</span><span class="p">(),</span>
+    <span class="s1">&#39;platform_system&#39;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">(),</span>
+    <span class="s1">&#39;platform_version&#39;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">version</span><span class="p">(),</span>
+    <span class="s1">&#39;python_full_version&#39;</span><span class="p">:</span> <span class="n">platform</span><span class="o">.</span><span class="n">python_version</span><span class="p">(),</span>
+    <span class="s1">&#39;python_version&#39;</span><span class="p">:</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">platform</span><span class="o">.</span><span class="n">python_version_tuple</span><span class="p">()[:</span><span class="mi">2</span><span class="p">]),</span>
+    <span class="s1">&#39;sys_platform&#39;</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">compiled</span> <span class="o">=</span> <span class="n">makeGrammar</span><span class="p">(</span><span class="n">grammar</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;lookup&#39;</span><span class="p">:</span> <span class="n">bindings</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">test</span> <span class="ow">in</span> <span class="n">tests</span><span class="p">:</span>
+    <span class="n">parsed</span> <span class="o">=</span> <span class="n">compiled</span><span class="p">(</span><span class="n">test</span><span class="p">)</span><span class="o">.</span><span class="n">specification</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> -&gt; </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">parsed</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="id16">
+<h2>历史<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h2>
+<p><strong>History</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<ul class="simple">
+<li><p>2015年11月：该规范通过 <span class="target" id="index-20"></span><a class="pep reference external" href="https://peps.python.org/pep-0508/"><strong>PEP 508</strong></a> 获得批准。</p></li>
+<li><p>2019年7月： <code class="docutils literal notranslate"><span class="pre">python_version</span></code> 的定义被 <a class="reference external" href="https://mail.python.org/pipermail/distutils-sig/2018-January/031920.html">更改</a>，从 <code class="docutils literal notranslate"><span class="pre">platform.python_version()[:3]</span></code> 更改为 <code class="docutils literal notranslate"><span class="pre">'.'.join(platform.python_version_tuple()[:2])</span></code>，以适应可能的未来 Python 版本，具有两位数的主版本号和次版本号（例如 3.10）。 <a class="footnote-reference brackets" href="#future-versions1" id="id17" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a></p></li>
+<li><p>2024年6月： <code class="docutils literal notranslate"><span class="pre">version_many</span></code> 的定义被更改，允许尾随逗号，以匹配自 2022 年底以来一直使用的 Python 实现的行为。</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<ul class="simple">
+<li><p>November 2015: This specification was approved through <span class="target" id="index-21"></span><a class="pep reference external" href="https://peps.python.org/pep-0508/"><strong>PEP 508</strong></a>.</p></li>
+<li><p>July 2019: The definition of <code class="docutils literal notranslate"><span class="pre">python_version</span></code> was <a class="reference external" href="https://mail.python.org/pipermail/distutils-sig/2018-January/031920.html">changed</a> from <code class="docutils literal notranslate"><span class="pre">platform.python_version()[:3]</span></code> to <code class="docutils literal notranslate"><span class="pre">'.'.join(platform.python_version_tuple()[:2])</span></code>, to accommodate potential future versions of Python with 2-digit major and minor versions (e.g. 3.10). <a class="footnote-reference brackets" href="#future-versions" id="id18" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a></p></li>
+<li><p>June 2024: The definition of <code class="docutils literal notranslate"><span class="pre">version_many</span></code> was changed to allow trailing commas, matching with the behavior of the Python implementation that has been in use since late 2022.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="id19">
+<h2>参考<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h2>
+<p><strong>References</strong></p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="pip1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<p>pip, Python 包的推荐安装程序 (<a class="reference external" href="http://pip.readthedocs.org/en/stable/">http://pip.readthedocs.org/en/stable/</a>)</p>
+</aside>
+<aside class="footnote brackets" id="pip" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">2</a><span class="fn-bracket">]</span></span>
+<p>pip, the recommended installer for Python packages (<a class="reference external" href="http://pip.readthedocs.org/en/stable/">http://pip.readthedocs.org/en/stable/</a>)</p>
+</aside>
+<aside class="footnote brackets" id="parsley1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">3</a><span class="fn-bracket">]</span></span>
+<p>parsley PEG 库. (<a class="reference external" href="https://pypi.python.org/pypi/parsley/">https://pypi.python.org/pypi/parsley/</a>)</p>
+</aside>
+<aside class="footnote brackets" id="parsley" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">4</a><span class="fn-bracket">]</span></span>
+<p>The parsley PEG library. (<a class="reference external" href="https://pypi.python.org/pypi/parsley/">https://pypi.python.org/pypi/parsley/</a>)</p>
+</aside>
+<aside class="footnote brackets" id="future-versions1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id17">5</a><span class="fn-bracket">]</span></span>
+<p>未来的 Python 版本可能会与环境标记变量 <code class="docutils literal notranslate"><span class="pre">python_version</span></code> 的定义存在问题（<a class="reference external" href="https://github.com/python/peps/issues/560">https://github.com/python/peps/issues/560</a>）</p>
+</aside>
+<aside class="footnote brackets" id="future-versions" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id18">6</a><span class="fn-bracket">]</span></span>
+<p>Future Python versions might be problematic with the definition of Environment Marker Variable <code class="docutils literal notranslate"><span class="pre">python_version</span></code> (<a class="reference external" href="https://github.com/python/peps/issues/560">https://github.com/python/peps/issues/560</a>)</p>
+</aside>
+</aside>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="pyproject-toml.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 规范</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="version-specifiers.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">版本标识符</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2013–2020, PyPA
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2024 年 11 月 15 日</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">依赖说明符</a><ul>
+<li><a class="reference internal" href="#id4">规范</a><ul>
+<li><a class="reference internal" href="#id5">示例</a></li>
+<li><a class="reference internal" href="#id6">概念</a></li>
+<li><a class="reference internal" href="#id7">语法</a></li>
+<li><a class="reference internal" href="#id10">空格</a></li>
+<li><a class="reference internal" href="#id11">名称</a></li>
+<li><a class="reference internal" href="#id12">附加内容</a></li>
+<li><a class="reference internal" href="#id13">版本</a></li>
+<li><a class="reference internal" href="#id14">环境标记</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id15">完整语法</a></li>
+<li><a class="reference internal" href="#id16">历史</a></li>
+<li><a class="reference internal" href="#id19">参考</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=cb5fb026"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    </body>
+</html>

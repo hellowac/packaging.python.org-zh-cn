@@ -1,0 +1,600 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="next" title="构建和发布" href="section-build-and-publish.html" /><link rel="prev" title="使用 Linux 包管理器安装 pip/setuptools/wheel" href="installing-using-linux-tools.html" />
+
+    <link rel="shortcut icon" href="../_static/py.png"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>安装科学软件包 - Python Packaging User Guide</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Python Packaging User Guide</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">Python Packaging User Guide</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow.html">打包流程</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/installing-packages.html">安装软件包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/managing-dependencies.html">管理依赖项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/packaging-projects.html">打包Python项目</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">指南</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current has-children"><a class="reference internal" href="section-install.html">安装</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 安装</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="installing-using-pip-and-virtual-environments.html">使用 pip 和 venv 在虚拟环境中安装软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installing-using-virtualenv.html">使用虚拟环境安装包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installing-stand-alone-command-line-tools.html">安装独立的命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installing-using-linux-tools.html">使用 Linux 包管理器安装 pip/setuptools/wheel</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">安装科学软件包</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-build-and-publish.html">构建和发布</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 构建和发布</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="writing-pyproject-toml.html">编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="distributing-packages-using-setuptools.html">打包和分发项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dropping-older-python-versions.html">放弃对旧版 Python 的支持</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packaging-binary-extensions.html">打包二进制扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packaging-namespace-packages.html">打包命名空间包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="creating-command-line-tools.html">创建和打包命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="creating-and-discovering-plugins.html">创建和发现插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-testpypi.html">使用 TestPyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making-a-pypi-friendly-readme.html">制作适合 PyPI 的 README</a></li>
+<li class="toctree-l3"><a class="reference internal" href="publishing-package-distribution-releases-using-github-actions-ci-cd-workflows.html">使用 GitHub Actions CI/CD 工作流发布软件包分发版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modernize-setup-py-project.html">如何使基于 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 的项目现代化？</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-hosting.html">托管</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of 托管</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="index-mirrors-and-caches.html">包索引镜像和缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hosting-your-own-index.html">托管您自己的简单存储库</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tool-recommendations.html">工具推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyzing-pypi-package-downloads.html">分析 PyPI 软件包下载</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discussions/index.html">讨论</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 讨论</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/versioning.html">版本控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/deploying-python-applications.html">部署 Python 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/pip-vs-easy-install.html">pip vs easy_install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/install-requires-vs-requirements.html">install_requires 与需求文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/distribution-package-vs-import-package.html">分发包与导入包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/package-formats.html">软件包格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/src-layout-vs-flat-layout.html">src 布局与平面布局</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/setup-py-deprecated.html"><code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 已被弃用吗？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/single-source-version.html">单一来源项目版本</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../specifications/index.html">PyPA 规范</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of PyPA 规范</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-distribution-metadata.html">包分发元数据</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 包分发元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/name-normalization.html">名称和规范化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/core-metadata.html">核心元数据规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/version-specifiers.html">版本标识符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/dependency-specifiers.html">依赖说明符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/pyproject-toml.html"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/inline-script-metadata.html">内联脚本元数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/platform-compatibility-tags.html">平台兼容性标签</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/well-known-project-urls.html">元数据中的知名项目 URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-installation-metadata.html">包安装元数据</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 包安装元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/recording-installed-packages.html">记录已安装的项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/entry-points.html">入口点规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/direct-url.html">记录已安装发行版的直接 URL 来源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/direct-url-data-structure.html">直接 URL 数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/virtual-environments.html">Python 虚拟环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/externally-managed-environments.html">外部管理环境</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-distribution-formats.html">包分发文件格式</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 包分发文件格式</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/source-distribution-format.html">源分发格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/binary-distribution-format.html">二进制分发格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-package-indices.html">包索引接口</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of 包索引接口</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/pypirc.html"><code class="file docutils literal notranslate"><span class="pre">.pypirc</span></code> 文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/simple-repository-api.html">Simple 仓库 API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../key_projects.html">项目摘要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">如何获取支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">为本指南做出贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">新闻</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/guides/installing-scientific-packages.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="numpy-and-the-science-stack">
+<span id="id1"></span><h1>安装科学软件包<a class="headerlink" href="#numpy-and-the-science-stack" title="Link to this heading">¶</a></h1>
+<p><strong>Installing scientific packages</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>科学软件通常比大多数软件有更复杂的依赖关系，并且通常会有多个构建选项，以便利用不同类型的硬件，或与不同的外部软件进行互操作。</p>
+<p>特别是， <a class="reference external" href="https://numpy.org/">NumPy</a> ，作为大多数 <a class="reference external" href="https://scientific-python.org">科学 Python 堆栈</a> 软件的基础，可以配置为与不同的 FORTRAN 库互操作，并且能够利用现代 CPU 中提供的不同级别的向量化指令。</p>
+<p>从 NumPy 版本 1.10.4 和 SciPy 版本 1.0.0 开始，PyPI 上提供了适用于所有主要操作系统（Windows、macOS 和 Linux）的预构建 32 位和 64 位二进制文件，格式为 <code class="docutils literal notranslate"><span class="pre">wheel</span></code> 。但请注意，在 Windows 上，NumPy 二进制文件是链接到 <a class="reference external" href="http://www.netlib.org/atlas/">ATLAS</a> BLAS/LAPACK 库的，并且仅限于 SSE2 指令，因此它们可能无法提供最佳的线性代数性能。</p>
+<p>对于获取科学 Python 库（或任何其他需要编译环境才能从源代码安装且未提供预构建 wheel 文件的 Python 库），有许多替代选项。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>Scientific software tends to have more complex dependencies than most, and
+it will often have multiple build options to take advantage of different
+kinds of hardware, or to interoperate with different pieces of external
+software.</p>
+<p>In particular, <a class="reference external" href="https://numpy.org/">NumPy</a>, which provides the basis
+for most of the software in the <a class="reference external" href="https://scientific-python.org">scientific Python stack</a> can be configured
+to interoperate with different FORTRAN libraries, and can take advantage
+of different levels of vectorised instructions available in modern CPUs.</p>
+<p>Starting with version 1.10.4 of NumPy and version 1.0.0 of SciPy, pre-built
+32-bit and 64-bit binaries in the <code class="docutils literal notranslate"><span class="pre">wheel</span></code> format are available for all major
+operating systems (Windows, macOS, and Linux) on PyPI. Note, however, that on
+Windows, NumPy binaries are linked against the <a class="reference external" href="http://www.netlib.org/atlas/">ATLAS</a> BLAS/LAPACK library, restricted to SSE2
+instructions, so they may not provide optimal linear algebra performance.</p>
+<p>There are a number of alternative options for obtaining scientific Python
+libraries (or any other Python libraries that require a compilation environment
+to install from source and don't provide pre-built wheel files on PyPI).</p>
+</div>
+</div>
+<section id="id2">
+<h2>从源代码构建<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<p><strong>Building from source</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>正是这种复杂性使得将 NumPy（以及许多依赖于它的项目）作为 wheel 文件分发变得困难，同时也使得它们从源代码构建变得更加复杂。然而，对于那些愿意花时间处理 C 和 FORTRAN 编译器及链接器的勇敢者来说，从源代码构建始终是一个可选的方案。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>The same complexity which makes it difficult to distribute NumPy (and many
+of the projects that depend on it) as wheel files also make them difficult
+to build from source yourself. However, for intrepid folks that are willing
+to spend the time wrangling compilers and linkers for both C and FORTRAN,
+building from source is always an option.</p>
+</div>
+</div>
+</section>
+<section id="linux">
+<h2>Linux 发行版软件包<a class="headerlink" href="#linux" title="Link to this heading">¶</a></h2>
+<p><strong>Linux distribution packages</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>对于 Linux 用户，系统包管理器通常会提供一些科学软件的预编译版本，包括 NumPy 以及科学 Python 堆栈的其他部分。</p>
+<p>如果使用可能有几个月历史的旧版本是可以接受的，那么这是一个不错的选择（只需确保在使用虚拟环境时允许访问安装在系统 Python 中的分发包）。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>For Linux users, the system package manager will often have pre-compiled
+versions of various pieces of scientific software, including NumPy and
+other parts of the scientific Python stack.</p>
+<p>If using versions which may be several months old is acceptable, then this is
+likely to be a good option (just make sure to allow access to distributions
+installed into the system Python when using virtual environments).</p>
+</div>
+</div>
+</section>
+<section id="windows">
+<h2>Windows 安装程序<a class="headerlink" href="#windows" title="Link to this heading">¶</a></h2>
+<p><strong>Windows installers</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>许多目前无法（或不愿）发布 wheel 文件的 Python 项目，至少会发布 Windows 安装程序，这些安装程序可以在 PyPI 或项目的下载页面上找到。使用这些安装程序可以让用户避免需要设置适合的环境来本地构建扩展。</p>
+<p>这些安装程序提供的扩展通常与 python.org 上发布的 CPython Windows 安装程序兼容。</p>
+<p>与 Linux 系统包一样，Windows 安装程序只能安装到系统 Python 安装中——它们不支持在虚拟环境中安装。使用虚拟环境时，允许访问安装在系统 Python 中的分发包是一种常见的解决方法。</p>
+<p><a class="reference internal" href="../glossary.html#term-Wheel"><span class="xref std std-term">Wheel</span></a> 项目还提供了一个 <strong class="command">wheel convert</strong> 子命令，可以将 Windows 的 <strong class="command">bdist_wininst</strong> 安装程序转换为 wheel 文件。</p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>Many Python projects that don't (or can't) currently publish wheel files at
+least publish Windows installers, either on PyPI or on their project
+download page. Using these installers allows users to avoid the need to set
+up a suitable environment to build extensions locally.</p>
+<p>The extensions provided in these installers are typically compatible with
+the CPython Windows installers published on python.org.</p>
+<p>As with Linux system packages, the Windows installers will only install into a
+system Python installation - they do not support installation in virtual
+environments. Allowing access to distributions installed into the system Python
+when using virtual environments is a common approach to working around this
+limitation.</p>
+<p>The <a class="reference internal" href="../glossary.html#term-Wheel"><span class="xref std std-term">Wheel</span></a> project also provides a <strong class="command">wheel convert</strong> subcommand that can
+convert a Windows <strong class="command">bdist_wininst</strong> installer to a wheel.</p>
+</div>
+</div>
+</section>
+<section id="macos">
+<span id="mac-os-x-installers-and-package-managers"></span><h2>macOS 安装程序和软件包管理器<a class="headerlink" href="#macos" title="Link to this heading">¶</a></h2>
+<p><strong>macOS installers and package managers</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>与 Windows 上的情况类似，许多项目（包括 NumPy）发布与 python.org 上发布的 macOS CPython 二进制文件兼容的 macOS 安装程序。</p>
+<p>macOS 用户还可以使用类似于 Linux 发行版的包管理器，如 <strong>Homebrew</strong> 。有关如何使用 Homebrew 安装 SciPy 的更多信息，请参见 SciPy 网站上的 <a class="reference external" href="https://scipy.org/install/#macos">在 macOS 上安装 SciPy</a> 章节。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>Similar to the situation on Windows, many projects (including NumPy) publish
+macOS installers that are compatible with the macOS CPython binaries
+published on python.org.</p>
+<p>macOS users also have access to Linux distribution style package managers
+such as <code class="docutils literal notranslate"><span class="pre">Homebrew</span></code>. The SciPy site has more details on using Homebrew to
+<a class="reference external" href="https://scipy.org/install/#macos">install SciPy on macOS</a>.</p>
+</div>
+</div>
+</section>
+<section id="scipy">
+<h2>SciPy 发行版<a class="headerlink" href="#scipy" title="Link to this heading">¶</a></h2>
+<p><strong>SciPy distributions</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>SciPy 网站列出了 <a class="reference external" href="https://scipy.org/install/#distributions">几种发行版</a> ，这些发行版以易于使用和更新的格式向最终用户提供完整的 SciPy 堆栈。</p>
+<p>其中一些发行版可能与标准的 <code class="docutils literal notranslate"><span class="pre">pip</span></code> 和 <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> 工具链不兼容。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>The SciPy site lists <a class="reference external" href="https://scipy.org/install/#distributions">several distributions</a>
+that provide the full SciPy stack to
+end users in an easy to use and update format.</p>
+<p>Some of these distributions may not be compatible with the standard <code class="docutils literal notranslate"><span class="pre">pip</span></code>
+and <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> based toolchain.</p>
+</div>
+</div>
+</section>
+<section id="spack">
+<h2>Spack<a class="headerlink" href="#spack" title="Link to this heading">¶</a></h2>
+<p><strong>Spack</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p><a class="reference external" href="https://github.com/spack/spack">Spack</a> 是一个灵活的包管理器，旨在支持多版本、多配置、多平台和多编译器。它是为了满足大型超级计算中心和科学应用团队的需求而构建的，这些团队经常需要以多种不同的方式构建软件。Spack 不仅限于 Python，它还可以安装 <code class="docutils literal notranslate"><span class="pre">C</span></code>、 <code class="docutils literal notranslate"><span class="pre">C++</span></code>、 <code class="docutils literal notranslate"><span class="pre">Fortran</span></code>、 <code class="docutils literal notranslate"><span class="pre">R</span></code> 和其他语言的包。Spack 是非破坏性的；安装一个新版本的包不会破坏现有的安装，因此多个配置可以在同一系统上共存。</p>
+<p>Spack 提供了一个简单但强大的语法，允许用户简洁地指定版本和配置选项。包文件使用纯 Python 编写，并且是模板化的，这样可以通过一个包文件轻松地更换编译器、依赖项实现（如 MPI）、版本和构建选项。Spack 还生成 <em>module</em> 文件，以便包可以从用户环境中加载和卸载。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p><a class="reference external" href="https://github.com/spack/spack">Spack</a> is a flexible package manager
+designed to support multiple versions, configurations, platforms, and compilers.
+It was built to support the needs of large supercomputing centers and scientific
+application teams, who must often build software many different ways.
+Spack is not limited to Python; it can install packages for <code class="docutils literal notranslate"><span class="pre">C</span></code>, <code class="docutils literal notranslate"><span class="pre">C++</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Fortran</span></code>, <code class="docutils literal notranslate"><span class="pre">R</span></code>, and other languages.  It is non-destructive; installing
+a new version of one package does not break existing installations, so many
+configurations can coexist on the same system.</p>
+<p>Spack offers a simple but powerful syntax that allows users to specify
+versions and configuration options concisely. Package files are written in
+pure Python, and they are templated so that it is easy to swap compilers,
+dependency implementations (like MPI), versions, and build options with a single
+package file.  Spack also generates <em>module</em> files so that packages can
+be loaded and unloaded from the user's environment.</p>
+</div>
+</div>
+</section>
+<section id="conda">
+<h2>conda 跨平台软件包管理器<a class="headerlink" href="#conda" title="Link to this heading">¶</a></h2>
+<p><strong>The conda cross-platform package manager</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p><a class="reference external" href="https://www.anaconda.com/products/individual/">Anaconda</a> 是由 Anaconda 公司发布的 Python 发行版。它是一个稳定的开源软件包集合，主要用于大数据和科学计算。自 Anaconda 5.0 版本发布以来，约有 200 个包被默认安装，此外，Anaconda 仓库中总共有 400 到 500 个包可以安装和更新。</p>
+<p><code class="docutils literal notranslate"><span class="pre">conda</span></code> 是一个开源（BSD 许可）的包管理系统和环境管理系统，包含在 Anaconda 中，允许用户安装多个版本的二进制软件包及其依赖项，并轻松在它们之间切换。它是一个跨平台工具，支持 Windows、macOS 和 Linux。Conda 不仅限于管理 Python 包，还可以用于打包和分发各种软件包。它完全支持原生的虚拟环境。Conda 将环境作为一等公民，使得创建独立的环境（即使是 C 库）也变得简单。它是用 Python 编写的，但与 Python 无关。Conda 将 Python 本身作为一个包进行管理，因此可以使用 <strong class="command">conda update python</strong> 命令进行更新，这与只能管理 Python 包的 pip 不同。Conda 可通过 Anaconda 和 Miniconda（一个简易安装包，仅包含 Python 和 conda）进行获取。</p>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p><a class="reference external" href="https://www.anaconda.com/products/individual/">Anaconda</a> is a Python distribution
+published by Anaconda, Inc. It is a stable collection of Open Source
+packages for big data and scientific use.  As of the 5.0 release of Anaconda,
+about 200 packages are installed by default, and a total of 400-500 can be
+installed and updated from the Anaconda repository.</p>
+<p><code class="docutils literal notranslate"><span class="pre">conda</span></code> is an open source (BSD licensed) package management system and
+environment management system included in Anaconda that allows users to install
+multiple versions of binary software packages and their dependencies, and
+easily switch between them. It is a cross-platform tool working on Windows,
+macOS, and Linux. Conda can be used to package up and distribute all kinds of
+packages, it is not limited to just Python packages. It has full support for
+native virtual environments. Conda makes environments first-class citizens,
+making it easy to create independent environments even for C libraries. It is
+written in Python, but is Python-agnostic. Conda manages Python itself as a
+package, so that <strong class="command">conda update python</strong> is possible, in contrast to
+pip, which only manages Python packages. Conda is available in Anaconda and
+Miniconda (an easy-to-install download with just Python and conda).</p>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="section-build-and-publish.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">构建和发布</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="installing-using-linux-tools.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">使用 Linux 包管理器安装 pip/setuptools/wheel</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2013–2020, PyPA
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2024 年 11 月 15 日</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">安装科学软件包</a><ul>
+<li><a class="reference internal" href="#id2">从源代码构建</a></li>
+<li><a class="reference internal" href="#linux">Linux 发行版软件包</a></li>
+<li><a class="reference internal" href="#windows">Windows 安装程序</a></li>
+<li><a class="reference internal" href="#macos">macOS 安装程序和软件包管理器</a></li>
+<li><a class="reference internal" href="#scipy">SciPy 发行版</a></li>
+<li><a class="reference internal" href="#spack">Spack</a></li>
+<li><a class="reference internal" href="#conda">conda 跨平台软件包管理器</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=cb5fb026"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    </body>
+</html>

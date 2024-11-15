@@ -1,0 +1,686 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="next" title="打包Python项目" href="packaging-projects.html" /><link rel="prev" title="安装软件包" href="installing-packages.html" />
+
+    <link rel="shortcut icon" href="../_static/py.png"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>管理依赖项 - Python Packaging User Guide</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Python Packaging User Guide</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">Python Packaging User Guide</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow.html">打包流程</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">教程</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="installing-packages.html">安装软件包</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">管理依赖项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packaging-projects.html">打包Python项目</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../guides/index.html">指南</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-install.html">安装</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 安装</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-pip-and-virtual-environments.html">使用 pip 和 venv 在虚拟环境中安装软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-virtualenv.html">使用虚拟环境安装包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-stand-alone-command-line-tools.html">安装独立的命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-linux-tools.html">使用 Linux 包管理器安装 pip/setuptools/wheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-scientific-packages.html">安装科学软件包</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-build-and-publish.html">构建和发布</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 构建和发布</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/writing-pyproject-toml.html">编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/distributing-packages-using-setuptools.html">打包和分发项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/dropping-older-python-versions.html">放弃对旧版 Python 的支持</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/packaging-binary-extensions.html">打包二进制扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/packaging-namespace-packages.html">打包命名空间包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/creating-command-line-tools.html">创建和打包命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/creating-and-discovering-plugins.html">创建和发现插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/using-testpypi.html">使用 TestPyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/making-a-pypi-friendly-readme.html">制作适合 PyPI 的 README</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows.html">使用 GitHub Actions CI/CD 工作流发布软件包分发版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/modernize-setup-py-project.html">如何使基于 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 的项目现代化？</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-hosting.html">托管</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of 托管</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/index-mirrors-and-caches.html">包索引镜像和缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/hosting-your-own-index.html">托管您自己的简单存储库</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/tool-recommendations.html">工具推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/analyzing-pypi-package-downloads.html">分析 PyPI 软件包下载</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discussions/index.html">讨论</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 讨论</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/versioning.html">版本控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/deploying-python-applications.html">部署 Python 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/pip-vs-easy-install.html">pip vs easy_install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/install-requires-vs-requirements.html">install_requires 与需求文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/distribution-package-vs-import-package.html">分发包与导入包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/package-formats.html">软件包格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/src-layout-vs-flat-layout.html">src 布局与平面布局</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/setup-py-deprecated.html"><code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 已被弃用吗？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/single-source-version.html">单一来源项目版本</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../specifications/index.html">PyPA 规范</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of PyPA 规范</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-distribution-metadata.html">包分发元数据</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 包分发元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/name-normalization.html">名称和规范化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/core-metadata.html">核心元数据规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/version-specifiers.html">版本标识符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/dependency-specifiers.html">依赖说明符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/pyproject-toml.html"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/inline-script-metadata.html">内联脚本元数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/platform-compatibility-tags.html">平台兼容性标签</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/well-known-project-urls.html">元数据中的知名项目 URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-installation-metadata.html">包安装元数据</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 包安装元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/recording-installed-packages.html">记录已安装的项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/entry-points.html">入口点规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/direct-url.html">记录已安装发行版的直接 URL 来源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/direct-url-data-structure.html">直接 URL 数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/virtual-environments.html">Python 虚拟环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/externally-managed-environments.html">外部管理环境</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-distribution-formats.html">包分发文件格式</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 包分发文件格式</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/source-distribution-format.html">源分发格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/binary-distribution-format.html">二进制分发格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-package-indices.html">包索引接口</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of 包索引接口</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/pypirc.html"><code class="file docutils literal notranslate"><span class="pre">.pypirc</span></code> 文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/simple-repository-api.html">Simple 仓库 API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../key_projects.html">项目摘要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">如何获取支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">为本指南做出贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">新闻</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/tutorials/managing-dependencies.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="managing-dependencies">
+<span id="id1"></span><h1>管理依赖项<a class="headerlink" href="#managing-dependencies" title="Link to this heading">¶</a></h1>
+<p><strong>Managing Application Dependencies</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>在 <a class="reference internal" href="installing-packages.html#installing-packages"><span class="std std-ref">包安装教程</span></a> 中，我们已经涵盖了安装和更新 Python 包的基本步骤。</p>
+<p>然而，即使是个人项目，交互式运行这些命令也可能变得乏味，而且当需要为多个贡献者的项目自动设置开发环境时，事情会变得更加复杂。</p>
+<p>本教程将带您了解如何使用 <a class="reference internal" href="../key_projects.html#pipenv"><span class="std std-ref">Pipenv</span></a> 来管理应用程序的依赖项。它将向您展示如何安装和使用所需的工具，并给出最佳实践的强烈建议。</p>
+<p>请记住，Python 被用于许多不同的用途，您管理依赖项的方式可能会根据您决定如何发布软件而有所不同。这里提供的指导最直接适用于网络服务（包括 Web 应用）的开发和部署，但也非常适合用于管理任何类型项目的开发和测试环境。</p>
+<p>有关其他工具的替代方案，请参阅 <a class="reference internal" href="#other-dependency-management-tools"><span class="std std-ref">其他应用依赖管理工具</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>The <a class="reference internal" href="installing-packages.html#installing-packages"><span class="std std-ref">package installation tutorial</span></a>
+covered the basics of getting set up to install and update Python packages.</p>
+<p>However, running these commands interactively can get tedious even for your
+own personal projects, and things get even more difficult when trying to set up
+development environments automatically for projects with multiple contributors.</p>
+<p>This tutorial walks you through the use of <a class="reference internal" href="../key_projects.html#pipenv"><span class="std std-ref">Pipenv</span></a> to manage dependencies
+for an application. It will show you how to install and use the necessary tools
+and make strong recommendations on best practices.</p>
+<p>Keep in mind that Python is used for a great many different purposes, and
+precisely how you want to manage your dependencies may change based on how you
+decide to publish your software. The guidance presented here is most directly
+applicable to the development and deployment of network services (including
+web applications), but is also very well suited to managing development and
+testing environments for any kind of project.</p>
+<p>For alternatives, see <a class="reference internal" href="#other-dependency-management-tools"><span class="std std-ref">Other Tools for Application Dependency Management</span></a>.</p>
+</div>
+</div>
+<section id="pipenv">
+<h2>安装 Pipenv<a class="headerlink" href="#pipenv" title="Link to this heading">¶</a></h2>
+<p><strong>Installing Pipenv</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p><a class="reference internal" href="../key_projects.html#pipenv"><span class="std std-ref">Pipenv</span></a> 是一个用于管理 Python 项目依赖的工具。如果你熟悉 Node.js 的 <a class="reference external" href="https://www.npmjs.com/">npm</a> 或 Ruby 的 <a class="reference external" href="https://bundler.io/">bundler</a>，你会发现它们在理念上有相似之处。虽然 <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> 通常足够满足个人使用需求，但对于协作项目，Pipenv 是推荐的工具，因为它是一个更高层次的工具，可以简化常见用例的依赖管理。</p>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">pip</span></code> 安装 Pipenv：</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>pipenv
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m pip install --user pipenv
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>这会执行一个 <a class="reference external" href="userinstallation">用户安装</a> 以防止破坏任何系统范围的包。如果安装后 <code class="docutils literal notranslate"><span class="pre">pipenv</span></code> 在你的 shell 中不可用，你需要将 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/site.html#site.USER_BASE" title="（在 Python v3.13）"><code class="xref py py-data docutils literal notranslate"><span class="pre">user</span> <span class="pre">base</span></code></a> 的二进制目录添加到你的 <code class="docutils literal notranslate"><span class="pre">PATH</span></code> 中。
+有关更多信息，请参见 <a class="reference internal" href="installing-packages.html#installing-to-the-user-site"><span class="std std-ref">安装到用户站点</span></a>。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p><a class="reference internal" href="../key_projects.html#pipenv"><span class="std std-ref">Pipenv</span></a> is a dependency manager for Python projects. If you're familiar
+with Node.js' <a class="reference external" href="https://www.npmjs.com/">npm</a> or Ruby's <a class="reference external" href="https://bundler.io/">bundler</a>, it is similar in spirit to those
+tools. While <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> alone is often sufficient for personal use, Pipenv is
+recommended for collaborative projects as it's a higher-level tool that
+simplifies dependency management for common use cases.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">pip</span></code> to install Pipenv:</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>pipenv
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m pip install --user pipenv
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This does a <a class="reference external" href="https://pip.pypa.io/en/stable/user_guide/#user-installs">user installation</a> to prevent breaking any system-wide
+packages. If <code class="docutils literal notranslate"><span class="pre">pipenv</span></code> isn't available in your shell after installation,
+you'll need to add the <a class="reference external" href="https://docs.python.org/zh-cn/3/library/site.html#site.USER_BASE" title="（在 Python v3.13）"><code class="xref py py-data docutils literal notranslate"><span class="pre">user</span> <span class="pre">base</span></code></a>'s
+binary directory to your <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.
+See <a class="reference internal" href="installing-packages.html#installing-to-the-user-site"><span class="std std-ref">Installing to the User Site</span></a> for more information.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2>为您的项目安装软件包<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<p><strong>Installing packages for your project</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>Pipenv 以项目为单位管理依赖关系。要安装包，进入你的项目目录（或仅为本教程创建一个空目录），然后运行：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>myproject
+pipenv<span class="w"> </span>install<span class="w"> </span>requests
+</pre></div>
+</div>
+<p>Pipenv 将安装 <a class="reference external" href="https://pypi.org/project/requests/">Requests</a> 库并在你的项目目录中创建一个 <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code>。这个 <a class="reference internal" href="../key_projects.html#pipfile"><span class="std std-ref">Pipfile</span></a> 用于记录项目需要哪些依赖包，以便你在需要重新安装时，比如与他人共享项目时，可以方便地恢复这些依赖。你应该会看到类似以下输出（尽管显示的路径会有所不同）：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Creating a Pipfile for this project...
+Creating a virtualenv for this project...
+Using base prefix &#39;/usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6&#39;
+New python executable in ~/.local/share/virtualenvs/tmp-agwWamBd/bin/python3.6
+Also creating executable in ~/.local/share/virtualenvs/tmp-agwWamBd/bin/python
+Installing setuptools, pip, wheel...done.
+
+Virtualenv location: ~/.local/share/virtualenvs/tmp-agwWamBd
+Installing requests...
+Collecting requests
+  Using cached requests-2.18.4-py2.py3-none-any.whl
+Collecting idna&lt;2.7,&gt;=2.5 (from requests)
+  Using cached idna-2.6-py2.py3-none-any.whl
+Collecting urllib3&lt;1.23,&gt;=1.21.1 (from requests)
+  Using cached urllib3-1.22-py2.py3-none-any.whl
+Collecting chardet&lt;3.1.0,&gt;=3.0.2 (from requests)
+  Using cached chardet-3.0.4-py2.py3-none-any.whl
+Collecting certifi&gt;=2017.4.17 (from requests)
+  Using cached certifi-2017.7.27.1-py2.py3-none-any.whl
+Installing collected packages: idna, urllib3, chardet, certifi, requests
+Successfully installed certifi-2017.7.27.1 chardet-3.0.4 idna-2.6 requests-2.18.4 urllib3-1.22
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>Pipenv manages dependencies on a per-project basis. To install packages,
+change into your project's directory (or just an empty directory for this
+tutorial) and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>myproject
+pipenv<span class="w"> </span>install<span class="w"> </span>requests
+</pre></div>
+</div>
+<p>Pipenv will install the <a class="reference external" href="https://pypi.org/project/requests/">Requests</a> library and create a <code class="docutils literal notranslate"><span class="pre">Pipfile</span></code>
+for you in your project's directory. The <a class="reference internal" href="../key_projects.html#pipfile"><span class="std std-ref">Pipfile</span></a> is used to track which
+dependencies your project needs in case you need to re-install them, such as
+when you share your project with others. You should get output similar to this
+(although the exact paths shown will vary):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Creating a Pipfile for this project...
+Creating a virtualenv for this project...
+Using base prefix &#39;/usr/local/Cellar/python3/3.6.2/Frameworks/Python.framework/Versions/3.6&#39;
+New python executable in ~/.local/share/virtualenvs/tmp-agwWamBd/bin/python3.6
+Also creating executable in ~/.local/share/virtualenvs/tmp-agwWamBd/bin/python
+Installing setuptools, pip, wheel...done.
+
+Virtualenv location: ~/.local/share/virtualenvs/tmp-agwWamBd
+Installing requests...
+Collecting requests
+  Using cached requests-2.18.4-py2.py3-none-any.whl
+Collecting idna&lt;2.7,&gt;=2.5 (from requests)
+  Using cached idna-2.6-py2.py3-none-any.whl
+Collecting urllib3&lt;1.23,&gt;=1.21.1 (from requests)
+  Using cached urllib3-1.22-py2.py3-none-any.whl
+Collecting chardet&lt;3.1.0,&gt;=3.0.2 (from requests)
+  Using cached chardet-3.0.4-py2.py3-none-any.whl
+Collecting certifi&gt;=2017.4.17 (from requests)
+  Using cached certifi-2017.7.27.1-py2.py3-none-any.whl
+Installing collected packages: idna, urllib3, chardet, certifi, requests
+Successfully installed certifi-2017.7.27.1 chardet-3.0.4 idna-2.6 requests-2.18.4 urllib3-1.22
+
+Adding requests to Pipfile&#39;s [packages]...
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>使用已安装的软件包<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<p><strong>Using installed packages</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>现在， <code class="xref any docutils literal notranslate"><span class="pre">Requests</span></code> 已经安装，你可以创建一个简单的 <code class="file docutils literal notranslate"><span class="pre">main.py</span></code> 文件来使用它：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://httpbin.org/ip&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Your IP is </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;origin&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>然后，你可以使用 <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">run</span></code> 运行这个脚本：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pipenv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>main.py
+</pre></div>
+</div>
+<p>你应该看到类似下面的输出：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Your IP is 8.8.8.8
+</pre></div>
+</div>
+<p>使用 <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">run</span></code> 可以确保你的安装包在脚本中可用。你也可以通过使用 <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">shell</span></code> 启动一个新的 shell，这样所有命令都能访问到你安装的包。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that Requests is installed you can create a simple <code class="file docutils literal notranslate"><span class="pre">main.py</span></code> file
+to use it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://httpbin.org/ip&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Your IP is </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;origin&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>Then you can run this script using <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">run</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pipenv<span class="w"> </span>run<span class="w"> </span>python<span class="w"> </span>main.py
+</pre></div>
+</div>
+<p>You should get output similar to this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Your IP is 8.8.8.8
+</pre></div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">run</span></code> ensures that your installed packages are available to
+your script. It's also possible to spawn a new shell that ensures all commands
+have access to your installed packages with <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">shell</span></code>.</p>
+</div>
+</div>
+</section>
+<section id="id5">
+<h2>后续步骤<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
+<p><strong>Next steps</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>恭喜你，现在你已经掌握了如何在协作型 Python 项目中有效地管理依赖和开发环境！✨ 🍰 ✨</p>
+<p>如果你有兴趣创建并分发你自己的 Python 包，可以参考 <a class="reference internal" href="../guides/distributing-packages-using-setuptools.html#distributing-packages"><span class="std std-ref">打包和分发包的教程</span></a>。</p>
+<p>请注意，当你的应用程序包含 Python 源包定义时，你可以通过 <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">&lt;相对路径到源目录&gt;</span></code> 将它们（及其依赖）添加到你的 <code class="docutils literal notranslate"><span class="pre">pipenv</span></code> 环境中（例如 <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code> 或 <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">src</span></code>）。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>Congratulations, you now know how to effectively manage dependencies and
+development environments on a collaborative Python project! ✨ 🍰 ✨</p>
+<p>If you're interested in creating and distributing your own Python packages, see
+the <a class="reference internal" href="../guides/distributing-packages-using-setuptools.html#distributing-packages"><span class="std std-ref">tutorial on packaging and distributing packages</span></a>.</p>
+<p>Note that when your application includes definitions of Python source packages,
+they (and their dependencies) can be added to your <code class="docutils literal notranslate"><span class="pre">pipenv</span></code> environment with
+<code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">&lt;relative-path-to-source-directory&gt;</span></code> (e.g.
+<code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code> or <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">src</span></code>).</p>
+</div>
+</div>
+</section>
+<section id="other-dependency-management-tools">
+<span id="id6"></span><h2>其他应用程序依赖项管理工具<a class="headerlink" href="#other-dependency-management-tools" title="Link to this heading">¶</a></h2>
+<p><strong>Other Tools for Application Dependency Management</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>如果你发现这种管理应用程序依赖的方法不适合你或你的使用场景，你可以探索以下其他工具和技术，按字母顺序列出，看看其中是否有更适合的工具：</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/pypa/hatch">hatch</a>：一个偏向于项目管理工作流更多步骤的工具，包括版本递增和从项目模板创建新项目骨架。</p></li>
+<li><p><a class="reference external" href="https://github.com/thoth-station/micropipenv">micropipenv</a>：一个轻量级的 pip 包装器，支持 <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>、Pipenv 和 Poetry 锁定文件，或将其转换为兼容 pip-tools 的输出。专为容器化 Python 应用设计，但不限于此。</p></li>
+<li><p><a class="reference external" href="https://github.com/pdm-project/pdm">PDM</a>：一种依赖于 <span class="target" id="index-0"></span><a class="pep reference external" href="https://peps.python.org/pep-0517/"><strong>PEP 517</strong></a> 和 <span class="target" id="index-1"></span><a class="pep reference external" href="https://peps.python.org/pep-0621/"><strong>PEP 621</strong></a> 等标准的现代 Python 包管理工具。</p></li>
+<li><p><a class="reference external" href="https://github.com/jazzband/pip-tools">pip-tools</a>：从项目中直接使用的包列表创建所有依赖项的锁定文件，并确保只安装那些依赖项。</p></li>
+<li><p><a class="reference external" href="https://github.com/python-poetry/poetry">Poetry</a>：与 Pipenv 相似的工具，更多地关注于结构化为可分发 Python 包的项目，要求有有效的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 文件。与之相对，Pipenv 明确避免假设正在处理的应用程序将支持作为 <code class="docutils literal notranslate"><span class="pre">pip</span></code> 可安装的 Python 包进行分发。</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>If you find this particular approach to managing application dependencies isn't
+working well for you or your use case, you may want to explore these other tools
+and techniques, listed in alphabetical order, to see if one of them is a better fit:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/pypa/hatch">hatch</a> for opinionated coverage of even
+more steps in the project management workflow, such as incrementing versions
+and creating new skeleton projects from project templates.</p></li>
+<li><p><a class="reference external" href="https://github.com/thoth-station/micropipenv">micropipenv</a> for a lightweight
+wrapper around pip that supports <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>, Pipenv and Poetry lock files,
+or converting them to pip-tools compatible output. Designed for containerized
+Python applications, but not limited to them.</p></li>
+<li><p><a class="reference external" href="https://github.com/pdm-project/pdm">PDM</a> for a modern Python package
+management relying on standards such as <span class="target" id="index-2"></span><a class="pep reference external" href="https://peps.python.org/pep-0517/"><strong>PEP 517</strong></a> and <span class="target" id="index-3"></span><a class="pep reference external" href="https://peps.python.org/pep-0621/"><strong>PEP 621</strong></a>.</p></li>
+<li><p><a class="reference external" href="https://github.com/jazzband/pip-tools">pip-tools</a> for creating a lock file of all
+dependencies from a list of packages directly used in a project, and ensuring that
+only those dependencies are installed.</p></li>
+<li><p><a class="reference external" href="https://github.com/python-poetry/poetry">Poetry</a> for a tool comparable in scope
+to Pipenv that focuses more directly on use cases where the project being managed is
+structured as a distributable Python package with a valid <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file.
+By contrast, Pipenv explicitly avoids making the assumption that the application
+being worked on will support distribution as a <code class="docutils literal notranslate"><span class="pre">pip</span></code>-installable Python package.</p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="packaging-projects.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">打包Python项目</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="installing-packages.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">安装软件包</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2013–2020, PyPA
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2024 年 11 月 15 日</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">管理依赖项</a><ul>
+<li><a class="reference internal" href="#pipenv">安装 Pipenv</a></li>
+<li><a class="reference internal" href="#id3">为您的项目安装软件包</a></li>
+<li><a class="reference internal" href="#id4">使用已安装的软件包</a></li>
+<li><a class="reference internal" href="#id5">后续步骤</a></li>
+<li><a class="reference internal" href="#other-dependency-management-tools">其他应用程序依赖项管理工具</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=cb5fb026"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    </body>
+</html>

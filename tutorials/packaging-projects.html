@@ -1,0 +1,1278 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="next" title="指南" href="../guides/index.html" /><link rel="prev" title="管理依赖项" href="managing-dependencies.html" />
+
+    <link rel="shortcut icon" href="../_static/py.png"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>打包Python项目 - Python Packaging User Guide</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Python Packaging User Guide</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">Python Packaging User Guide</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow.html">打包流程</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">教程</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="installing-packages.html">安装软件包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="managing-dependencies.html">管理依赖项</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">打包Python项目</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../guides/index.html">指南</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-install.html">安装</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 安装</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-pip-and-virtual-environments.html">使用 pip 和 venv 在虚拟环境中安装软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-virtualenv.html">使用虚拟环境安装包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-stand-alone-command-line-tools.html">安装独立的命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-linux-tools.html">使用 Linux 包管理器安装 pip/setuptools/wheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-scientific-packages.html">安装科学软件包</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-build-and-publish.html">构建和发布</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 构建和发布</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/writing-pyproject-toml.html">编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/distributing-packages-using-setuptools.html">打包和分发项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/dropping-older-python-versions.html">放弃对旧版 Python 的支持</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/packaging-binary-extensions.html">打包二进制扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/packaging-namespace-packages.html">打包命名空间包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/creating-command-line-tools.html">创建和打包命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/creating-and-discovering-plugins.html">创建和发现插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/using-testpypi.html">使用 TestPyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/making-a-pypi-friendly-readme.html">制作适合 PyPI 的 README</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows.html">使用 GitHub Actions CI/CD 工作流发布软件包分发版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/modernize-setup-py-project.html">如何使基于 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 的项目现代化？</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-hosting.html">托管</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of 托管</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/index-mirrors-and-caches.html">包索引镜像和缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/hosting-your-own-index.html">托管您自己的简单存储库</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/tool-recommendations.html">工具推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/analyzing-pypi-package-downloads.html">分析 PyPI 软件包下载</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discussions/index.html">讨论</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 讨论</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/versioning.html">版本控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/deploying-python-applications.html">部署 Python 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/pip-vs-easy-install.html">pip vs easy_install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/install-requires-vs-requirements.html">install_requires 与需求文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/distribution-package-vs-import-package.html">分发包与导入包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/package-formats.html">软件包格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/src-layout-vs-flat-layout.html">src 布局与平面布局</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/setup-py-deprecated.html"><code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 已被弃用吗？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/single-source-version.html">单一来源项目版本</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../specifications/index.html">PyPA 规范</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of PyPA 规范</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-distribution-metadata.html">包分发元数据</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 包分发元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/name-normalization.html">名称和规范化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/core-metadata.html">核心元数据规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/version-specifiers.html">版本标识符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/dependency-specifiers.html">依赖说明符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/pyproject-toml.html"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/inline-script-metadata.html">内联脚本元数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/platform-compatibility-tags.html">平台兼容性标签</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/well-known-project-urls.html">元数据中的知名项目 URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-installation-metadata.html">包安装元数据</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 包安装元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/recording-installed-packages.html">记录已安装的项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/entry-points.html">入口点规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/direct-url.html">记录已安装发行版的直接 URL 来源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/direct-url-data-structure.html">直接 URL 数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/virtual-environments.html">Python 虚拟环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/externally-managed-environments.html">外部管理环境</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-distribution-formats.html">包分发文件格式</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 包分发文件格式</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/source-distribution-format.html">源分发格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/binary-distribution-format.html">二进制分发格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-package-indices.html">包索引接口</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of 包索引接口</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/pypirc.html"><code class="file docutils literal notranslate"><span class="pre">.pypirc</span></code> 文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/simple-repository-api.html">Simple 仓库 API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../key_projects.html">项目摘要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">如何获取支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">为本指南做出贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">新闻</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/tutorials/packaging-projects.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="python">
+<h1>打包Python项目<a class="headerlink" href="#python" title="Link to this heading">¶</a></h1>
+<p><strong>Packaging Python Projects</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>本教程将带你了解如何打包一个简单的 Python 项目。它将展示如何添加必要的文件和结构以创建包，如何构建包，以及如何将其上传到 Python 包索引（PyPI）。</p>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>如果你在运行本教程中的命令时遇到问题，请复制命令及其输出，然后在 GitHub 上的  <a class="reference external" href="https://github.com/pypa/packaging-problems">packaging-problems</a> 仓库 <a class="reference external" href="https://github.com/pypa/packaging-problems/issues/new?template=packaging_tutorial.yml&amp;title=Trouble+with+the+packaging+tutorial&amp;guide=https://packaging.python.org/tutorials/packaging-projects">提交问题</a> ，我们会尽力提供帮助！</p>
+</div>
+<p>一些命令需要较新的 <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> 版本，因此请首先确保你安装了最新版本：</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m pip install --upgrade pip
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>This tutorial walks you through how to package a simple Python project. It will
+show you how to add the necessary files and structure to create the package, how
+to build the package, and how to upload it to the Python Package Index (PyPI).</p>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>If you have trouble running the commands in this tutorial, please copy the command and its output, then <a class="reference external" href="https://github.com/pypa/packaging-problems/issues/new?template=packaging_tutorial.yml&amp;title=Trouble+with+the+packaging+tutorial&amp;guide=https://packaging.python.org/tutorials/packaging-projects">open an issue</a> on the <a class="reference external" href="https://github.com/pypa/packaging-problems">packaging-problems</a> repository on GitHub. We'll do our best to help you!</p>
+</div>
+<p>Some of the commands require a newer version of <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a>, so start by making
+sure you have the latest version installed:</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m pip install --upgrade pip
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section id="id4">
+<h2>一个简单的项目<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<p><strong>A simple project</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>本教程使用一个简单的项目，名为 <code class="docutils literal notranslate"><span class="pre">example_package_YOUR_USERNAME_HERE</span></code>。如果你的用户名是 <code class="docutils literal notranslate"><span class="pre">me</span></code>，那么包名将是 <code class="docutils literal notranslate"><span class="pre">example_package_me</span></code>；这样可以确保你的包名唯一，不会与其他人上传的包发生冲突。我们建议在打包你自己的项目之前，先按照本教程使用该项目进行操作。</p>
+<p>请在本地创建以下文件结构：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>packaging_tutorial/
+└── src/
+    └── example_package_YOUR_USERNAME_HERE/
+        ├── __init__.py
+        └── example.py
+</pre></div>
+</div>
+<p>包含 Python 文件的目录应该与项目名称一致。这样做可以简化配置，并使得用户在安装包时更易于理解。</p>
+<p>建议创建文件 <code class="file docutils literal notranslate"><span class="pre">__init__.py</span></code>，因为该文件的存在允许用户将目录作为常规包导入，即使在本教程中， <code class="file docutils literal notranslate"><span class="pre">__init__.py</span></code> 文件是空的。<a class="footnote-reference brackets" href="#namespace-packages" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<p><code class="file docutils literal notranslate"><span class="pre">example.py</span></code> 是包中的一个示例模块，可能包含包的逻辑（如函数、类、常量等）。打开该文件并输入以下内容：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_one</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">number</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>如果你不熟悉 Python 的 <a class="reference internal" href="../glossary.html#term-Module"><span class="xref std std-term">模块</span></a> 和 <a class="reference internal" href="../glossary.html#term-Import-Package"><span class="xref std std-term">导入包</span></a>，建议花几分钟时间阅读 <a class="reference external" href="Pythondocumentationforpackagesandmodules">Python 包和模块的文档</a> 。</p>
+<p>创建好这个结构后，你需要在 <code class="docutils literal notranslate"><span class="pre">packaging_tutorial</span></code> 目录中运行本教程中的所有命令。</p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>This tutorial uses a simple project named
+<code class="docutils literal notranslate"><span class="pre">example_package_YOUR_USERNAME_HERE</span></code>. If your username is <code class="docutils literal notranslate"><span class="pre">me</span></code>, then the
+package would be <code class="docutils literal notranslate"><span class="pre">example_package_me</span></code>; this ensures that you have a unique
+package name that doesn't conflict with packages uploaded by other people
+following this tutorial. We recommend following this tutorial as-is using this
+project, before packaging your own project.</p>
+<p>Create the following file structure locally:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>packaging_tutorial/
+└── src/
+    └── example_package_YOUR_USERNAME_HERE/
+        ├── __init__.py
+        └── example.py
+</pre></div>
+</div>
+<p>The directory containing the Python files should match the project name. This
+simplifies the configuration and is more obvious to users who install the package.</p>
+<p>Creating the file <code class="file docutils literal notranslate"><span class="pre">__init__.py</span></code> is recommended because the existence of an
+<code class="file docutils literal notranslate"><span class="pre">__init__.py</span></code> file allows users to import the directory as a regular package,
+even if (as is the case in this tutorial) <code class="file docutils literal notranslate"><span class="pre">__init__.py</span></code> is empty.
+<a class="footnote-reference brackets" href="#namespace-packages" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a></p>
+<p><code class="file docutils literal notranslate"><span class="pre">example.py</span></code> is an example of a module within the package that could
+contain the logic (functions, classes, constants, etc.) of your package.
+Open that file and enter the following content:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_one</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">number</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>If you are unfamiliar with Python's <a class="reference internal" href="../glossary.html#term-Module"><span class="xref std std-term">modules</span></a> and
+<a class="reference internal" href="../glossary.html#term-Import-Package"><span class="xref std std-term">import packages</span></a>, take a few minutes to read over the
+<a class="reference external" href="https://docs.python.org/3/tutorial/modules.html#packages">Python documentation for packages and modules</a>.</p>
+<p>Once you create this structure, you'll want to run all of the commands in this
+tutorial within the <code class="docutils literal notranslate"><span class="pre">packaging_tutorial</span></code> directory.</p>
+</div>
+</div>
+</section>
+<section id="id8">
+<h2>创建包文件<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
+<p><strong>Creating the package files</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>现在，你将添加一些文件来为项目的分发做准备。完成后，项目结构将如下所示：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>packaging_tutorial/
+├── LICENSE
+├── pyproject.toml
+├── README.md
+├── src/
+│   └── example_package_YOUR_USERNAME_HERE/
+│       ├── __init__.py
+│       └── example.py
+└── tests/
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>You will now add files that are used to prepare the project for distribution.
+When you're done, the project structure will look like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>packaging_tutorial/
+├── LICENSE
+├── pyproject.toml
+├── README.md
+├── src/
+│   └── example_package_YOUR_USERNAME_HERE/
+│       ├── __init__.py
+│       └── example.py
+└── tests/
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id9">
+<h2>创建测试目录<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h2>
+<p><strong>Creating a test directory</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p><code class="file docutils literal notranslate"><span class="pre">tests/</span></code> 是测试文件的占位符。暂时将其留空。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p><code class="file docutils literal notranslate"><span class="pre">tests/</span></code> is a placeholder for test files. Leave it empty for now.</p>
+</div>
+</div>
+</section>
+<section id="choosing-build-backend">
+<span id="id10"></span><h2>选择构建后端<a class="headerlink" href="#choosing-build-backend" title="Link to this heading">¶</a></h2>
+<p><strong>Choosing a build backend</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>工具如 <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> 和 <a class="reference internal" href="../key_projects.html#build"><span class="std std-ref">build</span></a> 本身并不会将源代码转换为分发包（如 wheel 格式）；这项工作由 <a class="reference internal" href="../glossary.html#term-Build-Backend"><span class="xref std std-term">build backend</span></a> （构建后端）来完成。构建后端决定了如何指定项目的配置，包括元数据（关于项目的信息，例如名称和在 PyPI 上显示的标签）和输入文件。构建后端具有不同的功能级别，比如是否支持构建 <a class="reference internal" href="../glossary.html#term-Extension-Module"><span class="xref std std-term">extension modules</span></a>，你应该选择一个适合你需求和偏好的后端。</p>
+<p>你可以选择多个构建后端；本教程默认使用 <a class="reference internal" href="../key_projects.html#hatch"><span class="std std-ref">Hatchling</span></a>，但它与 <a class="reference internal" href="../key_projects.html#setuptools"><span class="std std-ref">Setuptools</span></a>、<a class="reference internal" href="../key_projects.html#flit"><span class="std std-ref">Flit</span></a>、<a class="reference internal" href="../key_projects.html#pdm"><span class="std std-ref">PDM</span></a> 等支持 <code class="docutils literal notranslate"><span class="pre">[project]</span></code> 表格和 <a class="reference internal" href="#configuring-metadata"><span class="std std-ref">metadata</span></a> 的工具一样适用。</p>
+<p>一些构建后端是更大工具的一部分，这些工具提供了命令行界面，具有如项目初始化、版本管理、构建、上传和安装包等额外功能。本教程使用的是单一功能工具，它们独立工作。</p>
+<p><a class="reference internal" href="../glossary.html#term-pyproject.toml"><code class="xref any std std-term docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a> 文件告诉 <a class="reference internal" href="../glossary.html#term-Build-Frontend"><span class="xref std std-term">build frontend</span></a> 工具（如 <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> 和 <a class="reference internal" href="../key_projects.html#build"><span class="std std-ref">build</span></a>）使用哪个后端来构建你的项目。以下是常见构建后端的一些示例，但请查看后端的文档以获取更多细节。</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">Hatchling</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hatchling&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hatchling.build&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">setuptools</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;setuptools&gt;=61.0&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;setuptools.build_meta&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--6-input--3" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--3">Flit</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;flit_core&gt;=3.4&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;flit_core.buildapi&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--6-input--4" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--4">PDM</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pdm-backend&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pdm.backend&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">requires</span></code> 键是构建包所需的依赖包列表。构建前端通常会在构建包时自动安装它们。前端通常会在隔离的环境中运行构建，因此如果遗漏了这些依赖，可能会导致构建时错误。此列表应始终包括后端包，并可能包括其他构建时依赖。</p>
+<p><code class="docutils literal notranslate"><span class="pre">build-backend</span></code> 键是前端用来执行构建的 Python 对象名称。</p>
+<p>这两个值将由构建后端的文档提供，或者通过其命令行接口生成。通常情况下，你无需自定义这些设置。</p>
+<p>构建工具的其他配置通常会位于 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 文件的 <code class="docutils literal notranslate"><span class="pre">tool</span></code> 部分，或者位于构建工具定义的特殊文件中。例如，使用 <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> 作为构建后端时，额外的配置可能会添加到 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 或 <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> 文件中，指定 <code class="docutils literal notranslate"><span class="pre">setuptools.build_meta</span></code> 可以让工具自动找到并使用这些文件。</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>Tools like <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> and <a class="reference internal" href="../key_projects.html#build"><span class="std std-ref">build</span></a> do not actually convert your sources
+into a <a class="reference internal" href="../glossary.html#term-Distribution-Package"><span class="xref std std-term">distribution package</span></a> (like a wheel);
+that job is performed by a <a class="reference internal" href="../glossary.html#term-Build-Backend"><span class="xref std std-term">build backend</span></a>. The build backend determines how
+your project will specify its configuration, including metadata (information
+about the project, for example, the name and tags that are displayed on PyPI)
+and input files. Build backends have different levels of functionality, such as
+whether they support building <a class="reference internal" href="../glossary.html#term-Extension-Module"><span class="xref std std-term">extension modules</span></a>, and
+you should choose one that suits your needs and preferences.</p>
+<p>You can choose from a number of backends; this tutorial uses <a class="reference internal" href="../key_projects.html#hatch"><span class="std std-ref">Hatchling</span></a> by default, but it will work identically with <a class="reference internal" href="../key_projects.html#setuptools"><span class="std std-ref">Setuptools</span></a>,
+<a class="reference internal" href="../key_projects.html#flit"><span class="std std-ref">Flit</span></a>, <a class="reference internal" href="../key_projects.html#pdm"><span class="std std-ref">PDM</span></a>, and others that support the <code class="docutils literal notranslate"><span class="pre">[project]</span></code>
+table for <a class="reference internal" href="#configuring-metadata"><span class="std std-ref">metadata</span></a>.</p>
+<p>Some build backends are part of larger tools that provide a command-line
+interface with additional features like project initialization and version
+management, as well as building, uploading, and installing packages. This
+tutorial uses single-purpose tools that work independently.</p>
+<p>The <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> tells <a class="reference internal" href="../glossary.html#term-Build-Frontend"><span class="xref std std-term">build frontend</span></a> tools like <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> and
+<a class="reference internal" href="../key_projects.html#build"><span class="std std-ref">build</span></a> which backend to use for your project. Below are some
+examples for common build backends, but check your backend's own documentation
+for more details.</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">Hatchling</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hatchling&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hatchling.build&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">setuptools</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;setuptools&gt;=61.0&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;setuptools.build_meta&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--7-input--3" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--3">Flit</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;flit_core&gt;=3.4&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;flit_core.buildapi&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--7-input--4" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--4">PDM</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pdm-backend&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pdm.backend&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">requires</span></code> key is a list of packages that are needed to build your package.
+The <a class="reference internal" href="../glossary.html#term-Build-Frontend"><span class="xref std std-term">frontend</span></a> should install them automatically when building your package.
+Frontends usually run builds in isolated environments, so omitting dependencies
+here may cause build-time errors.
+This should always include your backend's package, and might have other build-time
+dependencies.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">build-backend</span></code> key is the name of the Python object that frontends will use
+to perform the build.</p>
+<p>Both of these values will be provided by the documentation for your build
+backend, or generated by its command line interface. There should be no need for
+you to customize these settings.</p>
+<p>Additional configuration of the build tool will either be in a <code class="docutils literal notranslate"><span class="pre">tool</span></code> section
+of the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, or in a special file defined by the build tool. For
+example, when using <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> as your build backend, additional configuration
+may be added to a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> or <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> file, and specifying
+<code class="docutils literal notranslate"><span class="pre">setuptools.build_meta</span></code> in your build allows the tools to locate and use these
+automatically.</p>
+</div>
+</div>
+<section id="configuring-metadata">
+<span id="id11"></span><h3>配置元数据<a class="headerlink" href="#configuring-metadata" title="Link to this heading">¶</a></h3>
+<p><strong>Configuring metadata</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>打开 <a class="reference internal" href="../glossary.html#term-pyproject.toml"><code class="xref any std std-term docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a> 文件并输入以下内容。将 <a class="reference external" href="https://pybind11.readthedocs.io/en/stable/reference.html#_CPPv44name" title="（在 pybind11 v2.13.6）"><code class="xref any docutils literal notranslate"><span class="pre">name</span></code></a> 替换为包含你的用户名，这样可以确保你的包名唯一，不会与其他人上传的包名冲突。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;example_package_YOUR_USERNAME_HERE&quot;</span>
+<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.0.1&quot;</span>
+<span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="p">{</span><span class="w"> </span><span class="n">name</span><span class="p">=</span><span class="s2">&quot;Example Author&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">=</span><span class="s2">&quot;author@example.com&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;A small example package&quot;</span>
+<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;README.md&quot;</span>
+<span class="n">requires-python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=3.8&quot;</span>
+<span class="n">classifiers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;Programming Language :: Python :: 3&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;License :: OSI Approved :: MIT License&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;Operating System :: OS Independent&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">[project.urls]</span>
+<span class="n">Homepage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/pypa/sampleproject&quot;</span>
+<span class="n">Issues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/pypa/sampleproject/issues&quot;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pybind11.readthedocs.io/en/stable/reference.html#_CPPv44name" title="（在 pybind11 v2.13.6）"><code class="xref any docutils literal notranslate"><span class="pre">name</span></code></a> 是你的包的 <em>分发名称</em>。包名可以包含字母、数字、<code class="xref any docutils literal notranslate"><span class="pre">.</span></code>、<code class="xref any docutils literal notranslate"><span class="pre">_</span></code> 和 <code class="xref any docutils literal notranslate"><span class="pre">-</span></code>，但不能包含其他字符。此外，包名在 PyPI 上必须是唯一的。<strong>务必使用你的用户名来替换这个名称</strong>，这样可以确保不会上传与已存在包同名的包。</p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/development/html_themes/templating.html#version" title="（在 Sphinx v8.2.0）"><code class="xref any docutils literal notranslate"><span class="pre">version</span></code></a> 是包的版本号。（一些构建后端允许以其他方式指定版本，如从文件或 Git 标签中读取）</p></li>
+<li><p><a class="reference external" href="https://www.sphinx-doc.org/en/master/authors.html#authors" title="（在 Sphinx v8.2.0）"><code class="docutils literal notranslate"><span class="pre">Sphinx</span> <span class="pre">authors</span></code></a> 用于标识包的作者；你可以为每个作者指定一个名字和电子邮件，也可以列出 <code class="xref any docutils literal notranslate"><span class="pre">maintainers</span></code> （维护者），格式相同。</p></li>
+<li><p><a class="reference internal" href="../guides/writing-pyproject-toml.html#description"><span class="std std-ref">description</span></a> 是包的简短说明，通常为一句话。</p></li>
+<li><p><code class="xref any docutils literal notranslate"><span class="pre">readme</span></code> 是指向文件的路径，文件包含包的详细描述。这些信息会显示在 PyPI 上的包详情页中。通常，描述从 <code class="xref any docutils literal notranslate"><span class="pre">README.md</span></code> 文件加载（这是一种常见做法）。更高级的表格形式也有描述，见 <a class="reference internal" href="../guides/writing-pyproject-toml.html#writing-pyproject-toml"><span class="std std-ref">pyproject.toml guide</span></a>。</p></li>
+<li><p><a class="reference internal" href="../guides/writing-pyproject-toml.html#requires-python"><span class="std std-ref">requires-python</span></a> 列出了你的项目支持的 Python 版本。像 <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> 这样的安装工具会查找适配的 Python 版本来安装合适的包版本。</p></li>
+<li><p><a class="reference internal" href="../guides/writing-pyproject-toml.html#classifiers"><span class="std std-ref">classifiers</span></a> 为 PyPI 和 <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> 提供一些附加的包元数据。在此示例中，包仅兼容 Python 3，采用 MIT 许可，并且是跨平台的。你应始终包含至少以下信息：支持的 Python 版本、许可协议和操作系统兼容性。完整的分类器列表可见于 <a class="reference external" href="https://pypi.org/classifiers/">https://pypi.org/classifiers/</a>。</p></li>
+<li><p><code class="xref any docutils literal notranslate"><span class="pre">urls</span></code> 让你列出任何额外的链接，在 PyPI 页面上展示。通常，这些链接指向源代码、文档、问题追踪器等。</p></li>
+</ul>
+<p>请参阅 <a class="reference internal" href="../guides/writing-pyproject-toml.html#writing-pyproject-toml"><span class="std std-ref">pyproject.toml guide</span></a> 了解更多关于这些字段以及其他可以在 <code class="docutils literal notranslate"><span class="pre">[project]</span></code> 部分中定义的字段。常见的字段还包括 <a class="reference external" href="https://docs.python.org/zh-cn/3/reference/lexical_analysis.html#keywords" title="（在 Python v3.13）"><code class="docutils literal notranslate"><span class="pre">关键字</span></code></a> （改进包的可发现性）以及用于安装包的 <a class="reference external" href="https://spack.readthedocs.io/en/latest/packaging_guide.html#dependencies" title="（在 Spack v0.24）"><code class="docutils literal notranslate"><span class="pre">Dependencies</span></code></a> 。</p>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>Open <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> and enter the following content. Change the <code class="docutils literal notranslate"><span class="pre">name</span></code>
+to include your username; this ensures that you have a unique
+package name that doesn't conflict with packages uploaded by other people
+following this tutorial.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;example_package_YOUR_USERNAME_HERE&quot;</span>
+<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.0.1&quot;</span>
+<span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="p">{</span><span class="w"> </span><span class="n">name</span><span class="p">=</span><span class="s2">&quot;Example Author&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="p">=</span><span class="s2">&quot;author@example.com&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;A small example package&quot;</span>
+<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;README.md&quot;</span>
+<span class="n">requires-python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=3.8&quot;</span>
+<span class="n">classifiers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;Programming Language :: Python :: 3&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;License :: OSI Approved :: MIT License&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;Operating System :: OS Independent&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">[project.urls]</span>
+<span class="n">Homepage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/pypa/sampleproject&quot;</span>
+<span class="n">Issues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/pypa/sampleproject/issues&quot;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> is the <em>distribution name</em> of your package. This can be any name as
+long as it only contains letters, numbers, <code class="docutils literal notranslate"><span class="pre">.</span></code>, <code class="docutils literal notranslate"><span class="pre">_</span></code> , and <code class="docutils literal notranslate"><span class="pre">-</span></code>. It also
+must not already be taken on PyPI. <strong>Be sure to update this with your
+username</strong> for this tutorial, as this ensures you won't try to upload a
+package with the same name as one which already exists.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">version</span></code> is the package version. (Some build backends allow it to be
+specified another way, such as from a file or Git tag.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">authors</span></code> is used to identify the author of the package; you specify a name
+and an email for each author. You can also list <code class="docutils literal notranslate"><span class="pre">maintainers</span></code> in the same
+format.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> is a short, one-sentence summary of the package.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">readme</span></code> is a path to a file containing a detailed description of the
+package. This is shown on the package detail page on PyPI.
+In this case, the description is loaded from <code class="file docutils literal notranslate"><span class="pre">README.md</span></code> (which is a
+common pattern). There also is a more advanced table form described in the
+<a class="reference internal" href="../guides/writing-pyproject-toml.html#writing-pyproject-toml"><span class="std std-ref">pyproject.toml guide</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">requires-python</span></code> gives the versions of Python supported by your
+project. An installer like <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> will look back through older versions of
+packages until it finds one that has a matching Python version.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">classifiers</span></code> gives the index and <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> some additional metadata
+about your package. In this case, the package is only compatible with Python
+3, is licensed under the MIT license, and is OS-independent. You should
+always include at least which version(s) of Python your package works on,
+which license your package is available under, and which operating systems
+your package will work on. For a complete list of classifiers, see
+<a class="reference external" href="https://pypi.org/classifiers/">https://pypi.org/classifiers/</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">urls</span></code> lets you list any number of extra links to show on PyPI.
+Generally this could be to the source, documentation, issue trackers, etc.</p></li>
+</ul>
+<p>See the <a class="reference internal" href="../guides/writing-pyproject-toml.html#writing-pyproject-toml"><span class="std std-ref">pyproject.toml guide</span></a> for details
+on these and other fields that can be defined in the <code class="docutils literal notranslate"><span class="pre">[project]</span></code>
+table. Other common fields are <code class="docutils literal notranslate"><span class="pre">keywords</span></code> to improve discoverability
+and the <code class="docutils literal notranslate"><span class="pre">dependencies</span></code> that are required to install your package.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="readme-md">
+<h2>创建 README.md<a class="headerlink" href="#readme-md" title="Link to this heading">¶</a></h2>
+<p><strong>Creating README.md</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>打开 <code class="xref any docutils literal notranslate"><span class="pre">README.md</span></code> 文件并输入以下内容。你也可以根据需要进行自定义。</p>
+<div class="highlight-md notranslate"><div class="highlight"><pre><span></span><span class="gh"># Example Package</span>
+
+This is a simple example package. You can use
+[<span class="nt">GitHub-flavored Markdown</span>](<span class="na">https://guides.github.com/features/mastering-markdown/</span>)
+to write your content.
+</pre></div>
+</div>
+</div>
+</div>
+<p>该 <code class="xref any docutils literal notranslate"><span class="pre">README.md</span></code> 文件将作为你的包的详细描述，并在 PyPI 上显示。你可以在其中添加任何有用的信息，比如安装说明、使用示例、贡献指南等。</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">英文</label><div class="tab-content docutils container">
+<p>Open <code class="file docutils literal notranslate"><span class="pre">README.md</span></code> and enter the following content. You can customize this
+if you'd like.</p>
+<div class="highlight-md notranslate"><div class="highlight"><pre><span></span><span class="gh"># Example Package</span>
+
+This is a simple example package. You can use
+[<span class="nt">GitHub-flavored Markdown</span>](<span class="na">https://guides.github.com/features/mastering-markdown/</span>)
+to write your content.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="license">
+<h2>创建 LICENSE<a class="headerlink" href="#license" title="Link to this heading">¶</a></h2>
+<p><strong>Creating a LICENSE</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">中文</label><div class="tab-content docutils container">
+<p>对于上传到 Python 软件包索引的每个软件包来说，包含许可证非常重要。这会告诉安装软件包的用户他们可以使用软件包的条款。有关选择许可证的帮助，请参阅 <a class="reference external" href="https://choosealicense.com/">https://choosealicense.com/</a> 。选择许可证后，打开 <code class="file docutils literal notranslate"><span class="pre">LICENSE</span></code> 并输入许可证文本。例如，如果您选择了 MIT 许可证：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Copyright (c) 2018 The Python Packaging Authority
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</pre></div>
+</div>
+<p>大多数构建后端都会自动在包中包含许可证文件。请参阅后端的文档以了解更多详细信息。</p>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">英文</label><div class="tab-content docutils container">
+<p>It's important for every package uploaded to the Python Package Index to include a license. This tells users who install your package the terms under which they can use your package. For help picking a license, see <a class="reference external" href="https://choosealicense.com/">https://choosealicense.com/</a>. Once you have chosen a license, open <code class="file docutils literal notranslate"><span class="pre">LICENSE</span></code> and enter the license text. For example, if you had chosen the MIT license:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Copyright (c) 2018 The Python Packaging Authority
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+</pre></div>
+</div>
+<p>Most build backends automatically include license files in packages. See your
+backend's documentation for more details.</p>
+</div>
+</div>
+</section>
+<section id="id12">
+<h2>包括其他文件<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h2>
+<p><strong>Including other files</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--13-input--1" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--1">中文</label><div class="tab-content docutils container">
+<p>上述列出的文件将会自动包含在你的 <a class="reference internal" href="../glossary.html#term-Source-Distribution-or-sdist"><span class="xref std std-term">源代码分发</span></a> 中。如果你想包含额外的文件，请参考你所使用的构建后端的文档。</p>
+</div>
+<input class="tab-input" id="tab-set--13-input--2" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--2">英文</label><div class="tab-content docutils container">
+<p>The files listed above will be included automatically in your
+<a class="reference internal" href="../glossary.html#term-Source-Distribution-or-sdist"><span class="xref std std-term">source distribution</span></a>. If you want to
+include additional files, see the documentation for your build backend.</p>
+</div>
+</div>
+</section>
+<section id="generating-archives">
+<span id="id13"></span><h2>生成分发档案<a class="headerlink" href="#generating-archives" title="Link to this heading">¶</a></h2>
+<p><strong>Generating distribution archives</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--18-input--1" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--1">中文</label><div class="tab-content docutils container">
+<p>下一步是为包生成 <a class="reference internal" href="../glossary.html#term-Distribution-Package"><span class="xref std std-term">分发包</span></a>。这些是上传到 Python 包索引（PyPI）的归档文件，可以通过 <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> 安装。</p>
+<p>确保你已经安装了 PyPA 的最新版本的 <a class="reference internal" href="../key_projects.html#build"><span class="std std-ref">build</span></a> 工具：</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--14-input--1" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>build
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--14-input--2" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m pip install --upgrade build
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>如果你在安装过程中遇到问题，请参考 <span class="xref std std-doc">安装包</span> 教程。</p>
+</div>
+<p>接下来，在包含 <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 文件的目录中运行以下命令：</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--15-input--1" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>build
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--15-input--2" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m build
+</pre></div>
+</div>
+</div>
+</div>
+<p>该命令将输出大量文本，完成后将在 <code class="file docutils literal notranslate"><span class="pre">dist</span></code> 目录中生成两个文件：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>dist/
+├── example_package_YOUR_USERNAME_HERE-0.0.1-py3-none-any.whl
+└── example_package_YOUR_USERNAME_HERE-0.0.1.tar.gz
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">tar.gz</span></code> 文件是 <span class="xref std std-term">源代码分发</span>，而 <code class="docutils literal notranslate"><span class="pre">.whl</span></code> 文件是 <a class="reference internal" href="../glossary.html#term-Built-Distribution"><span class="xref std std-term">构建分发</span></a>。
+较新的 <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> 版本会优先安装构建分发包，但如果需要，也会回退到源代码分发包。你应始终上传源代码分发包，并为你的项目兼容的所有平台提供构建分发包。在这个例子中，我们的示例包兼容任何平台上的 Python，因此只需要一个构建分发包。</p>
+</div>
+<input class="tab-input" id="tab-set--18-input--2" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--2">英文</label><div class="tab-content docutils container">
+<p>The next step is to generate <a class="reference internal" href="../glossary.html#term-Distribution-Package"><span class="xref std std-term">distribution packages</span></a>
+for the package. These are archives that are uploaded to the Python
+Package Index and can be installed by <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a>.</p>
+<p>Make sure you have the latest version of PyPA's <a class="reference internal" href="../key_projects.html#build"><span class="std std-ref">build</span></a> installed:</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--16-input--1" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>build
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--16-input--2" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m pip install --upgrade build
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">小技巧</p>
+<p>If you have trouble installing these, see the
+<a class="reference internal" href="installing-packages.html"><span class="doc">安装软件包</span></a> tutorial.</p>
+</div>
+<p>Now run this command from the same directory where <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> is located:</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--17-input--1" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>build
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--17-input--2" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m build
+</pre></div>
+</div>
+</div>
+</div>
+<p>This command should output a lot of text and once completed should generate two
+files in the <code class="file docutils literal notranslate"><span class="pre">dist</span></code> directory:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>dist/
+├── example_package_YOUR_USERNAME_HERE-0.0.1-py3-none-any.whl
+└── example_package_YOUR_USERNAME_HERE-0.0.1.tar.gz
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">tar.gz</span></code> file is a <a class="reference internal" href="../glossary.html#term-Source-Distribution-or-sdist"><span class="xref std std-term">source distribution</span></a>
+whereas the <code class="docutils literal notranslate"><span class="pre">.whl</span></code> file is a <a class="reference internal" href="../glossary.html#term-Built-Distribution"><span class="xref std std-term">built distribution</span></a>.
+Newer <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> versions preferentially install built distributions, but will
+fall back to source distributions if needed. You should always upload a source
+distribution and provide built distributions for the platforms your project is
+compatible with. In this case, our example package is compatible with Python on
+any platform so only one built distribution is needed.</p>
+</div>
+</div>
+</section>
+<section id="id14">
+<h2>上传分发档案<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h2>
+<p><strong>Uploading the distribution archives</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--23-input--1" name="tab-set--23" type="radio"><label class="tab-label" for="tab-set--23-input--1">中文</label><div class="tab-content docutils container">
+<p>最后，是时候将你的包上传到 Python 包索引（PyPI）了！</p>
+<p>首先，你需要在 TestPyPI 上注册一个账户。TestPyPI 是一个用于测试和实验的独立包索引实例，非常适合像本教程这样的场景，避免直接上传到真实的 PyPI。要注册账户，请访问 <a class="reference external" href="https://test.pypi.org/account/register/">https://test.pypi.org/account/register/</a> 并完成页面上的步骤。你还需要验证你的电子邮件地址，才能上传任何包。有关更多详细信息，请参见 <a class="reference internal" href="../guides/using-testpypi.html"><span class="doc">使用 TestPyPI</span></a> 。</p>
+<p>为了安全上传你的项目，你需要一个 PyPI <a class="reference external" href="https://test.pypi.org/help/#apitoken">API token</a> 。你可以在 <a class="reference external" href="https://test.pypi.org/manage/account/#api-tokens">https://test.pypi.org/manage/account/#api-tokens</a> 创建一个，设置 &quot;Scope&quot; 为 &quot;Entire account&quot;。 <strong>在复制并保存 token 之前，请不要关闭该页面 — 你将无法再次看到该 token</strong>。</p>
+<p>现在你已经注册了账户，可以使用 <a class="reference internal" href="../key_projects.html#twine"><span class="std std-ref">twine</span></a> 上传分发包。你需要安装 Twine：</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--19-input--1" name="tab-set--19" type="radio"><label class="tab-label" for="tab-set--19-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>twine
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--19-input--2" name="tab-set--19" type="radio"><label class="tab-label" for="tab-set--19-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m pip install --upgrade twine
+</pre></div>
+</div>
+</div>
+</div>
+<p>安装完成后，运行 Twine 上传 <code class="file docutils literal notranslate"><span class="pre">dist</span></code> 目录下的所有归档文件：</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--20-input--1" name="tab-set--20" type="radio"><label class="tab-label" for="tab-set--20-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>twine<span class="w"> </span>upload<span class="w"> </span>--repository<span class="w"> </span>testpypi<span class="w"> </span>dist/*
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--20-input--2" name="tab-set--20" type="radio"><label class="tab-label" for="tab-set--20-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m twine upload --repository testpypi dist/*
+</pre></div>
+</div>
+</div>
+</div>
+<p>系统会提示你输入用户名和密码。用户名填写 <code class="docutils literal notranslate"><span class="pre">__token__</span></code> ，密码填写 token 的值（包括 <code class="docutils literal notranslate"><span class="pre">pypi-</span></code> 前缀）。</p>
+<p>命令完成后，你应该会看到类似如下的输出：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Uploading distributions to https://test.pypi.org/legacy/
+Enter your username: __token__
+Uploading example_package_YOUR_USERNAME_HERE-0.0.1-py3-none-any.whl
+100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.2/8.2 kB • 00:01 • ?
+Uploading example_package_YOUR_USERNAME_HERE-0.0.1.tar.gz
+100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.8/6.8 kB • 00:00 • ?
+</pre></div>
+</div>
+<p>上传完成后，你的包应该可以在 TestPyPI 上查看；例如：<code class="docutils literal notranslate"><span class="pre">https://test.pypi.org/project/example_package_YOUR_USERNAME_HERE</span></code>。</p>
+</div>
+<input class="tab-input" id="tab-set--23-input--2" name="tab-set--23" type="radio"><label class="tab-label" for="tab-set--23-input--2">英文</label><div class="tab-content docutils container">
+<p>Finally, it's time to upload your package to the Python Package Index!</p>
+<p>The first thing you'll need to do is register an account on TestPyPI, which
+is a separate instance of the package index intended for testing and
+experimentation. It's great for things like this tutorial where we don't
+necessarily want to upload to the real index. To register an account, go to
+<a class="reference external" href="https://test.pypi.org/account/register/">https://test.pypi.org/account/register/</a> and complete the steps on that page.
+You will also need to verify your email address before you're able to upload
+any packages.  For more details, see <a class="reference internal" href="../guides/using-testpypi.html"><span class="doc">使用 TestPyPI</span></a>.</p>
+<p>To securely upload your project, you'll need a PyPI <a class="reference external" href="https://test.pypi.org/help/#apitoken">API token</a>. Create one at
+<a class="reference external" href="https://test.pypi.org/manage/account/#api-tokens">https://test.pypi.org/manage/account/#api-tokens</a>, setting the &quot;Scope&quot; to &quot;Entire
+account&quot;. <strong>Don't close the page until you have copied and saved the token — you
+won't see that token again.</strong></p>
+<p>Now that you are registered, you can use <a class="reference internal" href="../key_projects.html#twine"><span class="std std-ref">twine</span></a> to upload the
+distribution packages. You'll need to install Twine:</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--21-input--1" name="tab-set--21" type="radio"><label class="tab-label" for="tab-set--21-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>twine
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--21-input--2" name="tab-set--21" type="radio"><label class="tab-label" for="tab-set--21-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m pip install --upgrade twine
+</pre></div>
+</div>
+</div>
+</div>
+<p>Once installed, run Twine to upload all of the archives under <code class="file docutils literal notranslate"><span class="pre">dist</span></code>:</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--22-input--1" name="tab-set--22" type="radio"><label class="tab-label" for="tab-set--22-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>twine<span class="w"> </span>upload<span class="w"> </span>--repository<span class="w"> </span>testpypi<span class="w"> </span>dist/*
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--22-input--2" name="tab-set--22" type="radio"><label class="tab-label" for="tab-set--22-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m twine upload --repository testpypi dist/*
+</pre></div>
+</div>
+</div>
+</div>
+<p>You will be prompted for a username and password. For the username,
+use <code class="docutils literal notranslate"><span class="pre">__token__</span></code>. For the password, use the token value, including
+the <code class="docutils literal notranslate"><span class="pre">pypi-</span></code> prefix.</p>
+<p>After the command completes, you should see output similar to this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Uploading distributions to https://test.pypi.org/legacy/
+Enter your username: __token__
+Uploading example_package_YOUR_USERNAME_HERE-0.0.1-py3-none-any.whl
+100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.2/8.2 kB • 00:01 • ?
+Uploading example_package_YOUR_USERNAME_HERE-0.0.1.tar.gz
+100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.8/6.8 kB • 00:00 • ?
+</pre></div>
+</div>
+<p>Once uploaded, your package should be viewable on TestPyPI; for example:
+<code class="docutils literal notranslate"><span class="pre">https://test.pypi.org/project/example_package_YOUR_USERNAME_HERE</span></code>.</p>
+</div>
+</div>
+</section>
+<section id="id15">
+<h2>安装新上传的包<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h2>
+<p><strong>Installing your newly uploaded package</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--28-input--1" name="tab-set--28" type="radio"><label class="tab-label" for="tab-set--28-input--1">中文</label><div class="tab-content docutils container">
+<p>你可以使用 <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> 安装你的包并验证它是否正常工作。创建一个 <a class="reference internal" href="installing-packages.html#creating-and-using-virtual-environments"><span class="std std-ref">虚拟环境</span></a>，然后从 TestPyPI 安装你的包：</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--24-input--1" name="tab-set--24" type="radio"><label class="tab-label" for="tab-set--24-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--index-url<span class="w"> </span>https://test.pypi.org/simple/<span class="w"> </span>--no-deps<span class="w"> </span>example-package-YOUR-USERNAME-HERE
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--24-input--2" name="tab-set--24" type="radio"><label class="tab-label" for="tab-set--24-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m pip install --index-url https://test.pypi.org/simple/ --no-deps example-package-YOUR-USERNAME-HERE
+</pre></div>
+</div>
+</div>
+</div>
+<p>确保在包名中指定你的用户名！</p>
+<p>pip 应该从 TestPyPI 安装该包，输出应如下所示：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Collecting example-package-YOUR-USERNAME-HERE
+Downloading https://test-files.pythonhosted.org/packages/.../example_package_YOUR_USERNAME_HERE_0.0.1-py3-none-any.whl
+Installing collected packages: example_package_YOUR_USERNAME_HERE
+Successfully installed example_package_YOUR_USERNAME_HERE-0.0.1
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>本示例使用 <code class="docutils literal notranslate"><span class="pre">--index-url</span></code> 标志来指定 TestPyPI，而不是在线的 PyPI。此外，还指定了 <code class="docutils literal notranslate"><span class="pre">--no-deps</span></code>。由于 TestPyPI 并不包含与在线 PyPI 相同的包，因此尝试安装依赖项可能会失败或安装一些意外的内容。虽然我们的示例包没有任何依赖项，但在使用 TestPyPI 时，避免安装依赖项是一个好的实践。</p>
+</div>
+<p>你可以通过导入包来测试它是否正确安装。确保你仍然在虚拟环境中，然后运行 Python:</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--25-input--1" name="tab-set--25" type="radio"><label class="tab-label" for="tab-set--25-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--25-input--2" name="tab-set--25" type="radio"><label class="tab-label" for="tab-set--25-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py
+</pre></div>
+</div>
+</div>
+</div>
+<p>然后导入包：</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">example_package_YOUR_USERNAME_HERE</span> <span class="kn">import</span> <span class="n">example</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="o">.</span><span class="n">add_one</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--28-input--2" name="tab-set--28" type="radio"><label class="tab-label" for="tab-set--28-input--2">英文</label><div class="tab-content docutils container">
+<p>You can use <a class="reference internal" href="../key_projects.html#pip"><span class="std std-ref">pip</span></a> to install your package and verify that it works.
+Create a <a class="reference internal" href="installing-packages.html#creating-and-using-virtual-environments"><span class="std std-ref">virtual environment</span></a>
+and install your package from TestPyPI:</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--26-input--1" name="tab-set--26" type="radio"><label class="tab-label" for="tab-set--26-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--index-url<span class="w"> </span>https://test.pypi.org/simple/<span class="w"> </span>--no-deps<span class="w"> </span>example-package-YOUR-USERNAME-HERE
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--26-input--2" name="tab-set--26" type="radio"><label class="tab-label" for="tab-set--26-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py -m pip install --index-url https://test.pypi.org/simple/ --no-deps example-package-YOUR-USERNAME-HERE
+</pre></div>
+</div>
+</div>
+</div>
+<p>Make sure to specify your username in the package name!</p>
+<p>pip should install the package from TestPyPI and the output should look
+something like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Collecting example-package-YOUR-USERNAME-HERE
+Downloading https://test-files.pythonhosted.org/packages/.../example_package_YOUR_USERNAME_HERE_0.0.1-py3-none-any.whl
+Installing collected packages: example_package_YOUR_USERNAME_HERE
+Successfully installed example_package_YOUR_USERNAME_HERE-0.0.1
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>This example uses <code class="docutils literal notranslate"><span class="pre">--index-url</span></code> flag to specify TestPyPI instead of
+live PyPI. Additionally, it specifies <code class="docutils literal notranslate"><span class="pre">--no-deps</span></code>. Since TestPyPI doesn't
+have the same packages as the live PyPI, it's possible that attempting to
+install dependencies may fail or install something unexpected. While our
+example package doesn't have any dependencies, it's a good practice to avoid
+installing dependencies when using TestPyPI.</p>
+</div>
+<p>You can test that it was installed correctly by importing the package.
+Make sure you're still in your virtual environment, then run Python:</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--27-input--1" name="tab-set--27" type="radio"><label class="tab-label" for="tab-set--27-input--1">Unix/macOS</label><div class="tab-content docutils container">
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--27-input--2" name="tab-set--27" type="radio"><label class="tab-label" for="tab-set--27-input--2">Windows</label><div class="tab-content docutils container">
+<div class="highlight-bat notranslate"><div class="highlight"><pre><span></span>py
+</pre></div>
+</div>
+</div>
+</div>
+<p>and import the package:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">example_package_YOUR_USERNAME_HERE</span> <span class="kn">import</span> <span class="n">example</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span><span class="o">.</span><span class="n">add_one</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id16">
+<h2>后续步骤<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h2>
+<p><strong>Next steps</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--29-input--1" name="tab-set--29" type="radio"><label class="tab-label" for="tab-set--29-input--1">中文</label><div class="tab-content docutils container">
+<p><strong>恭喜你，你已经成功地打包并发布了一个 Python 项目！</strong>
+✨ 🍰 ✨</p>
+<p>请记住，本教程展示的是如何将你的包上传到 Test PyPI，而 Test PyPI 不是一个永久的存储库。测试系统会偶尔删除包和账户。因此，最好将 Test PyPI 用于像本教程这样的测试和实验。</p>
+<p>当你准备好将一个真实的包上传到 Python 包索引时，你可以像本教程中一样进行操作，但有以下几个重要的不同点：</p>
+<ul class="simple">
+<li><p>选择一个容易记住且独特的包名。你不需要像教程中那样附加用户名，但你不能使用已有的名称。</p></li>
+<li><p>在 <a class="reference external" href="https://pypi.org">https://pypi.org</a> 上注册一个账户——注意，这是两个独立的服务器，测试服务器的登录信息与主服务器不共享。</p></li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">twine</span> <span class="pre">upload</span> <span class="pre">dist/*</span></code> 上传你的包，并输入你在真实 PyPI 上注册的账户的凭据。现在你是在生产环境中上传包，因此不需要指定 <code class="docutils literal notranslate"><span class="pre">--repository</span></code>；包将默认上传到 <a class="reference external" href="https://pypi.org/">https://pypi.org/</a>。</p></li>
+<li><p>使用 <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">[your-package]</span></code> 从真实的 PyPI 安装你的包。</p></li>
+</ul>
+<p>如果你此时想要了解更多关于 Python 库打包的内容，以下是一些可以进一步阅读的资源：</p>
+<ul class="simple">
+<li><p>阅读关于你选择的构建后端的高级配置文档： <a class="reference external" href="https://hatch.pypa.io/latest/config/metadata/">Hatchling</a> ， <a class="reference external" href="https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html" title="（在 setuptools v75.5.0.post20241113）"><span class="xref std std-doc">setuptools</span></a>， <a class="reference external" href="https://flit.pypa.io/en/stable/pyproject_toml.html" title="（在 Flit v3.10.1）"><span class="xref std std-doc">Flit</span></a>， <a class="reference external" href="https://pdm-project.org/latest/reference/pep621/">PDM</a>。</p></li>
+<li><p>查阅本站的 <a class="reference internal" href="../guides/index.html"><span class="doc">指南</span></a>，获取更多高级实用信息，或在 <a class="reference internal" href="../discussions/index.html"><span class="doc">讨论</span></a> 中了解具体主题的解释和背景。</p></li>
+<li><p>考虑使用那些提供单一命令行接口来管理项目和打包的工具，如 <a class="reference internal" href="../key_projects.html#hatch"><span class="std std-ref">hatch</span></a>、<a class="reference internal" href="../key_projects.html#flit"><span class="std std-ref">flit</span></a>、<a class="reference internal" href="../key_projects.html#pdm"><span class="std std-ref">pdm</span></a> 和 <a class="reference internal" href="../key_projects.html#poetry"><span class="std std-ref">poetry</span></a>。</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--29-input--2" name="tab-set--29" type="radio"><label class="tab-label" for="tab-set--29-input--2">英文</label><div class="tab-content docutils container">
+<p><strong>Congratulations, you've packaged and distributed a Python project!</strong>
+✨ 🍰 ✨</p>
+<p>Keep in mind that this tutorial showed you how to upload your package to Test
+PyPI, which isn't a permanent storage. The Test system occasionally deletes
+packages and accounts. It is best to use TestPyPI for testing and experiments
+like this tutorial.</p>
+<p>When you are ready to upload a real package to the Python Package Index you can
+do much the same as you did in this tutorial, but with these important
+differences:</p>
+<ul class="simple">
+<li><p>Choose a memorable and unique name for your package. You don't have to append
+your username as you did in the tutorial, but you can't use an existing name.</p></li>
+<li><p>Register an account on <a class="reference external" href="https://pypi.org">https://pypi.org</a> - note that these are two separate
+servers and the login details from the test server are not shared with the
+main server.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">twine</span> <span class="pre">upload</span> <span class="pre">dist/*</span></code> to upload your package and enter your credentials
+for the account you registered on the real PyPI.  Now that you're uploading
+the package in production, you don't need to specify <code class="docutils literal notranslate"><span class="pre">--repository</span></code>; the
+package will upload to <a class="reference external" href="https://pypi.org/">https://pypi.org/</a> by default.</p></li>
+<li><p>Install your package from the real PyPI using <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">[your-package]</span></code>.</p></li>
+</ul>
+<p>At this point if you want to read more on packaging Python libraries here are
+some things you can do:</p>
+<ul class="simple">
+<li><p>Read about advanced configuration for your chosen build backend:
+<a class="reference external" href="https://hatch.pypa.io/latest/config/metadata/">Hatchling</a>,
+<a class="reference external" href="https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html" title="（在 setuptools v75.5.0.post20241113）"><span class="xref std std-doc">setuptools</span></a>,
+<a class="reference external" href="https://flit.pypa.io/en/stable/pyproject_toml.html" title="（在 Flit v3.10.1）"><span class="xref std std-doc">Flit</span></a>, <a class="reference external" href="https://pdm-project.org/latest/reference/pep621/">PDM</a>.</p></li>
+<li><p>Look at the <a class="reference internal" href="../guides/index.html"><span class="doc">guides</span></a> on this site for more advanced
+practical information, or the <a class="reference internal" href="../discussions/index.html"><span class="doc">discussions</span></a>
+for explanations and background on specific topics.</p></li>
+<li><p>Consider packaging tools that provide a single command-line interface for
+project management and packaging, such as <a class="reference internal" href="../key_projects.html#hatch"><span class="std std-ref">hatch</span></a>, <a class="reference internal" href="../key_projects.html#flit"><span class="std std-ref">flit</span></a>,
+<a class="reference internal" href="../key_projects.html#pdm"><span class="std std-ref">pdm</span></a>, and <a class="reference internal" href="../key_projects.html#poetry"><span class="std std-ref">poetry</span></a>.</p></li>
+</ul>
+</div>
+</div>
+<hr class="docutils" />
+<p class="rubric">Notes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="namespace-packages" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id5">1</a>,<a role="doc-backlink" href="#id7">2</a>)</span>
+<p>Technically, you can also create Python packages without an <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file,
+but those are called <a class="reference internal" href="../guides/packaging-namespace-packages.html"><span class="doc">namespace packages</span></a>
+and considered an <strong>advanced topic</strong> (not covered in this tutorial).
+If you are only getting started with Python packaging, it is recommended to
+stick with <em>regular packages</em> and <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> (even if the file is empty).</p>
+</aside>
+</aside>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../guides/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">指南</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="managing-dependencies.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">管理依赖项</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2013–2020, PyPA
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2024 年 11 月 15 日</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">打包Python项目</a><ul>
+<li><a class="reference internal" href="#id4">一个简单的项目</a></li>
+<li><a class="reference internal" href="#id8">创建包文件</a></li>
+<li><a class="reference internal" href="#id9">创建测试目录</a></li>
+<li><a class="reference internal" href="#choosing-build-backend">选择构建后端</a><ul>
+<li><a class="reference internal" href="#configuring-metadata">配置元数据</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#readme-md">创建 README.md</a></li>
+<li><a class="reference internal" href="#license">创建 LICENSE</a></li>
+<li><a class="reference internal" href="#id12">包括其他文件</a></li>
+<li><a class="reference internal" href="#generating-archives">生成分发档案</a></li>
+<li><a class="reference internal" href="#id14">上传分发档案</a></li>
+<li><a class="reference internal" href="#id15">安装新上传的包</a></li>
+<li><a class="reference internal" href="#id16">后续步骤</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=cb5fb026"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    </body>
+</html>

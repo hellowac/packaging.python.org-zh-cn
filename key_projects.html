@@ -1,0 +1,1490 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="genindex.html" /><link rel="search" title="搜索" href="search.html" /><link rel="next" title="术语" href="glossary.html" /><link rel="prev" title="Simple 仓库 API" href="specifications/simple-repository-api.html" />
+
+    <link rel="shortcut icon" href="_static/py.png"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>项目摘要 - Python Packaging User Guide</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Python Packaging User Guide</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">Python Packaging User Guide</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flow.html">打包流程</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/installing-packages.html">安装软件包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/managing-dependencies.html">管理依赖项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/packaging-projects.html">打包Python项目</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="guides/index.html">指南</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="guides/section-install.html">安装</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 安装</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-using-pip-and-virtual-environments.html">使用 pip 和 venv 在虚拟环境中安装软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-using-virtualenv.html">使用虚拟环境安装包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-stand-alone-command-line-tools.html">安装独立的命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-using-linux-tools.html">使用 Linux 包管理器安装 pip/setuptools/wheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-scientific-packages.html">安装科学软件包</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="guides/section-build-and-publish.html">构建和发布</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 构建和发布</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="guides/writing-pyproject-toml.html">编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/distributing-packages-using-setuptools.html">打包和分发项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/dropping-older-python-versions.html">放弃对旧版 Python 的支持</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/packaging-binary-extensions.html">打包二进制扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/packaging-namespace-packages.html">打包命名空间包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/creating-command-line-tools.html">创建和打包命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/creating-and-discovering-plugins.html">创建和发现插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/using-testpypi.html">使用 TestPyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/making-a-pypi-friendly-readme.html">制作适合 PyPI 的 README</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows.html">使用 GitHub Actions CI/CD 工作流发布软件包分发版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/modernize-setup-py-project.html">如何使基于 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 的项目现代化？</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="guides/section-hosting.html">托管</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of 托管</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="guides/index-mirrors-and-caches.html">包索引镜像和缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/hosting-your-own-index.html">托管您自己的简单存储库</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="guides/tool-recommendations.html">工具推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/analyzing-pypi-package-downloads.html">分析 PyPI 软件包下载</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="discussions/index.html">讨论</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 讨论</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="discussions/versioning.html">版本控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/deploying-python-applications.html">部署 Python 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/pip-vs-easy-install.html">pip vs easy_install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/install-requires-vs-requirements.html">install_requires 与需求文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/distribution-package-vs-import-package.html">分发包与导入包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/package-formats.html">软件包格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/src-layout-vs-flat-layout.html">src 布局与平面布局</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/setup-py-deprecated.html"><code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 已被弃用吗？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/single-source-version.html">单一来源项目版本</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="specifications/index.html">PyPA 规范</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of PyPA 规范</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="specifications/section-distribution-metadata.html">包分发元数据</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 包分发元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="specifications/name-normalization.html">名称和规范化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/core-metadata.html">核心元数据规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/version-specifiers.html">版本标识符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/dependency-specifiers.html">依赖说明符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/pyproject-toml.html"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/inline-script-metadata.html">内联脚本元数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/platform-compatibility-tags.html">平台兼容性标签</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/well-known-project-urls.html">元数据中的知名项目 URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="specifications/section-installation-metadata.html">包安装元数据</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 包安装元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="specifications/recording-installed-packages.html">记录已安装的项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/entry-points.html">入口点规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/direct-url.html">记录已安装发行版的直接 URL 来源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/direct-url-data-structure.html">直接 URL 数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/virtual-environments.html">Python 虚拟环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/externally-managed-environments.html">外部管理环境</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="specifications/section-distribution-formats.html">包分发文件格式</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 包分发文件格式</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="specifications/source-distribution-format.html">源分发格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/binary-distribution-format.html">二进制分发格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="specifications/section-package-indices.html">包索引接口</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of 包索引接口</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="specifications/pypirc.html"><code class="file docutils literal notranslate"><span class="pre">.pypirc</span></code> 文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/simple-repository-api.html">Simple 仓库 API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">项目摘要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">如何获取支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">为本指南做出贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">新闻</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/key_projects.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="projects">
+<span id="id1"></span><h1>项目摘要<a class="headerlink" href="#projects" title="Link to this heading">¶</a></h1>
+<p><strong>Project Summaries</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>Python 安装和打包领域最相关项目的摘要和链接。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>Summaries and links for the most relevant projects in the space of Python installation and packaging.</p>
+</div>
+</div>
+<section id="pypa">
+<span id="pypa-projects"></span><h2>PyPA 项目<a class="headerlink" href="#pypa" title="Link to this heading">¶</a></h2>
+<p><strong>PyPA Projects</strong></p>
+<section id="bandersnatch">
+<span id="id2"></span><h3>bandersnatch<a class="headerlink" href="#bandersnatch" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://bandersnatch.readthedocs.io">Docs</a> |
+<a class="reference external" href="https://github.com/pypa/bandersnatch/issues">Issues</a> |
+<a class="reference external" href="https://github.com/pypa/bandersnatch">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/bandersnatch">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">bandersnatch</span></code> 是一个 PyPI 镜像客户端，旨在高效地创建 PyPI 内容的完整镜像。通过使用该工具，组织可以节省带宽和延迟，特别是在自动化测试的上下文中，并防止对 PyPI 内容分发网络（CDN）造成过大负载。文件可以从本地目录或 <a class="reference external" href="https://aws.amazon.com/s3/">AWS S3</a> 提供服务。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">bandersnatch</span></code> is a PyPI mirroring client designed to efficiently
+create a complete mirror of the contents of PyPI. Organizations thus
+save bandwidth and latency on package downloads (especially in the
+context of automated tests) and to prevent heavily loading PyPI's
+Content Delivery Network (CDN).
+Files can be served from a local directory or <a class="reference external" href="https://aws.amazon.com/s3/">AWS S3</a>.</p>
+</div>
+</div>
+</section>
+<section id="build">
+<span id="id3"></span><h3>build<a class="headerlink" href="#build" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://build.pypa.io/en/stable/index.html" title="（在 build v1.2.2.post1）"><code class="xref any docutils literal notranslate"><span class="pre">Docs</span></code></a> |
+<a class="reference external" href="https://github.com/pypa/build/issues">Issues</a> |
+<a class="reference external" href="https://github.com/pypa/build">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/build">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">build</span></code> 是一个兼容 <span class="target" id="index-0"></span><a class="pep reference external" href="https://peps.python.org/pep-0517/"><strong>PEP 517</strong></a> 的 Python 包构建工具。它提供了一个命令行接口（CLI）来构建包，以及一个 Python API。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">build</span></code> is a <span class="target" id="index-1"></span><a class="pep reference external" href="https://peps.python.org/pep-0517/"><strong>PEP 517</strong></a> compatible Python package builder. It provides a CLI to build packages, as well as a Python API.</p>
+</div>
+</div>
+</section>
+<section id="cibuildwheel">
+<span id="id4"></span><h3>cibuildwheel<a class="headerlink" href="#cibuildwheel" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://cibuildwheel.readthedocs.io/">Docs</a> |
+<a class="reference external" href="https://github.com/pypa/cibuildwheel/issues">Issues</a> |
+<a class="reference external" href="https://github.com/pypa/cibuildwheel">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/cibuildwheel">PyPI</a> |
+<a class="reference external" href="https://github.com/pypa/cibuildwheel/discussions">Discussions</a> |
+<a class="reference external" href="https://discord.com/invite/pypa">Discord #cibuildwheel</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">cibuildwheel</span></code> 是一个 Python 包，它可以在大多数 CI 系统上为所有常见平台和 Python 版本构建 <a class="reference internal" href="glossary.html#term-Wheel"><span class="xref std std-term">wheels</span></a>。另请参见 <a class="reference internal" href="#multibuild"><span class="std std-ref">multibuild</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">cibuildwheel</span></code> is a Python package that builds <a class="reference internal" href="glossary.html#term-Wheel"><span class="xref std std-term">wheels</span></a> for all common platforms and Python versions on most CI systems. Also see <a class="reference internal" href="#multibuild"><span class="std std-ref">multibuild</span></a>.</p>
+</div>
+</div>
+</section>
+<section id="distlib">
+<span id="id5"></span><h3>distlib<a class="headerlink" href="#distlib" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://distlib.readthedocs.io/en/latest/index.html" title="（在 Distlib v0.4）"><span class="xref std std-doc">Docs</span></a> |
+<a class="reference external" href="https://github.com/pypa/distlib/issues">Issues</a> |
+<a class="reference external" href="https://github.com/pypa/distlib">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/distlib">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">distlib</span></code> 是一个实现与 Python 软件的打包和分发相关的低级函数的库。 <code class="docutils literal notranslate"><span class="pre">distlib</span></code> 实现了多个相关的 PEP（Python 增强提案标准），并且对第三方打包工具的开发者很有用，可以用来创建和上传二进制和源代码 <a class="reference internal" href="glossary.html#term-Distribution-Package"><span class="xref std std-term">distributions</span></a>，实现互操作性，解决依赖关系，管理包资源，执行其他类似的功能。</p>
+<p>与更严格的 <a class="reference internal" href="#packaging"><span class="std std-ref">packaging</span></a> 项目（下文所述）不同，后者专门实现了现代 Python 打包互操作性标准，<code class="docutils literal notranslate"><span class="pre">distlib</span></code> 还尝试在处理遗留包和元数据时提供合理的回退行为，这些遗留包和元数据早于现代互操作性标准，并且属于与这些标准不兼容的包的子集。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">distlib</span></code> is a library which implements low-level functions that
+relate to packaging and distribution of Python software.  <code class="docutils literal notranslate"><span class="pre">distlib</span></code>
+implements several relevant PEPs (Python Enhancement Proposal
+standards) and is useful for developers of third-party packaging tools
+to make and upload binary and source <a class="reference internal" href="glossary.html#term-Distribution-Package"><span class="xref std std-term">distributions</span></a>, achieve interoperability, resolve
+dependencies, manage package resources, and do other similar
+functions.</p>
+<p>Unlike the stricter <a class="reference internal" href="#packaging"><span class="std std-ref">packaging</span></a> project (below), which
+specifically implements modern Python packaging interoperability
+standards, <code class="docutils literal notranslate"><span class="pre">distlib</span></code> also attempts to provide reasonable fallback
+behaviours when asked to handle legacy packages and metadata that
+predate the modern interoperability standards and fall into the subset
+of packages that are incompatible with those standards.</p>
+</div>
+</div>
+</section>
+<section id="distutils">
+<span id="id6"></span><h3>distutils<a class="headerlink" href="#distutils" title="Link to this heading">¶</a></h3>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>原始的 Python 打包系统，最早在 Python 2.0 中加入标准库，并在 3.12 中被移除。</p>
+<p>由于维护一个打包系统面临的挑战，特别是当功能更新与语言运行时更新紧密耦合时，已不再推荐直接使用 <a class="reference internal" href="#distutils"><span class="std std-ref">distutils</span></a>，而是推荐使用 <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a> 作为替代方案。 <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a> 不仅提供了 <a class="reference internal" href="#distutils"><span class="std std-ref">distutils</span></a> 所不具备的功能（例如依赖声明和入口点声明），它还提供了一个一致的构建接口和功能集，适用于所有受支持的 Python 版本。</p>
+<p>因此， <a class="reference internal" href="#distutils"><span class="std std-ref">distutils</span></a> 在 Python 3.10 中被 <span class="target" id="index-2"></span><a class="pep reference external" href="https://peps.python.org/pep-0632/"><strong>PEP 632</strong></a> 弃用，并在 Python 3.12 中被 <a class="reference external" href="https://docs.python.org/zh-cn/3/whatsnew/3.12.html" title="（在 Python v3.13）"><span class="xref std std-doc">移除</span></a>。Setuptools 打包了 distutils 的独立副本，并且即使在 Python &lt; 3.12 中，如果先导入 setuptools 或使用 pip，也会注入 distutils。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>The original Python packaging system, added to the standard library in
+Python 2.0 and removed in 3.12.</p>
+<p>Due to the challenges of maintaining a packaging system
+where feature updates are tightly coupled to language runtime updates,
+direct usage of <a class="reference internal" href="#distutils"><span class="std std-ref">distutils</span></a> has been actively discouraged, with
+<a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a> being the preferred replacement. <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a>
+not only provides features that plain <a class="reference internal" href="#distutils"><span class="std std-ref">distutils</span></a> doesn't offer
+(such as dependency declarations and entry point declarations), it
+also provides a consistent build interface and feature set across all
+supported Python versions.</p>
+<p>Consequently, <a class="reference internal" href="#distutils"><span class="std std-ref">distutils</span></a> was deprecated in Python 3.10 by <span class="target" id="index-3"></span><a class="pep reference external" href="https://peps.python.org/pep-0632/"><strong>PEP 632</strong></a> and
+has been <a class="reference external" href="https://docs.python.org/zh-cn/3/whatsnew/3.12.html" title="（在 Python v3.13）"><span class="xref std std-doc">removed</span></a> from the standard library in
+Python 3.12.  Setuptools bundles the standalone copy of distutils, and it is
+injected even on Python &lt; 3.12 if you import setuptools first or use pip.</p>
+</div>
+</div>
+</section>
+<section id="flit">
+<span id="id7"></span><h3>flit<a class="headerlink" href="#flit" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://flit.readthedocs.io/en/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/pypa/flit/issues">Issues</a> |
+<a class="reference external" href="https://pypi.org/project/flit">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>Flit 提供了一种简单的方法，用于将纯 Python 包和模块创建并上传到 PyPI。它专注于 <a class="reference external" href="https://flit.readthedocs.io/en/latest/rationale.html">让简单的事情变得更简单</a>，以简化打包过程。Flit 可以生成配置文件，快速设置一个简单的项目，构建源代码分发包和 wheel 文件，并将它们上传到 PyPI。</p>
+<p>Flit 使用 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 来配置项目。Flit 不依赖于 <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a> 等工具来构建分发包，也不依赖于 <a class="reference internal" href="#twine"><span class="std std-ref">twine</span></a> 将其上传到 PyPI。Flit 需要 Python 3，但你可以使用它来分发适用于 Python 2 的模块，只要这些模块可以在 Python 3 中导入。</p>
+<p>Flit 包由 <a class="reference external" href="https://github.com/Carreau">Matthias Bussonnier</a> 自 2023 年 10 月起在 <a class="reference external" href="https://tidelift.com/lifter/search/pypi/flit">tidelift 平台</a> 提供支持，资金会捐赠给 PSF，并指定用于 PyPA 使用。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>Flit provides a simple way to create and upload pure Python packages and
+modules to PyPI.  It focuses on <a class="reference external" href="https://flit.readthedocs.io/en/latest/rationale.html">making the easy things easy</a>
+for packaging.  Flit can generate a configuration file to quickly set up a
+simple project, build source distributions and wheels, and upload them to PyPI.</p>
+<p>Flit uses <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> to configure a project. Flit does not rely on tools
+such as <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a> to build distributions, or <a class="reference internal" href="#twine"><span class="std std-ref">twine</span></a> to upload them
+to PyPI. Flit requires Python 3, but you can use it to distribute modules for
+Python 2, so long as they can be imported on Python 3.</p>
+<p>The flit package is lifted by <a class="reference external" href="https://github.com/Carreau">Matthias Bussonnier</a> since October 2023 on the <a class="reference external" href="https://tidelift.com/lifter/search/pypi/flit">tidelift platform</a>, and funds sent to the PSF and
+earmarked for PyPA usage.</p>
+</div>
+</div>
+</section>
+<section id="hatch">
+<span id="id8"></span><h3>hatch<a class="headerlink" href="#hatch" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://hatch.pypa.io/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/pypa/hatch">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/hatch">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>Hatch 是一个统一的命令行工具，旨在方便地管理 Python 开发者的依赖关系和环境隔离。Python 包开发者使用 Hatch 及其 <a class="reference internal" href="glossary.html#term-Build-Backend"><span class="xref std std-term">build backend</span></a> Hatchling 来配置、版本控制、指定依赖关系并将包发布到 PyPI。其插件系统允许轻松扩展功能。</p>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>Hatch is a unified command-line tool meant to conveniently manage
+dependencies and environment isolation for Python developers. Python
+package developers use Hatch and its <a class="reference internal" href="glossary.html#term-Build-Backend"><span class="xref std std-term">build backend</span></a> Hatchling to
+configure, version, specify dependencies for, and publish packages
+to PyPI. Its plugin system allows for easily extending functionality.</p>
+</div>
+</div>
+</section>
+<section id="packaging">
+<span id="id9"></span><h3>packaging<a class="headerlink" href="#packaging" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://packaging.pypa.io/en/latest/index.html" title="（在 Packaging v24.3.dev0）"><span class="xref std std-doc">Docs</span></a> |
+<a class="reference external" href="https://github.com/pypa/packaging/issues">Issues</a> |
+<a class="reference external" href="https://github.com/pypa/packaging">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/packaging">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>Python 打包的核心工具，供 <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> 和 <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a> 使用。</p>
+<p>打包库中的核心工具处理 Python 包的版本管理、规范、标记、需求、标签以及类似的属性和任务。大多数 Python 用户在不需要显式调用它的情况下依赖于这个库；这里列出的其他 Python 打包、分发和安装工具的开发者通常会使用它的功能来解析、发现以及处理依赖属性。</p>
+<p>该项目特别专注于实现现代 Python 打包互操作性标准，这些标准定义在 <a class="reference internal" href="specifications/index.html#packaging-specifications"><span class="std std-ref">PyPA 规范</span></a> 中，并且会为那些与这些标准不兼容的足够古老的遗留包报告错误。与此相比， <a class="reference internal" href="#distlib"><span class="std std-ref">distlib</span></a> 项目是一个更宽松的库，它试图在 <a class="reference internal" href="#packaging"><span class="std std-ref">packaging</span></a> 会报告错误的情况下，对模糊的元数据提供一个合理的解释。</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>Core utilities for Python packaging used by <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> and <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a>.</p>
+<p>The core utilities in the packaging library handle version handling,
+specifiers, markers, requirements, tags, and similar attributes and
+tasks for Python packages. Most Python users rely on this library
+without needing to explicitly call it; developers of the other Python
+packaging, distribution, and installation tools listed here often use
+its functionality to parse, discover, and otherwise handle dependency
+attributes.</p>
+<p>This project specifically focuses on implementing the modern Python
+packaging interoperability standards defined at
+<a class="reference internal" href="specifications/index.html#packaging-specifications"><span class="std std-ref">PyPA 规范</span></a>, and will report errors for
+sufficiently old legacy packages that are incompatible with those
+standards. In contrast, the <a class="reference internal" href="#distlib"><span class="std std-ref">distlib</span></a> project is a more
+permissive library that attempts to provide a plausible reading of
+ambiguous metadata in cases where <a class="reference internal" href="#packaging"><span class="std std-ref">packaging</span></a> will instead report
+on error.</p>
+</div>
+</div>
+</section>
+<section id="pip">
+<span id="id10"></span><h3>pip<a class="headerlink" href="#pip" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://pip.pypa.io/">Docs</a> |
+<a class="reference external" href="https://github.com/pypa/pip/issues">Issues</a> |
+<a class="reference external" href="https://github.com/pypa/pip">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/pip/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>最流行的 Python 包安装工具，也是现代版本 Python 附带的工具。</p>
+<p>它提供了从 PyPI 和其他 Python 包索引查找、下载和安装包的基本核心功能，并且可以通过其命令行接口（CLI）融入到各种开发工作流中。</p>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>The most popular tool for installing Python packages, and the one
+included with modern versions of Python.</p>
+<p>It provides the essential core features for finding, downloading, and
+installing packages from PyPI and other Python package indexes, and can be
+incorporated into a wide range of development workflows via its
+command-line interface (CLI).</p>
+</div>
+</div>
+</section>
+<section id="pipenv">
+<span id="id11"></span><h3>Pipenv<a class="headerlink" href="#pipenv" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://pipenv.pypa.io/en/latest/index.html" title="（在 pipenv v2024.4.0）"><span class="xref std std-doc">Docs</span></a> |
+<a class="reference external" href="https://github.com/pypa/pipenv">Source</a> |
+<a class="reference external" href="https://github.com/pypa/pipenv/issues">Issues</a> |
+<a class="reference external" href="https://pypi.org/project/pipenv">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>Pipenv 是一个旨在将所有打包领域的最佳实践带入 Python 世界的项目。它将 <a class="reference internal" href="#pipfile"><span class="std std-ref">Pipfile</span></a>、<a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> 和 <a class="reference internal" href="#virtualenv"><span class="std std-ref">virtualenv</span></a> 融合成一个单一的工具链。它可以自动导入 <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>，并使用 <a class="reference external" href="https://pyup.io/safety">safety</a> 检查 <a class="reference internal" href="#pipfile">Pipfile</a> 中的 CVE 漏洞。</p>
+<p>Pipenv 旨在帮助用户在命令行上管理环境、依赖关系和导入的包。它在 Windows 上也表现良好（这是其他工具常常忽视的），可以生成和检查文件哈希，以确保依赖关系规范与哈希锁定的依赖一致，并简化包和依赖的卸载过程。</p>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<p>Pipenv is a project that aims to bring the best of all packaging worlds to the
+Python world. It harnesses <a class="reference internal" href="#pipfile"><span class="std std-ref">Pipfile</span></a>, <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a>, and <a class="reference internal" href="#virtualenv"><span class="std std-ref">virtualenv</span></a>
+into one single toolchain. It can autoimport <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> and also
+check for CVEs in <a class="reference internal" href="#pipfile">Pipfile</a> using <a class="reference external" href="https://pyup.io/safety">safety</a>.</p>
+<p>Pipenv aims to help users manage environments, dependencies, and
+imported packages on the command line. It also works well on Windows
+(which other tools often underserve), makes and checks file hashes,
+to ensure compliance with hash-locked dependency specifiers, and eases
+uninstallation of packages and dependencies.</p>
+</div>
+</div>
+</section>
+<section id="pipfile">
+<span id="id13"></span><h3>Pipfile<a class="headerlink" href="#pipfile" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://github.com/pypa/pipfile">Source</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">中文</label><div class="tab-content docutils container">
+<p><code class="file docutils literal notranslate"><span class="pre">Pipfile</span></code> 及其姊妹文件 <code class="file docutils literal notranslate"><span class="pre">Pipfile.lock</span></code> 是一个面向应用的高层次替代方案，用于取代 <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> 的低层次 <code class="file docutils literal notranslate"><span class="pre">requirements.txt</span></code> 文件。</p>
+</div>
+<input class="tab-input" id="tab-set--11-input--2" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--2">英文</label><div class="tab-content docutils container">
+<p><code class="file docutils literal notranslate"><span class="pre">Pipfile</span></code> and its sister <code class="file docutils literal notranslate"><span class="pre">Pipfile.lock</span></code> are a higher-level
+application-centric alternative to <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a>'s lower-level
+<code class="file docutils literal notranslate"><span class="pre">requirements.txt</span></code> file.</p>
+</div>
+</div>
+</section>
+<section id="pipx">
+<span id="id14"></span><h3>pipx<a class="headerlink" href="#pipx" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://pipx.pypa.io/">Docs</a> |
+<a class="reference external" href="https://github.com/pypa/pipx">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/pipx/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">中文</label><div class="tab-content docutils container">
+<p>pipx 是一个工具，用于安装和运行 Python 命令行应用程序，而不会导致与系统中安装的其他包发生依赖冲突。</p>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">英文</label><div class="tab-content docutils container">
+<p>pipx is a tool to install and run Python command-line applications without causing dependency conflicts with other packages installed on the system.</p>
+</div>
+</div>
+</section>
+<section id="python">
+<h3>Python 打包用户指南<a class="headerlink" href="#python" title="Link to this heading">¶</a></h3>
+<p><strong>Python Packaging User Guide</strong></p>
+<p><a class="reference internal" href="index.html"><span class="doc">Docs</span></a> |
+<a class="reference external" href="https://github.com/pypa/packaging.python.org/issues">Issues</a> |
+<a class="reference external" href="https://github.com/pypa/packaging.python.org">GitHub</a></p>
+<p>本指南！</p>
+<p>This guide!</p>
+</section>
+<section id="readme-renderer">
+<span id="id15"></span><h3>readme_renderer<a class="headerlink" href="#readme-renderer" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://github.com/pypa/readme_renderer/">GitHub and docs</a> |
+<a class="reference external" href="https://pypi.org/project/readme-renderer/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--13-input--1" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--1">中文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">readme_renderer</span></code> 是一个供包开发者使用的库，用于将其用户文档（README）文件从标记语言（如 Markdown 或 reStructuredText）渲染为 HTML。开发者可以单独调用它，也可以通过 <a class="reference internal" href="#twine"><span class="std std-ref">twine</span></a> 在发布管理过程中使用，检查其包描述是否能在 PyPI 上正确显示。</p>
+</div>
+<input class="tab-input" id="tab-set--13-input--2" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--2">英文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">readme_renderer</span></code> is a library that package developers use to render
+their user documentation (README) files into HTML from markup
+languages such as Markdown or reStructuredText. Developers call it on
+its own or via <a class="reference internal" href="#twine"><span class="std std-ref">twine</span></a>, as part of their release management
+process, to check that their package descriptions will properly
+display on PyPI.</p>
+</div>
+</div>
+</section>
+<section id="easy-install">
+<span id="setuptools"></span><span id="id16"></span><h3>Setuptools<a class="headerlink" href="#easy-install" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://setuptools.readthedocs.io/en/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/pypa/setuptools/issues">Issues</a> |
+<a class="reference external" href="https://github.com/pypa/setuptools">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/setuptools">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--14-input--1" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--1">中文</label><div class="tab-content docutils container">
+<p>Setuptools（包括 <code class="docutils literal notranslate"><span class="pre">easy_install</span></code>）是对 Python distutils 的一组增强，旨在让你更轻松地构建和分发 Python <a class="reference internal" href="glossary.html#term-Distribution-Package"><span class="xref std std-term">distributions</span></a>，特别是那些依赖于其他包的分发包。</p>
+</div>
+<input class="tab-input" id="tab-set--14-input--2" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--2">英文</label><div class="tab-content docutils container">
+<p>Setuptools (which includes <code class="docutils literal notranslate"><span class="pre">easy_install</span></code>) is a collection of
+enhancements to the Python distutils that allow you to more easily
+build and distribute Python <a class="reference internal" href="glossary.html#term-Distribution-Package"><span class="xref std std-term">distributions</span></a>, especially ones that have dependencies on other packages.</p>
+</div>
+</div>
+</section>
+<section id="trove-classifiers">
+<span id="id17"></span><h3>trove-classifiers<a class="headerlink" href="#trove-classifiers" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://github.com/pypa/trove-classifiers/issues">Issues</a> | <a class="reference external" href="https://github.com/pypa/trove-classifiers">GitHub</a> | <a class="reference external" href="https://pypi.org/project/trove-classifiers/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--15-input--1" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--1">中文</label><div class="tab-content docutils container">
+<p>trove-classifiers 是 PyPI 上 <a class="reference external" href="https://pypi.org/classifiers/">分类器</a> 的标准来源，项目维护者使用它来 <a class="reference internal" href="specifications/core-metadata.html#core-metadata-classifier"><span class="std std-ref">系统地描述他们的项目</span></a>，以便用户可以更容易地在 PyPI 上找到符合他们需求的项目。</p>
+<p>trove-classifiers 包含了有效的分类器列表和已弃用的分类器列表（已弃用的分类器与替代它们的分类器配对）。使用此包可以验证用于准备上传到 PyPI 的包中的分类器。由于这个分类器列表是作为代码发布的，你可以安装并导入它，与参考 PyPI 上发布的 <a class="reference external" href="https://pypi.org/classifiers/">列表</a> 相比，这样可以提供更便捷的工作流。该项目的 <a class="reference external" href="https://github.com/pypa/trove-classifiers/issues">问题追踪器</a> 用于讨论提议的分类器和新分类器的请求。</p>
+</div>
+<input class="tab-input" id="tab-set--15-input--2" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--2">英文</label><div class="tab-content docutils container">
+<p>trove-classifiers is the canonical source for <a class="reference external" href="https://pypi.org/classifiers/">classifiers on PyPI</a>, which project maintainers use to
+<a class="reference internal" href="specifications/core-metadata.html#core-metadata-classifier"><span class="std std-ref">systematically describe their projects</span></a>
+so that users can better find projects that match their needs on the PyPI.</p>
+<p>The trove-classifiers package contains a list of valid classifiers and
+deprecated classifiers (which are paired with the classifiers that replace
+them).  Use this package to validate classifiers used in packages intended for
+uploading to PyPI. As this list of classifiers is published as code, you
+can install and import it, giving you a more convenient workflow compared to
+referring to the <a class="reference external" href="https://pypi.org/classifiers/">list published on PyPI</a>. The
+<a class="reference external" href="https://github.com/pypa/trove-classifiers/issues">issue tracker</a> for the
+project hosts discussions on proposed classifiers and requests for new
+classifiers.</p>
+</div>
+</div>
+</section>
+<section id="twine">
+<span id="id21"></span><h3>twine<a class="headerlink" href="#twine" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://twine.readthedocs.io/en/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/pypa/twine/issues">Issues</a> |
+<a class="reference external" href="https://github.com/pypa/twine">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/twine">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--16-input--1" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--1">中文</label><div class="tab-content docutils container">
+<p>Twine 是开发者用来将包上传到 Python 包索引或其他 Python 包索引的主要工具。它是一个命令行程序，将程序文件和元数据传递给 Web API。开发者使用它是因为它是官方的 PyPI 上传工具，快速且安全，得到维护，并且可靠地工作。</p>
+</div>
+<input class="tab-input" id="tab-set--16-input--2" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--2">英文</label><div class="tab-content docutils container">
+<p>Twine is the primary tool developers use to upload packages to the
+Python Package Index or other Python package indexes. It is a
+command-line program that passes program files and metadata to a web
+API. Developers use it because it's the official PyPI upload tool,
+it's fast and secure, it's maintained, and it reliably works.</p>
+</div>
+</div>
+</section>
+<section id="virtualenv">
+<span id="id22"></span><h3>virtualenv<a class="headerlink" href="#virtualenv" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://virtualenv.pypa.io/en/stable/index.html">Docs</a> |
+<a class="reference external" href="https://github.com/pypa/virtualenv/issues">Issues</a> |
+<a class="reference external" href="https://github.com/pypa/virtualenv">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/virtualenv/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--17-input--1" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--1">中文</label><div class="tab-content docutils container">
+<p>virtualenv 是一个用于创建隔离的 Python <a class="reference internal" href="glossary.html#term-Virtual-Environment"><span class="xref std std-term">Virtual Environments</span></a> 的工具，类似于 <a class="reference internal" href="#venv"><span class="std std-ref">venv</span></a>。与 <a class="reference internal" href="#venv"><span class="std std-ref">venv</span></a> 不同，virtualenv 可以为其他版本的 Python 创建虚拟环境，它通过 PATH 环境变量来定位这些版本。它还提供了便捷的功能来配置、维护、复制和排查虚拟环境的问题。欲了解更多信息，请参阅 <span class="xref std std-ref">创建和使用虚拟环境</span> 部分。</p>
+</div>
+<input class="tab-input" id="tab-set--17-input--2" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--2">英文</label><div class="tab-content docutils container">
+<p>virtualenv is a tool for creating isolated Python <a class="reference internal" href="glossary.html#term-Virtual-Environment"><span class="xref std std-term">Virtual Environments</span></a>, like <a class="reference internal" href="#venv"><span class="std std-ref">venv</span></a>. Unlike <a class="reference internal" href="#venv"><span class="std std-ref">venv</span></a>, virtualenv can
+create virtual environments for other versions of Python, which it locates
+using the PATH environment variable. It also provides convenient features for
+configuring, maintaining, duplicating, and troubleshooting virtual environments.
+For more information, see the section on <a class="reference internal" href="tutorials/installing-packages.html#creating-and-using-virtual-environments"><span class="std std-ref">创建虚拟环境</span></a>.</p>
+</div>
+</div>
+</section>
+<section id="warehouse">
+<span id="id23"></span><h3>Warehouse<a class="headerlink" href="#warehouse" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://warehouse.pypa.io/">Docs</a> |
+<a class="reference external" href="https://github.com/pypa/warehouse/issues">Issues</a> |
+<a class="reference external" href="https://github.com/pypa/warehouse">GitHub</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--18-input--1" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--1">中文</label><div class="tab-content docutils container">
+<p>当前为 <a class="reference internal" href="glossary.html#term-Python-Package-Index-PyPI"><span class="xref std std-term">Python Package Index (PyPI)</span></a> 提供支持的代码库。它托管在 <a class="reference external" href="https://pypi.org/">pypi.org</a> 上。是 <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> 下载的默认来源。</p>
+</div>
+<input class="tab-input" id="tab-set--18-input--2" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--2">英文</label><div class="tab-content docutils container">
+<p>The current codebase powering the <a class="reference internal" href="glossary.html#term-Python-Package-Index-PyPI"><span class="xref std std-term">Python Package Index
+(PyPI)</span></a>. It is hosted at <a class="reference external" href="https://pypi.org/">pypi.org</a>. The default
+source for <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> downloads.</p>
+</div>
+</div>
+</section>
+<section id="wheel">
+<span id="id25"></span><h3>wheel<a class="headerlink" href="#wheel" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://wheel.readthedocs.io/en/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/pypa/wheel/issues">Issues</a> |
+<a class="reference external" href="https://github.com/pypa/wheel">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/wheel">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--19-input--1" name="tab-set--19" type="radio"><label class="tab-label" for="tab-set--19-input--1">中文</label><div class="tab-content docutils container">
+<p>主要来说，wheel 项目提供了 <code class="docutils literal notranslate"><span class="pre">bdist_wheel</span></code> <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a> 扩展，用于创建 <a class="reference internal" href="glossary.html#term-Wheel"><span class="xref std std-term">wheel distributions</span></a>。此外，它还提供了自己的命令行工具，用于创建和安装 wheel 文件。</p>
+<p>另请参见 <a class="reference external" href="https://github.com/pypa/auditwheel">auditwheel</a>，这是一个供包开发者使用的工具，用于检查和修复他们正在制作的二进制 wheel 格式的 Python 包。它提供了发现依赖关系、检查元数据合规性以及修复 wheel 和元数据的功能，以正确链接和包含包中的外部共享库。</p>
+</div>
+<input class="tab-input" id="tab-set--19-input--2" name="tab-set--19" type="radio"><label class="tab-label" for="tab-set--19-input--2">英文</label><div class="tab-content docutils container">
+<p>Primarily, the wheel project offers the <code class="docutils literal notranslate"><span class="pre">bdist_wheel</span></code> <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a> extension for
+creating <a class="reference internal" href="glossary.html#term-Wheel"><span class="xref std std-term">wheel distributions</span></a>.  Additionally, it offers its own
+command line utility for creating and installing wheels.</p>
+<p>See also <a class="reference external" href="https://github.com/pypa/auditwheel">auditwheel</a>, a tool
+that package developers use to check and fix Python packages they are
+making in the binary wheel format. It provides functionality to
+discover dependencies, check metadata for compliance, and repair the
+wheel and metadata to properly link and include external shared
+libraries in a package.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id26">
+<h2>非 PyPA 项目<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h2>
+<p><strong>Non-PyPA Projects</strong></p>
+<section id="buildout">
+<span id="id27"></span><h3>buildout<a class="headerlink" href="#buildout" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="http://www.buildout.org/en/latest/">Docs</a> |
+<a class="reference external" href="https://bugs.launchpad.net/zc.buildout">Issues</a> |
+<a class="reference external" href="https://pypi.org/project/zc.buildout">PyPI</a> |
+<a class="reference external" href="https://github.com/buildout/buildout/">GitHub</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--20-input--1" name="tab-set--20" type="radio"><label class="tab-label" for="tab-set--20-input--1">中文</label><div class="tab-content docutils container">
+<p>Buildout 是一个基于 Python 的构建系统，用于从多个部分创建、组装和部署应用程序，其中一些部分可能不是基于 Python 的。它允许你创建一个 buildout 配置，并在以后重新生成相同的软件。</p>
+</div>
+<input class="tab-input" id="tab-set--20-input--2" name="tab-set--20" type="radio"><label class="tab-label" for="tab-set--20-input--2">英文</label><div class="tab-content docutils container">
+<p>Buildout is a Python-based build system for creating, assembling and deploying
+applications from multiple parts, some of which may be non-Python-based.  It
+lets you create a buildout configuration and reproduce the same software later.</p>
+</div>
+</div>
+</section>
+<section id="conda">
+<span id="id28"></span><h3>conda<a class="headerlink" href="#conda" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://docs.conda.io/en/latest/index.html" title="（在 conda-docs）"><span class="xref std std-doc">Docs</span></a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--21-input--1" name="tab-set--21" type="radio"><label class="tab-label" for="tab-set--21-input--1">中文</label><div class="tab-content docutils container">
+<p>conda 是 <a class="reference external" href="https://docs.anaconda.com/anaconda/">Anaconda</a> Python 安装的包管理工具。Anaconda Python 是由 <a class="reference external" href="https://www.anaconda.com/products/individual">Anaconda, Inc</a> 提供的一个专门面向科学社区的发行版，特别是在 Windows 上，那里安装二进制扩展通常较为困难。</p>
+<p>Conda 是与 <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a>、virtualenv 和 wheel 完全独立的工具，但在包管理、虚拟环境管理和二进制扩展部署方面，提供了它们的许多组合功能。</p>
+<p>Conda 不从 PyPI 安装包，只能从官方 Anaconda 仓库、anaconda.org（一个用户贡献的 <em>conda</em> 包的地方）或本地（例如内网）包服务器安装包。然而，请注意， <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> 可以安装到 conda 环境中，并与 conda 并行工作，用于管理来自 PyPI 的 <a class="reference internal" href="glossary.html#term-Distribution-Package"><span class="xref std std-term">distributions</span></a>。另外， <a class="reference external" href="https://docs.conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html">conda skeleton</a> 是一个工具，它通过先从 PyPI 获取包并修改其元数据，使得 Python 包可以被 conda 安装。</p>
+</div>
+<input class="tab-input" id="tab-set--21-input--2" name="tab-set--21" type="radio"><label class="tab-label" for="tab-set--21-input--2">英文</label><div class="tab-content docutils container">
+<p>conda is the package management tool for <a class="reference external" href="https://docs.anaconda.com/anaconda/">Anaconda</a> Python installations.
+Anaconda Python is a distribution from <a class="reference external" href="https://www.anaconda.com/products/individual">Anaconda, Inc</a> specifically aimed at the scientific
+community, and in particular on Windows where the installation of binary
+extensions is often difficult.</p>
+<p>Conda is a completely separate tool from <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a>, virtualenv and wheel, but provides
+many of their combined features in terms of package management, virtual environment
+management and deployment of binary extensions.</p>
+<p>Conda does not install packages from PyPI and can install only from
+the official Anaconda repositories, or anaconda.org (a place for
+user-contributed <em>conda</em> packages), or a local (e.g. intranet) package
+server.  However, note that <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> can be installed into, and work
+side-by-side with conda for managing <a class="reference internal" href="glossary.html#term-Distribution-Package"><span class="xref std std-term">distributions</span></a> from PyPI. Also, <a class="reference external" href="https://docs.conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html">conda skeleton</a>
+is a tool to make Python packages installable by conda by first
+fetching them from PyPI and modifying their metadata.</p>
+</div>
+</div>
+</section>
+<section id="devpi">
+<span id="id29"></span><h3>devpi<a class="headerlink" href="#devpi" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="http://doc.devpi.net/latest/">Docs</a> |
+<a class="extlink-gh reference external" href="https://github.com/devpi/devpi/issues">Issues</a> |
+<a class="reference external" href="https://pypi.org/project/devpi">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--22-input--1" name="tab-set--22" type="radio"><label class="tab-label" for="tab-set--22-input--1">中文</label><div class="tab-content docutils container">
+<p>devpi 具有一个强大的 PyPI 兼容服务器和 PyPI 代理缓存，并配有一个互补的命令行工具，用于推动 Python 的打包、测试和发布活动。devpi 还提供了一个可浏览和可搜索的 Web 界面。
+devpi 支持镜像 PyPI、多个 <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package indexes</span></a> 及其继承、这些索引之间的同步、索引复制和故障切换，以及包的上传。</p>
+</div>
+<input class="tab-input" id="tab-set--22-input--2" name="tab-set--22" type="radio"><label class="tab-label" for="tab-set--22-input--2">英文</label><div class="tab-content docutils container">
+<p>devpi features a powerful PyPI-compatible server and PyPI proxy cache
+with a complementary command line tool to drive packaging, testing and
+release activities with Python. devpi also provides a browsable and
+searchable web interface.
+devpi supports mirroring PyPI, multiple
+<a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package indexes</span></a> with inheritance, syncing between
+these indexes, index replication and fail-over, and package upload.</p>
+</div>
+</div>
+</section>
+<section id="dumb-pypi">
+<span id="id30"></span><h3>dumb-pypi<a class="headerlink" href="#dumb-pypi" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://github.com/chriskuehl/dumb-pypi">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/dumb-pypi">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--23-input--1" name="tab-set--23" type="radio"><label class="tab-label" for="tab-set--23-input--1">中文</label><div class="tab-content docutils container">
+<p>dumb-pypi 是一个简单的 <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> 静态文件站点生成器，生成的站点必须由静态文件 Web 服务器托管，以成为包索引。它支持提供哈希、核心元数据和 yank 状态。</p>
+</div>
+<input class="tab-input" id="tab-set--23-input--2" name="tab-set--23" type="radio"><label class="tab-label" for="tab-set--23-input--2">英文</label><div class="tab-content docutils container">
+<p>dumb-pypi is a simple <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> static file site
+generator, which then must be hosted by a static file webserver to become the
+package index. It supports serving the hash, core-metadata, and yank-status.</p>
+</div>
+</div>
+</section>
+<section id="enscons">
+<span id="id31"></span><h3>enscons<a class="headerlink" href="#enscons" title="Link to this heading">¶</a></h3>
+<p><a class="extlink-gh reference external" href="https://github.com/dholth/enscons">Source</a> |
+<a class="extlink-gh reference external" href="https://github.com/dholth/enscons/issues">Issues</a> |
+<a class="reference external" href="https://pypi.org/project/enscons">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--24-input--1" name="tab-set--24" type="radio"><label class="tab-label" for="tab-set--24-input--1">中文</label><div class="tab-content docutils container">
+<p>Enscons 是一个基于 <a class="reference external" href="https://scons.org/">SCons</a> 的 Python 打包工具。它构建与 <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> 兼容的源代码分发包和 wheel 文件，而无需使用 distutils 或 setuptools，包括带有 C 扩展的分发包。Enscons 的架构和理念与 <a class="reference internal" href="#distutils"><span class="std std-ref">distutils</span></a> 不同。与其将构建功能添加到 Python 打包系统中，enscons 将 Python 打包功能添加到一个通用的构建系统中。Enscons 帮助你构建可以被 <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> 自动构建的源代码分发包（sdist）和独立于 enscons 的 wheel 文件。</p>
+</div>
+<input class="tab-input" id="tab-set--24-input--2" name="tab-set--24" type="radio"><label class="tab-label" for="tab-set--24-input--2">英文</label><div class="tab-content docutils container">
+<p>Enscons is a Python packaging tool based on <a class="reference external" href="https://scons.org/">SCons</a>. It builds
+<a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a>-compatible source distributions and wheels without using
+distutils or setuptools, including distributions with C
+extensions. Enscons has a different architecture and philosophy than
+<a class="reference internal" href="#distutils"><span class="std std-ref">distutils</span></a>. Rather than adding build features to a Python
+packaging system, enscons adds Python packaging to a general purpose
+build system. Enscons helps you to build sdists that can be
+automatically built by <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a>, and wheels that are independent of
+enscons.</p>
+</div>
+</div>
+</section>
+<section id="flask-pypi-proxy">
+<span id="flaskpypiproxy"></span><h3>Flask-Pypi-Proxy<a class="headerlink" href="#flask-pypi-proxy" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://flask-pypi-proxy.readthedocs.io">Docs</a> |
+<a class="extlink-gh reference external" href="https://github.com/tzulberti/Flask-PyPi-Proxy">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/Flask-Pypi-Proxy/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--25-input--1" name="tab-set--25" type="radio"><label class="tab-label" for="tab-set--25-input--1">中文</label><div class="tab-content docutils container">
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>不再维护，项目已归档</p>
+</div>
+<p>Flask-Pypi-Proxy 是一个作为 PyPI 缓存代理的 <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--25-input--2" name="tab-set--25" type="radio"><label class="tab-label" for="tab-set--25-input--2">英文</label><div class="tab-content docutils container">
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Not maintained, project archived</p>
+</div>
+<p>Flask-Pypi-Proxy is a <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> as a cached
+proxy for PyPI.</p>
+</div>
+</div>
+</section>
+<section id="hashdist">
+<span id="id32"></span><h3>Hashdist<a class="headerlink" href="#hashdist" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://hashdist.readthedocs.io/en/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/hashdist/hashdist/">GitHub</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--26-input--1" name="tab-set--26" type="radio"><label class="tab-label" for="tab-set--26-input--1">中文</label><div class="tab-content docutils container">
+<p>Hashdist 是一个用于构建非根软件分发的库。Hashdist 力图成为“在 Debian 技术无法使用的情况下，选择的 Debian”。对 Python 开发者来说，理解 Hashdist 最好的方式可能是将其视为 <a class="reference internal" href="#virtualenv"><span class="std std-ref">virtualenv</span></a> 和 <a class="reference internal" href="#buildout"><span class="std std-ref">buildout</span></a> 的一个更强大的混合体。它旨在解决安装科学软件的问题，并使包分发无状态、可缓存且可分支。它被一些研究人员使用，但自 2016 年以来一直缺乏维护。</p>
+</div>
+<input class="tab-input" id="tab-set--26-input--2" name="tab-set--26" type="radio"><label class="tab-label" for="tab-set--26-input--2">英文</label><div class="tab-content docutils container">
+<p>Hashdist is a library for building non-root software
+distributions. Hashdist is trying to be “the Debian of choice for
+cases where Debian technology doesn’t work”. The best way for
+Pythonistas to think about Hashdist may be a more powerful hybrid of
+<a class="reference internal" href="#virtualenv"><span class="std std-ref">virtualenv</span></a> and <a class="reference internal" href="#buildout"><span class="std std-ref">buildout</span></a>. It is aimed at solving the
+problem of installing scientific software, and making package
+distribution stateless, cached, and branchable. It is used by some
+researchers but has been lacking in maintenance since 2016.</p>
+</div>
+</div>
+</section>
+<section id="maturin">
+<span id="id33"></span><h3>Maturin<a class="headerlink" href="#maturin" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://www.maturin.rs">Docs</a> |
+<a class="reference external" href="https://github.com/PyO3/maturin">GitHub</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--27-input--1" name="tab-set--27" type="radio"><label class="tab-label" for="tab-set--27-input--1">中文</label><div class="tab-content docutils container">
+<p>Maturin 是一个用于 Rust 扩展模块的构建后端，也用 Rust 编写。它支持在 Windows、Linux、macOS 和 FreeBSD 上为 Python 3.7+ 构建 wheel 文件，可以将它们上传到 PyPI，并且具有基本的 PyPy 和 GraalPy 支持。</p>
+</div>
+<input class="tab-input" id="tab-set--27-input--2" name="tab-set--27" type="radio"><label class="tab-label" for="tab-set--27-input--2">英文</label><div class="tab-content docutils container">
+<p>Maturin is a build backend for Rust extension modules, also written in
+Rust. It supports building wheels for python 3.7+ on Windows, Linux, macOS and
+FreeBSD, can upload them to PyPI and has basic PyPy and GraalPy support.</p>
+</div>
+</div>
+</section>
+<section id="meson-python">
+<span id="id34"></span><h3>meson-python<a class="headerlink" href="#meson-python" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://meson-python.readthedocs.io/en/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/mesonbuild/meson-python">GitHub</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--28-input--1" name="tab-set--28" type="radio"><label class="tab-label" for="tab-set--28-input--1">中文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">meson-python</span></code> 是一个使用 <a class="reference external" href="https://github.com/mesonbuild/meson">Meson</a> 构建系统的构建后端。它允许 Python 包作者将 <a class="reference external" href="https://github.com/mesonbuild/meson">Meson</a> 作为其包的构建系统。它支持多种语言，包括 C，并能够满足大多数复杂构建配置的需求。</p>
+</div>
+<input class="tab-input" id="tab-set--28-input--2" name="tab-set--28" type="radio"><label class="tab-label" for="tab-set--28-input--2">英文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">meson-python</span></code> is a build backend that uses the <a class="reference external" href="https://github.com/mesonbuild/meson">Meson</a> build system. It enables
+Python package authors to use <a class="reference external" href="https://github.com/mesonbuild/meson">Meson</a> as the build system for their package. It
+supports a wide variety of languages, including C, and is able to fill the needs
+of most complex build configurations.</p>
+</div>
+</div>
+</section>
+<section id="multibuild">
+<span id="id35"></span><h3>multibuild<a class="headerlink" href="#multibuild" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://github.com/multi-build/multibuild">GitHub</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--29-input--1" name="tab-set--29" type="radio"><label class="tab-label" for="tab-set--29-input--1">中文</label><div class="tab-content docutils container">
+<p>Multibuild 是一组用于构建和测试 Python <a class="reference internal" href="glossary.html#term-Wheel"><span class="xref std std-term">wheels</span></a> 的 CI 脚本，支持 Linux、macOS 和（较少灵活的）Windows。另请参见 <a class="reference internal" href="#cibuildwheel"><span class="std std-ref">cibuildwheel</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--29-input--2" name="tab-set--29" type="radio"><label class="tab-label" for="tab-set--29-input--2">英文</label><div class="tab-content docutils container">
+<p>Multibuild is a set of CI scripts for building and testing Python <a class="reference internal" href="glossary.html#term-Wheel"><span class="xref std std-term">wheels</span></a> for
+Linux, macOS, and (less flexibly) Windows. Also see <a class="reference internal" href="#cibuildwheel"><span class="std std-ref">cibuildwheel</span></a>.</p>
+</div>
+</div>
+</section>
+<section id="nginx-pypi-cache">
+<span id="id36"></span><h3>nginx_pypi_cache<a class="headerlink" href="#nginx-pypi-cache" title="Link to this heading">¶</a></h3>
+<p><a class="extlink-gh reference external" href="https://github.com/hauntsaninja/nginx_pypi_cache">GitHub</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--30-input--1" name="tab-set--30" type="radio"><label class="tab-label" for="tab-set--30-input--1">中文</label><div class="tab-content docutils container">
+<p>nginx_pypi_cache 是一个使用 <a class="reference external" href="https://nginx.org/en/">nginx</a> 的 <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> 缓存代理。</p>
+</div>
+<input class="tab-input" id="tab-set--30-input--2" name="tab-set--30" type="radio"><label class="tab-label" for="tab-set--30-input--2">英文</label><div class="tab-content docutils container">
+<p>nginx_pypi_cache is a <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> caching proxy using <a class="reference external" href="https://nginx.org/en/">nginx</a>.</p>
+</div>
+</div>
+</section>
+<section id="pdm">
+<span id="id38"></span><h3>pdm<a class="headerlink" href="#pdm" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://pdm.fming.dev/">Docs</a> |
+<a class="reference external" href="https://github.com/pdm-project/pdm/">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/pdm">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--31-input--1" name="tab-set--31" type="radio"><label class="tab-label" for="tab-set--31-input--1">中文</label><div class="tab-content docutils container">
+<p>PDM 是一个现代的 Python 包管理器。它使用 <a class="reference internal" href="glossary.html#term-pyproject.toml"><span class="xref std std-term">pyproject.toml</span></a> 来存储 <span class="target" id="index-4"></span><a class="pep reference external" href="https://peps.python.org/pep-0621/"><strong>PEP 621</strong></a> 中定义的项目元数据。</p>
+</div>
+<input class="tab-input" id="tab-set--31-input--2" name="tab-set--31" type="radio"><label class="tab-label" for="tab-set--31-input--2">英文</label><div class="tab-content docutils container">
+<p>PDM is a modern Python package manager. It uses <a class="reference internal" href="glossary.html#term-pyproject.toml"><span class="xref std std-term">pyproject.toml</span></a> to store project metadata as defined in <span class="target" id="index-5"></span><a class="pep reference external" href="https://peps.python.org/pep-0621/"><strong>PEP 621</strong></a>.</p>
+</div>
+</div>
+</section>
+<section id="pex">
+<span id="id39"></span><h3>pex<a class="headerlink" href="#pex" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://pex.readthedocs.io/en/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/pantsbuild/pex/">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/pex">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--32-input--1" name="tab-set--32" type="radio"><label class="tab-label" for="tab-set--32-input--1">中文</label><div class="tab-content docutils container">
+<p>Pex 是一个用于生成 <code class="file docutils literal notranslate"><span class="pre">.pex`（Python</span> <span class="pre">EXecutable）文件的工具，提供独立的</span> <span class="pre">Python</span> <span class="pre">环境，类似于</span> <span class="pre">:ref:`virtualenv</span></code>。PEX 文件是 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/zipapp.html" title="（在 Python v3.13）"><span class="xref std std-doc">zipapps</span></a>，使得 Python 应用程序的部署像 <code class="docutils literal notranslate"><span class="pre">cp</span></code> 一样简单。单个 PEX 文件可以支持多个目标平台，并且可以从标准的 <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> 可解析的依赖项、使用 <code class="docutils literal notranslate"><span class="pre">pex3</span> <span class="pre">lock</span> <span class="pre">...</span></code> 生成的锁文件，甚至另一个 PEX 文件中创建。PEX 文件可以选择性地嵌入支持将 PEX 文件转换为标准 venv、绘制依赖关系图等功能的工具。</p>
+</div>
+<input class="tab-input" id="tab-set--32-input--2" name="tab-set--32" type="radio"><label class="tab-label" for="tab-set--32-input--2">英文</label><div class="tab-content docutils container">
+<p>Pex is a tool for generating <code class="file docutils literal notranslate"><span class="pre">.pex</span></code> (Python EXecutable)
+files, standalone Python environments in the spirit of <a class="reference internal" href="#virtualenv"><span class="std std-ref">virtualenv</span></a>.
+PEX files are <a class="reference external" href="https://docs.python.org/zh-cn/3/library/zipapp.html" title="（在 Python v3.13）"><span class="xref std std-doc">zipapps</span></a> that
+make deployment of Python applications as simple as <code class="docutils literal notranslate"><span class="pre">cp</span></code>. A single PEX
+file can support multiple target platforms and can be created from standard
+<a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a>-resolvable requirements, a lockfile generated with <code class="docutils literal notranslate"><span class="pre">pex3</span> <span class="pre">lock</span> <span class="pre">...</span></code>
+or even another PEX. PEX files can optionally have tools embedded that support
+turning the PEX file into a standard venv, graphing dependencies and more.</p>
+</div>
+</div>
+</section>
+<section id="pip-tools">
+<span id="id40"></span><h3>pip-tools<a class="headerlink" href="#pip-tools" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://pip-tools.readthedocs.io/en/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/jazzband/pip-tools/">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/pip-tools/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--33-input--1" name="tab-set--33" type="radio"><label class="tab-label" for="tab-set--33-input--1">中文</label><div class="tab-content docutils container">
+<p>pip-tools 是一套工具，专为 Python 系统管理员和发布经理设计，特别适合那些希望保持构建的确定性同时又能跟上其依赖项新版本的用户。用户可以通过哈希指定依赖项的特定版本，方便地从程序的其他部分的信息中生成正确格式的需求列表，更新所有依赖项（这是 <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> 当前不提供的功能），并为程序创建约束层以遵循。</p>
+</div>
+<input class="tab-input" id="tab-set--33-input--2" name="tab-set--33" type="radio"><label class="tab-label" for="tab-set--33-input--2">英文</label><div class="tab-content docutils container">
+<p>pip-tools is a suite of tools meant for Python system administrators
+and release managers who particularly want to keep their builds
+deterministic yet stay up to date with new versions of their
+dependencies. Users can specify particular release of their
+dependencies via hash, conveniently make a properly formatted list of
+requirements from information in other parts of their program, update
+all dependencies (a feature <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> currently does not provide), and
+create layers of constraints for the program to obey.</p>
+</div>
+</div>
+</section>
+<section id="pip2pi">
+<span id="id41"></span><h3>pip2pi<a class="headerlink" href="#pip2pi" title="Link to this heading">¶</a></h3>
+<p><a class="extlink-gh reference external" href="https://github.com/wolever/pip2pi">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/pip2pi/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--34-input--1" name="tab-set--34" type="radio"><label class="tab-label" for="tab-set--34-input--1">中文</label><div class="tab-content docutils container">
+<p>pip2pi 是一个 <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">包索引</span></a> 服务器，其中特定的包是手动同步的。</p>
+</div>
+<input class="tab-input" id="tab-set--34-input--2" name="tab-set--34" type="radio"><label class="tab-label" for="tab-set--34-input--2">英文</label><div class="tab-content docutils container">
+<p>pip2pi is a <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> server where specific packages are manually synchronised.</p>
+</div>
+</div>
+</section>
+<section id="piwheels">
+<span id="id42"></span><h3>piwheels<a class="headerlink" href="#piwheels" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://www.piwheels.org/">Website</a> |
+<a class="reference external" href="https://piwheels.readthedocs.io/en/latest/index.html" title="（在 Piwheels v0.20）"><span class="xref std std-doc">Docs</span></a> |
+<a class="reference external" href="https://github.com/piwheels/piwheels/">GitHub</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--35-input--1" name="tab-set--35" type="radio"><label class="tab-label" for="tab-set--35-input--1">中文</label><div class="tab-content docutils container">
+<p>piwheels 是一个网站及其底层软件，它从 PyPI 获取源代码分发包，并将它们编译成针对 Raspberry Pi 计算机安装优化的二进制 wheel 文件。Raspberry Pi OS 预先配置了 pip，将 piwheels.org 作为 PyPI 的附加索引。</p>
+</div>
+<input class="tab-input" id="tab-set--35-input--2" name="tab-set--35" type="radio"><label class="tab-label" for="tab-set--35-input--2">英文</label><div class="tab-content docutils container">
+<p>piwheels is a website, and software underpinning it, that fetches
+source code distribution packages from PyPI and compiles them into
+binary wheels that are optimized for installation onto Raspberry Pi
+computers. Raspberry Pi OS pre-configures pip to use piwheels.org as
+an additional index to PyPI.</p>
+</div>
+</div>
+</section>
+<section id="poetry">
+<span id="id43"></span><h3>poetry<a class="headerlink" href="#poetry" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://python-poetry.org/">Docs</a> |
+<a class="reference external" href="https://github.com/python-poetry/poetry">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/poetry/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--36-input--1" name="tab-set--36" type="radio"><label class="tab-label" for="tab-set--36-input--1">中文</label><div class="tab-content docutils container">
+<p>poetry 是一个命令行工具，用于处理依赖项安装和隔离，以及 Python 包的构建和打包。它使用 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>，并且不依赖于 <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> 中的解析器功能，而是提供了自己的依赖解析器。它通过本地缓存关于依赖项的元数据，试图加速用户的安装和依赖解析体验。</p>
+</div>
+<input class="tab-input" id="tab-set--36-input--2" name="tab-set--36" type="radio"><label class="tab-label" for="tab-set--36-input--2">英文</label><div class="tab-content docutils container">
+<p>poetry is a command-line tool to handle dependency installation and
+isolation as well as building and packaging of Python packages. It
+uses <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> and, instead of depending on the resolver
+functionality within <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a>, provides its own dependency resolver.
+It attempts to speed users' experience of installation and dependency
+resolution by locally caching metadata about dependencies.</p>
+</div>
+</div>
+</section>
+<section id="proxpi">
+<span id="id44"></span><h3>proxpi<a class="headerlink" href="#proxpi" title="Link to this heading">¶</a></h3>
+<p><a class="extlink-gh reference external" href="https://github.com/EpicWink/proxpi">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/proxpi/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--37-input--1" name="tab-set--37" type="radio"><label class="tab-label" for="tab-set--37-input--1">中文</label><div class="tab-content docutils container">
+<p>proxpi 是一个简单的 <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">包索引</span></a>，它使用缓存代理 PyPI 和其他索引。</p>
+</div>
+<input class="tab-input" id="tab-set--37-input--2" name="tab-set--37" type="radio"><label class="tab-label" for="tab-set--37-input--2">英文</label><div class="tab-content docutils container">
+<p>proxpi is a simple <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> which proxies PyPI and other indexes with caching.</p>
+</div>
+</div>
+</section>
+<section id="pulp-python">
+<span id="pulppython"></span><h3>Pulp-python<a class="headerlink" href="#pulp-python" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://docs.pulpproject.org/pulp_python/">Docs</a> |
+<a class="extlink-gh reference external" href="https://github.com/pulp/pulp_python">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/pulp-python/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--38-input--1" name="tab-set--38" type="radio"><label class="tab-label" for="tab-set--38-input--1">中文</label><div class="tab-content docutils container">
+<p>Pulp-python 是 <a class="reference external" href="https://pulpproject.org/">Pulp</a> 的 Python <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> 插件。Pulp-python 支持由本地或 <a class="reference external" href="https://aws.amazon.com/s3/">AWS S3</a> 支持的镜像、包上传以及代理到多个包索引。</p>
+</div>
+<input class="tab-input" id="tab-set--38-input--2" name="tab-set--38" type="radio"><label class="tab-label" for="tab-set--38-input--2">英文</label><div class="tab-content docutils container">
+<p>Pulp-python is the Python <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> plugin for
+<a class="reference external" href="https://pulpproject.org/">Pulp</a>. Pulp-python supports mirrors backed by
+local or <a class="reference external" href="https://aws.amazon.com/s3/">AWS S3</a>, package upload, and proxying to multiple package
+indexes.</p>
+</div>
+</div>
+</section>
+<section id="pypi-cloud">
+<span id="pypicloud"></span><h3>PyPI Cloud<a class="headerlink" href="#pypi-cloud" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://pypicloud.readthedocs.io/">Docs</a> |
+<a class="extlink-gh reference external" href="https://github.com/stevearc/pypicloud">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/pypicloud/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--39-input--1" name="tab-set--39" type="radio"><label class="tab-label" for="tab-set--39-input--1">中文</label><div class="tab-content docutils container">
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>未维护，项目已归档</p>
+</div>
+<p>PyPI Cloud 是一个 <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> 服务器，由 <a class="reference external" href="https://aws.amazon.com/s3/">AWS S3</a> 或其他云存储服务，或者本地文件提供支持。PyPI Cloud 支持对 PyPI 的重定向/缓存代理，以及认证和授权。</p>
+</div>
+<input class="tab-input" id="tab-set--39-input--2" name="tab-set--39" type="radio"><label class="tab-label" for="tab-set--39-input--2">英文</label><div class="tab-content docutils container">
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Not maintained, project archived</p>
+</div>
+<p>PyPI Cloud is a <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> server, backed by
+<a class="reference external" href="https://aws.amazon.com/s3/">AWS S3</a> or another cloud storage service, or local files. PyPI Cloud
+supports redirect/cached proxying for PyPI, as well as authentication and
+authorisation.</p>
+</div>
+</div>
+</section>
+<section id="pypiprivate">
+<span id="id46"></span><h3>pypiprivate<a class="headerlink" href="#pypiprivate" title="Link to this heading">¶</a></h3>
+<p><a class="extlink-gh reference external" href="https://github.com/helpshift/pypiprivate">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/pypiprivate/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--40-input--1" name="tab-set--40" type="radio"><label class="tab-label" for="tab-set--40-input--1">中文</label><div class="tab-content docutils container">
+<p>pypiprivate 将本地（或 <a class="reference external" href="https://aws.amazon.com/s3/">AWS S3</a> 托管的）包目录作为 <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">包索引</span></a> 提供。</p>
+</div>
+<input class="tab-input" id="tab-set--40-input--2" name="tab-set--40" type="radio"><label class="tab-label" for="tab-set--40-input--2">英文</label><div class="tab-content docutils container">
+<p>pypiprivate serves a local (or <a class="reference external" href="https://aws.amazon.com/s3/">AWS S3</a>-hosted) directory of packages as a <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a>.</p>
+</div>
+</div>
+</section>
+<section id="pypiserver">
+<span id="id47"></span><h3>pypiserver<a class="headerlink" href="#pypiserver" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://github.com/pypiserver/pypiserver">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/pypiserver/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--41-input--1" name="tab-set--41" type="radio"><label class="tab-label" for="tab-set--41-input--1">中文</label><div class="tab-content docutils container">
+<p>pypiserver 是一个极简的应用程序，作为组织内的私有 Python <span class="xref std std-term">package index &lt;Package Index&gt;`（来自本地目录）使用，提供一个简单的 API 和浏览器界面。你可以使用标准上传工具上传私有包，用户可以使用 :ref:`pip</span> 下载和安装这些包，而无需公开发布它们。使用 pypiserver 的组织通常会同时从 pypiserver 和 PyPI 下载包。</p>
+</div>
+<input class="tab-input" id="tab-set--41-input--2" name="tab-set--41" type="radio"><label class="tab-label" for="tab-set--41-input--2">英文</label><div class="tab-content docutils container">
+<p>pypiserver is a minimalist application that serves as a private Python
+<a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> (from a local directory) within
+organizations, implementing a simple API and
+browser interface. You can upload private packages using standard
+upload tools, and users can download and install them with <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a>,
+without publishing them publicly. Organizations who use pypiserver
+usually download packages both from pypiserver and from PyPI.</p>
+</div>
+</div>
+</section>
+<section id="pyscaffold">
+<span id="id48"></span><h3>PyScaffold<a class="headerlink" href="#pyscaffold" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://pyscaffold.org">Docs</a> |
+<a class="reference external" href="https://github.com/pyscaffold/pyscaffold">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/pyscaffold/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--42-input--1" name="tab-set--42" type="radio"><label class="tab-label" for="tab-set--42-input--1">中文</label><div class="tab-content docutils container">
+<p>PyScaffold 是一个用于引导 Python 包的项目生成器，生成的包已准备好共享到 PyPI 并通过 <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> 安装。它依赖于一组合理的默认配置，适用于已建立的工具（如 <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a>、<a class="reference external" href="https://docs.pytest.org/en/stable/">pytest</a> 和 <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a>），提供一个高效的开发环境，使开发者能够立即开始编码。PyScaffold 还可以与现有项目一起使用，简化打包过程。</p>
+</div>
+<input class="tab-input" id="tab-set--42-input--2" name="tab-set--42" type="radio"><label class="tab-label" for="tab-set--42-input--2">英文</label><div class="tab-content docutils container">
+<p>PyScaffold is a project generator for bootstrapping Python packages,
+ready to be shared on PyPI and installable via <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a>.
+It relies on a set of sane default configurations for established tools
+(such as <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a>, <a class="reference external" href="https://docs.pytest.org/en/stable/">pytest</a> and <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a>) to provide a productive
+environment so developers can start coding right away.
+PyScaffold can also be used with existing projects to make packaging
+easier.</p>
+</div>
+</div>
+</section>
+<section id="pywharf">
+<span id="id49"></span><h3>pywharf<a class="headerlink" href="#pywharf" title="Link to this heading">¶</a></h3>
+<p><a class="extlink-gh reference external" href="https://github.com/pywharf/pywharf">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/pywharf">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--43-input--1" name="tab-set--43" type="radio"><label class="tab-label" for="tab-set--43-input--1">中文</label><div class="tab-content docutils container">
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>未维护，项目已归档</p>
+</div>
+<p>pywharf 是一个 <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">包索引</span></a> 服务器，在本地或从 <a class="reference external" href="https://github.com/">GitHub</a> 提供文件。</p>
+</div>
+<input class="tab-input" id="tab-set--43-input--2" name="tab-set--43" type="radio"><label class="tab-label" for="tab-set--43-input--2">英文</label><div class="tab-content docutils container">
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Not maintained, project archived</p>
+</div>
+<p>pywharf is a <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> server, serving files locally or from <a class="reference external" href="https://github.com/">GitHub</a>.</p>
+</div>
+</div>
+</section>
+<section id="scikit-build">
+<span id="id51"></span><h3>scikit-build<a class="headerlink" href="#scikit-build" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://scikit-build.readthedocs.io/en/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/scikit-build/scikit-build/">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/scikit-build">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--44-input--1" name="tab-set--44" type="radio"><label class="tab-label" for="tab-set--44-input--1">中文</label><div class="tab-content docutils container">
+<p>Scikit-build 是一个用于 CPython 的 <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a> 封装器，用于构建 C/C++/Fortran/Cython 扩展。它使用 <a class="reference external" href="https://pypi.org/project/cmake">cmake</a> （可在 PyPI 上获取）提供更好的支持，适用于额外的编译器、构建系统、交叉编译，以及定位依赖项及其相关的构建需求。为了加速和并行化大型项目的构建，用户可以安装 <a class="reference external" href="https://pypi.org/project/ninja">ninja</a> （同样可在 PyPI 上获取）。</p>
+</div>
+<input class="tab-input" id="tab-set--44-input--2" name="tab-set--44" type="radio"><label class="tab-label" for="tab-set--44-input--2">英文</label><div class="tab-content docutils container">
+<p>Scikit-build is a <a class="reference internal" href="#setuptools"><span class="std std-ref">Setuptools</span></a> wrapper for CPython that builds
+C/C++/Fortran/Cython extensions It uses
+<a class="reference external" href="https://pypi.org/project/cmake">cmake</a> (available on PyPI) to provide
+better support for additional compilers, build systems, cross compilation, and
+locating dependencies and their associated build requirements. To speed up and
+parallelize the build of large projects, the user can install <a class="reference external" href="https://pypi.org/project/ninja">ninja</a> (also available on PyPI).</p>
+</div>
+</div>
+</section>
+<section id="scikit-build-core">
+<span id="id52"></span><h3>scikit-build-core<a class="headerlink" href="#scikit-build-core" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://scikit-build-core.readthedocs.io/en/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/scikit-build/scikit-build-core/">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/scikit-build-core">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--45-input--1" name="tab-set--45" type="radio"><label class="tab-label" for="tab-set--45-input--1">中文</label><div class="tab-content docutils container">
+<p>Scikit-build-core 是一个用于 CPython C/C++/Fortran/Cython 扩展的构建后端。它使用户能够使用 <a class="reference external" href="https://pypi.org/project/cmake">cmake</a> （可在 PyPI 上获取）编写扩展，以提供对额外编译器、构建系统、交叉编译以及定位依赖项及其相关构建需求的更好支持。如果系统上没有 CMake/Ninja，它们会自动从 PyPI 下载。</p>
+</div>
+<input class="tab-input" id="tab-set--45-input--2" name="tab-set--45" type="radio"><label class="tab-label" for="tab-set--45-input--2">英文</label><div class="tab-content docutils container">
+<p>Scikit-build-core is a build backend for CPython C/C++/Fortran/Cython
+extensions.  It enables users to write extensions with <a class="reference external" href="https://pypi.org/project/cmake">cmake</a> (available on PyPI) to provide better
+support for additional compilers, build systems, cross compilation, and
+locating dependencies and their associated build requirements. CMake/Ninja
+are automatically downloaded from PyPI if not available on the system.</p>
+</div>
+</div>
+</section>
+<section id="shiv">
+<span id="id53"></span><h3>shiv<a class="headerlink" href="#shiv" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://shiv.readthedocs.io/en/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/linkedin/shiv">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/shiv/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--46-input--1" name="tab-set--46" type="radio"><label class="tab-label" for="tab-set--46-input--1">中文</label><div class="tab-content docutils container">
+<p>shiv 是一个命令行工具，用于构建完全自包含的 Python zipapp，如 <span class="target" id="index-6"></span><a class="pep reference external" href="https://peps.python.org/pep-0441/"><strong>PEP 441</strong></a> 中所述，但包含了所有的依赖项。它的主要目标是使得分发 Python 应用程序和命令行工具变得快速且简便。</p>
+</div>
+<input class="tab-input" id="tab-set--46-input--2" name="tab-set--46" type="radio"><label class="tab-label" for="tab-set--46-input--2">英文</label><div class="tab-content docutils container">
+<p>shiv is a command line utility for building fully self contained
+Python zipapps as outlined in <span class="target" id="index-7"></span><a class="pep reference external" href="https://peps.python.org/pep-0441/"><strong>PEP 441</strong></a>, but with all their
+dependencies included. Its primary goal is making distributing Python
+applications and command line tools fast &amp; easy.</p>
+</div>
+</div>
+</section>
+<section id="simpleindex">
+<span id="id54"></span><h3>simpleindex<a class="headerlink" href="#simpleindex" title="Link to this heading">¶</a></h3>
+<p><a class="extlink-gh reference external" href="https://github.com/uranusjr/simpleindex">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/simpleindex/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--47-input--1" name="tab-set--47" type="radio"><label class="tab-label" for="tab-set--47-input--1">中文</label><div class="tab-content docutils container">
+<p>simpleindex 是一个 <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a>，它将 URL 路由到多个包索引（包括 PyPI），提供本地（或云托管，例如 <a class="reference external" href="https://aws.amazon.com/s3/">AWS S3</a>，通过自定义插件）包目录的服务，并支持自定义插件。</p>
+</div>
+<input class="tab-input" id="tab-set--47-input--2" name="tab-set--47" type="radio"><label class="tab-label" for="tab-set--47-input--2">英文</label><div class="tab-content docutils container">
+<p>simpleindex is a <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> which routes URLs to
+multiple package indexes (including PyPI), serves local (or cloud-hosted,
+for example <a class="reference external" href="https://aws.amazon.com/s3/">AWS S3</a>, with a custom plugin) directories of packages, and
+supports custom plugins.</p>
+</div>
+</div>
+</section>
+<section id="spack">
+<span id="id55"></span><h3>Spack<a class="headerlink" href="#spack" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://spack.readthedocs.io/en/latest/index.html" title="（在 Spack v0.24）"><span class="xref std std-doc">Docs</span></a> |
+<a class="reference external" href="https://github.com/spack/spack">GitHub</a> |
+<a class="reference external" href="https://www.computer.org/csdl/proceedings-article/sc/2015/2807623/12OmNBf94Xq">Paper</a> |
+<a class="reference external" href="https://tgamblin.github.io/files/Gamblin-Spack-SC15-Talk.pdf">Slides</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--48-input--1" name="tab-set--48" type="radio"><label class="tab-label" for="tab-set--48-input--1">中文</label><div class="tab-content docutils container">
+<p>Spack 是一个灵活的包管理器，旨在支持多个版本、配置、平台和编译器。Spack 类似于 Homebrew，但包是用 Python 编写的，并且进行了参数化，以允许轻松切换编译器、库版本、构建选项等。多个版本的包可以在同一系统上共存。Spack 旨在快速构建高性能科学应用程序，特别是在集群和超级计算机上。</p>
+<p>Spack 目前不在 PyPI 上（尚未），但它无需安装，可以在从 GitHub 克隆后立即使用。</p>
+</div>
+<input class="tab-input" id="tab-set--48-input--2" name="tab-set--48" type="radio"><label class="tab-label" for="tab-set--48-input--2">英文</label><div class="tab-content docutils container">
+<p>A flexible package manager designed to support multiple versions,
+configurations, platforms, and compilers.  Spack is like Homebrew, but
+packages are written in Python and parameterized to allow easy
+swapping of compilers, library versions, build options,
+etc. Arbitrarily many versions of packages can coexist on the same
+system. Spack was designed for rapidly building high performance
+scientific applications on clusters and supercomputers.</p>
+<p>Spack is not in PyPI (yet), but it requires no installation and can be
+used immediately after cloning from GitHub.</p>
+</div>
+</div>
+</section>
+<section id="zest-releaser">
+<span id="zestreleaser"></span><h3>zest.releaser<a class="headerlink" href="#zest-releaser" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://zestreleaser.readthedocs.io/en/latest/">Docs</a> |
+<a class="reference external" href="https://github.com/zestsoftware/zest.releaser/">GitHub</a> |
+<a class="reference external" href="https://pypi.org/project/zest.releaser/">PyPI</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--49-input--1" name="tab-set--49" type="radio"><label class="tab-label" for="tab-set--49-input--1">中文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">zest.releaser</span></code> 是一个 Python 包发布工具，提供了一个基于 <a class="reference internal" href="#twine"><span class="std std-ref">twine</span></a> 的抽象层。Python 开发者使用 <code class="docutils literal notranslate"><span class="pre">zest.releaser</span></code> 来自动化增量包版本号、更新变更日志、在版本控制中标记发布以及将新包上传到 PyPI。</p>
+</div>
+<input class="tab-input" id="tab-set--49-input--2" name="tab-set--49" type="radio"><label class="tab-label" for="tab-set--49-input--2">英文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">zest.releaser</span></code> is a Python package release tool providing an
+abstraction layer on top of <a class="reference internal" href="#twine"><span class="std std-ref">twine</span></a>. Python developers use
+<code class="docutils literal notranslate"><span class="pre">zest.releaser</span></code> to automate incrementing package version numbers,
+updating changelogs, tagging releases in source control, and uploading
+new packages to PyPI.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id56">
+<h2>标准库项目<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h2>
+<p><strong>Standard Library Projects</strong></p>
+<section id="ensurepip">
+<span id="id57"></span><h3>ensurepip<a class="headerlink" href="#ensurepip" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://docs.python.org/3/library/ensurepip.html">Docs</a> |
+<a class="reference external" href="https://bugs.python.org/">Issues</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--50-input--1" name="tab-set--50" type="radio"><label class="tab-label" for="tab-set--50-input--1">中文</label><div class="tab-content docutils container">
+<p>Python 标准库中的一个包，提供了将 <a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> 引导到现有 Python 安装或虚拟环境中的支持。在大多数情况下，最终用户不会直接使用这个模块，而是在构建 Python 发行版时使用它。</p>
+</div>
+<input class="tab-input" id="tab-set--50-input--2" name="tab-set--50" type="radio"><label class="tab-label" for="tab-set--50-input--2">英文</label><div class="tab-content docutils container">
+<p>A package in the Python Standard Library that provides support for bootstrapping
+<a class="reference internal" href="#pip"><span class="std std-ref">pip</span></a> into an existing Python installation or virtual environment.  In most
+cases, end users won't use this module, but rather it will be used during the
+build of the Python distribution.</p>
+</div>
+</div>
+</section>
+<section id="http-server">
+<span id="httpserver"></span><h3>http.server<a class="headerlink" href="#http-server" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/http.server.html" title="（在 Python v3.13）"><span class="xref std std-doc">Docs</span></a> |
+<a class="extlink-gh reference external" href="https://github.com/python/cpython/issues">Issues</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--51-input--1" name="tab-set--51" type="radio"><label class="tab-label" for="tab-set--51-input--1">中文</label><div class="tab-content docutils container">
+<p>一个包和命令行接口，可以将目录托管为网站，例如作为一个 <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> （参见 <a class="reference internal" href="guides/hosting-your-own-index.html#hosting-your-own-simple-repository"><span class="std std-ref">托管您自己的简单存储库</span></a>）。</p>
+</div>
+<input class="tab-input" id="tab-set--51-input--2" name="tab-set--51" type="radio"><label class="tab-label" for="tab-set--51-input--2">英文</label><div class="tab-content docutils container">
+<p>A package and command-line interface which can host a directory as a
+website, for example as a <a class="reference internal" href="glossary.html#term-Package-Index"><span class="xref std std-term">package index</span></a> (see
+<a class="reference internal" href="guides/hosting-your-own-index.html#hosting-your-own-simple-repository"><span class="std std-ref">托管您自己的简单存储库</span></a>).</p>
+</div>
+</div>
+</section>
+<section id="venv">
+<span id="id58"></span><h3>venv<a class="headerlink" href="#venv" title="Link to this heading">¶</a></h3>
+<p><a class="reference external" href="https://docs.python.org/3/library/venv.html">Docs</a> |
+<a class="reference external" href="https://github.com/python/cpython/issues">Issues</a></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--52-input--1" name="tab-set--52" type="radio"><label class="tab-label" for="tab-set--52-input--1">中文</label><div class="tab-content docutils container">
+<p>Python 标准库中的一个包（从 Python 3.3 开始），用于创建 <a class="reference internal" href="glossary.html#term-Virtual-Environment"><span class="xref std std-term">Virtual Environments</span></a>。有关更多信息，请参见 <a class="reference internal" href="tutorials/installing-packages.html#creating-and-using-virtual-environments"><span class="std std-ref">创建和使用虚拟环境</span></a> 部分。</p>
+</div>
+<input class="tab-input" id="tab-set--52-input--2" name="tab-set--52" type="radio"><label class="tab-label" for="tab-set--52-input--2">英文</label><div class="tab-content docutils container">
+<p>A package in the Python Standard Library (starting with Python 3.3) for creating <a class="reference internal" href="glossary.html#term-Virtual-Environment"><span class="xref std std-term">Virtual Environments</span></a>.  For more information, see the section on <a class="reference internal" href="tutorials/installing-packages.html#creating-and-using-virtual-environments"><span class="std std-ref">创建虚拟环境</span></a>.</p>
+</div>
+</div>
+<hr class="docutils" />
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="glossary.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">术语</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="specifications/simple-repository-api.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Simple 仓库 API</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2013–2020, PyPA
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2024 年 11 月 15 日</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">项目摘要</a><ul>
+<li><a class="reference internal" href="#pypa">PyPA 项目</a><ul>
+<li><a class="reference internal" href="#bandersnatch">bandersnatch</a></li>
+<li><a class="reference internal" href="#build">build</a></li>
+<li><a class="reference internal" href="#cibuildwheel">cibuildwheel</a></li>
+<li><a class="reference internal" href="#distlib">distlib</a></li>
+<li><a class="reference internal" href="#distutils">distutils</a></li>
+<li><a class="reference internal" href="#flit">flit</a></li>
+<li><a class="reference internal" href="#hatch">hatch</a></li>
+<li><a class="reference internal" href="#packaging">packaging</a></li>
+<li><a class="reference internal" href="#pip">pip</a></li>
+<li><a class="reference internal" href="#pipenv">Pipenv</a></li>
+<li><a class="reference internal" href="#pipfile">Pipfile</a></li>
+<li><a class="reference internal" href="#pipx">pipx</a></li>
+<li><a class="reference internal" href="#python">Python 打包用户指南</a></li>
+<li><a class="reference internal" href="#readme-renderer">readme_renderer</a></li>
+<li><a class="reference internal" href="#easy-install">Setuptools</a></li>
+<li><a class="reference internal" href="#trove-classifiers">trove-classifiers</a></li>
+<li><a class="reference internal" href="#twine">twine</a></li>
+<li><a class="reference internal" href="#virtualenv">virtualenv</a></li>
+<li><a class="reference internal" href="#warehouse">Warehouse</a></li>
+<li><a class="reference internal" href="#wheel">wheel</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id26">非 PyPA 项目</a><ul>
+<li><a class="reference internal" href="#buildout">buildout</a></li>
+<li><a class="reference internal" href="#conda">conda</a></li>
+<li><a class="reference internal" href="#devpi">devpi</a></li>
+<li><a class="reference internal" href="#dumb-pypi">dumb-pypi</a></li>
+<li><a class="reference internal" href="#enscons">enscons</a></li>
+<li><a class="reference internal" href="#flask-pypi-proxy">Flask-Pypi-Proxy</a></li>
+<li><a class="reference internal" href="#hashdist">Hashdist</a></li>
+<li><a class="reference internal" href="#maturin">Maturin</a></li>
+<li><a class="reference internal" href="#meson-python">meson-python</a></li>
+<li><a class="reference internal" href="#multibuild">multibuild</a></li>
+<li><a class="reference internal" href="#nginx-pypi-cache">nginx_pypi_cache</a></li>
+<li><a class="reference internal" href="#pdm">pdm</a></li>
+<li><a class="reference internal" href="#pex">pex</a></li>
+<li><a class="reference internal" href="#pip-tools">pip-tools</a></li>
+<li><a class="reference internal" href="#pip2pi">pip2pi</a></li>
+<li><a class="reference internal" href="#piwheels">piwheels</a></li>
+<li><a class="reference internal" href="#poetry">poetry</a></li>
+<li><a class="reference internal" href="#proxpi">proxpi</a></li>
+<li><a class="reference internal" href="#pulp-python">Pulp-python</a></li>
+<li><a class="reference internal" href="#pypi-cloud">PyPI Cloud</a></li>
+<li><a class="reference internal" href="#pypiprivate">pypiprivate</a></li>
+<li><a class="reference internal" href="#pypiserver">pypiserver</a></li>
+<li><a class="reference internal" href="#pyscaffold">PyScaffold</a></li>
+<li><a class="reference internal" href="#pywharf">pywharf</a></li>
+<li><a class="reference internal" href="#scikit-build">scikit-build</a></li>
+<li><a class="reference internal" href="#scikit-build-core">scikit-build-core</a></li>
+<li><a class="reference internal" href="#shiv">shiv</a></li>
+<li><a class="reference internal" href="#simpleindex">simpleindex</a></li>
+<li><a class="reference internal" href="#spack">Spack</a></li>
+<li><a class="reference internal" href="#zest-releaser">zest.releaser</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id56">标准库项目</a><ul>
+<li><a class="reference internal" href="#ensurepip">ensurepip</a></li>
+<li><a class="reference internal" href="#http-server">http.server</a></li>
+<li><a class="reference internal" href="#venv">venv</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=7d86a446"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="_static/tabs.js?v=3ee01567"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=cb5fb026"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    </body>
+</html>

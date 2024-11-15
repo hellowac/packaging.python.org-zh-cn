@@ -1,0 +1,1077 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="genindex.html" /><link rel="search" title="搜索" href="search.html" /><link rel="next" title="打包流程" href="flow.html" /><link rel="prev" title="Python打包用户指南" href="index.html" />
+
+    <link rel="shortcut icon" href="_static/py.png"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>概述 - Python Packaging User Guide</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Python Packaging User Guide</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">Python Packaging User Guide</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flow.html">打包流程</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/installing-packages.html">安装软件包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/managing-dependencies.html">管理依赖项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/packaging-projects.html">打包Python项目</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="guides/index.html">指南</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="guides/section-install.html">安装</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 安装</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-using-pip-and-virtual-environments.html">使用 pip 和 venv 在虚拟环境中安装软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-using-virtualenv.html">使用虚拟环境安装包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-stand-alone-command-line-tools.html">安装独立的命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-using-linux-tools.html">使用 Linux 包管理器安装 pip/setuptools/wheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-scientific-packages.html">安装科学软件包</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="guides/section-build-and-publish.html">构建和发布</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 构建和发布</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="guides/writing-pyproject-toml.html">编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/distributing-packages-using-setuptools.html">打包和分发项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/dropping-older-python-versions.html">放弃对旧版 Python 的支持</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/packaging-binary-extensions.html">打包二进制扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/packaging-namespace-packages.html">打包命名空间包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/creating-command-line-tools.html">创建和打包命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/creating-and-discovering-plugins.html">创建和发现插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/using-testpypi.html">使用 TestPyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/making-a-pypi-friendly-readme.html">制作适合 PyPI 的 README</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows.html">使用 GitHub Actions CI/CD 工作流发布软件包分发版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/modernize-setup-py-project.html">如何使基于 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 的项目现代化？</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="guides/section-hosting.html">托管</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of 托管</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="guides/index-mirrors-and-caches.html">包索引镜像和缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/hosting-your-own-index.html">托管您自己的简单存储库</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="guides/tool-recommendations.html">工具推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/analyzing-pypi-package-downloads.html">分析 PyPI 软件包下载</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="discussions/index.html">讨论</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 讨论</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="discussions/versioning.html">版本控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/deploying-python-applications.html">部署 Python 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/pip-vs-easy-install.html">pip vs easy_install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/install-requires-vs-requirements.html">install_requires 与需求文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/distribution-package-vs-import-package.html">分发包与导入包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/package-formats.html">软件包格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/src-layout-vs-flat-layout.html">src 布局与平面布局</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/setup-py-deprecated.html"><code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 已被弃用吗？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/single-source-version.html">单一来源项目版本</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="specifications/index.html">PyPA 规范</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of PyPA 规范</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="specifications/section-distribution-metadata.html">包分发元数据</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 包分发元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="specifications/name-normalization.html">名称和规范化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/core-metadata.html">核心元数据规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/version-specifiers.html">版本标识符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/dependency-specifiers.html">依赖说明符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/pyproject-toml.html"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/inline-script-metadata.html">内联脚本元数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/platform-compatibility-tags.html">平台兼容性标签</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/well-known-project-urls.html">元数据中的知名项目 URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="specifications/section-installation-metadata.html">包安装元数据</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 包安装元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="specifications/recording-installed-packages.html">记录已安装的项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/entry-points.html">入口点规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/direct-url.html">记录已安装发行版的直接 URL 来源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/direct-url-data-structure.html">直接 URL 数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/virtual-environments.html">Python 虚拟环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/externally-managed-environments.html">外部管理环境</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="specifications/section-distribution-formats.html">包分发文件格式</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 包分发文件格式</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="specifications/source-distribution-format.html">源分发格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/binary-distribution-format.html">二进制分发格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="specifications/section-package-indices.html">包索引接口</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of 包索引接口</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="specifications/pypirc.html"><code class="file docutils literal notranslate"><span class="pre">.pypirc</span></code> 文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/simple-repository-api.html">Simple 仓库 API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="key_projects.html">项目摘要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">如何获取支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">为本指南做出贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">新闻</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/overview.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="id1">
+<h1>概述<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
+<p><strong>Overview of Python Packaging</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>作为一种通用编程语言，Python 旨在多种方式使用。您可以用它构建网站、工业机器人或为朋友们制作游戏，等等，所有这些都可以使用相同的核心技术。</p>
+<p>Python 的灵活性正是为什么每个 Python 项目的第一步必须是思考项目的受众和项目运行的环境。虽然在编写代码之前考虑打包可能看起来有些奇怪，但这个过程可以有效避免未来的麻烦。</p>
+<p>本概述提供了一个通用的决策树，帮助您理清 Python 众多打包选项。继续阅读，选择最适合您下一个项目的技术。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>As a general-purpose programming language, Python is designed to be
+used in many ways. You can build web sites or industrial robots or a
+game for your friends to play, and much more, all using the same
+core technology.</p>
+<p>Python's flexibility is why the first step in every Python project
+must be to think about the project's audience and the corresponding
+environment where the project will run. It might seem strange to think
+about packaging before writing code, but this process does wonders for
+avoiding future headaches.</p>
+<p>This overview provides a general-purpose decision tree for reasoning
+about Python's plethora of packaging options. Read on to choose the best
+technology for your next project.</p>
+</div>
+</div>
+<section id="id2">
+<h2>考虑部署<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<p><strong>Thinking about deployment</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>软件包的存在是为了被安装（或 <em>部署</em> ），因此在打包任何内容之前，您需要回答以下一些关于部署的问题：</p>
+<ul class="simple">
+<li><p>谁是您的软件用户？您的软件是由从事软件开发的其他开发人员、数据中心的运维人员，还是一些不太懂软件的用户群体安装？</p></li>
+<li><p>您的软件是打算在服务器、桌面、移动客户端（手机、平板等）上运行，还是嵌入到专用设备中？</p></li>
+<li><p>您的软件是单独安装，还是以大规模批量部署的方式安装？</p></li>
+</ul>
+<p>打包与目标环境和部署体验密切相关。上述问题有很多不同的答案，每种情况组合都有其解决方案。根据这些信息，以下概述将帮助您选择最适合您项目的打包技术。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>Packages exist to be installed (or <em>deployed</em>), so before you package
+anything, you'll want to have some answers to the deployment questions
+below:</p>
+<ul class="simple">
+<li><p>Who are your software's users? Will your software be installed by other developers doing software development, operations people in a datacenter, or a less software-savvy group?</p></li>
+<li><p>Is your software intended to run on servers, desktops, mobile clients (phones, tablets, etc.), or embedded in dedicated devices?</p></li>
+<li><p>Is your software installed individually, or in large deployment batches?</p></li>
+</ul>
+<p>Packaging is all about target environment and deployment
+experience. There are many answers to the questions above and each
+combination of circumstances has its own solutions. With this
+information, the following overview will guide you to the packaging
+technologies best suited to your project.</p>
+</div>
+</div>
+</section>
+<section id="python">
+<h2>打包 Python 库和工具<a class="headerlink" href="#python" title="Link to this heading">¶</a></h2>
+<p><strong>Packaging Python libraries and tools</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>您可能听说过 PyPI、 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 和 <code class="docutils literal notranslate"><span class="pre">wheel</span></code> 文件。这些只是 Python 生态系统提供的用于将 Python 代码分发给开发人员的一些工具，您可以在 <a class="reference internal" href="guides/distributing-packages-using-setuptools.html"><span class="doc">打包和分发项目</span></a> 中阅读更多内容。</p>
+<p>以下的打包方法适用于在开发环境中由技术人员使用的库和工具。如果您正在寻找为非技术用户和/或生产环境打包 Python 的方法，请跳到 <a class="reference internal" href="#packaging-applications"><span class="std std-ref">打包 Python 应用程序</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>You may have heard about PyPI, <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>, and <code class="docutils literal notranslate"><span class="pre">wheel</span></code>
+files. These are just a few of the tools Python's ecosystem provides
+for distributing Python code to developers, which you can read about in
+<a class="reference internal" href="guides/distributing-packages-using-setuptools.html"><span class="doc">打包和分发项目</span></a>.</p>
+<p>The following approaches to packaging are meant for libraries and
+tools used by technical audience in a development setting. If you're
+looking for ways to package Python for a non-technical audience and/or
+a production setting, skip ahead to <a class="reference internal" href="#packaging-applications"><span class="std std-ref">打包 Python 应用程序</span></a>.</p>
+</div>
+</div>
+<section id="id3">
+<h3>Python 模块<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<p><strong>Python modules</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>一个 Python 文件，只要它仅依赖于标准库，就可以重新分发和重用。您还需要确保它是为正确版本的 Python 编写的，并且只依赖于标准库。</p>
+<p>这种方式非常适合在使用兼容 Python 版本的人之间共享简单的脚本和代码片段（例如通过电子邮件、StackOverflow 或 GitHub gists）。甚至有一些整个 Python 库也提供了这种选项，比如 <a class="reference external" href="https://bottlepy.org/docs/dev/tutorial.html" title="（在 Bottle v0.14）"><span class="xref std std-doc">bottle.py</span></a> 和 <a class="reference external" href="https://boltons.readthedocs.io/en/latest/architecture.html" title="（在 boltons v24.1）"><span class="xref std std-doc">boltons</span></a>。</p>
+<p>然而，对于由多个文件组成、需要额外库或需要特定版本 Python 的项目，这种模式就不适用了，因此下面列出了其他选项。</p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>A Python file, provided it only relies on the standard library, can be
+redistributed and reused. You will also need to ensure it's written
+for the right version of Python, and only relies on the standard
+library.</p>
+<p>This is great for sharing simple scripts and snippets between people
+who both have compatible Python versions (such as via email,
+StackOverflow, or GitHub gists). There are even some entire Python
+libraries that offer this as an option, such as
+<a class="reference external" href="https://bottlepy.org/docs/dev/tutorial.html" title="（在 Bottle v0.14）"><span class="xref std std-doc">bottle.py</span></a> and <a class="reference external" href="https://boltons.readthedocs.io/en/latest/architecture.html" title="（在 boltons v24.1）"><span class="xref std std-doc">boltons</span></a>.</p>
+<p>However, this pattern won't scale for projects that consist of
+multiple files, need additional libraries, or need a specific version
+of Python, hence the options below.</p>
+</div>
+</div>
+</section>
+<section id="id4">
+<h3>Python 源代码发行版<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<p><strong>Python source distributions</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>如果您的代码由多个 Python 文件组成，通常会以目录结构的形式进行组织。任何包含 Python 文件的目录都可以构成一个 <a class="reference internal" href="glossary.html#term-Import-Package"><span class="xref std std-term">导入包</span></a>。</p>
+<p>由于包由多个文件组成，它们的分发变得更为复杂。大多数协议仅支持一次传输一个文件（您上次点击链接并下载多个文件是什么时候？）。这增加了获取不完整传输的风险，并且更难确保目标位置的代码完整性。</p>
+<p>只要您的代码仅包含纯 Python 代码，并且您知道您的部署环境支持您的 Python 版本，那么您可以使用 Python 的原生打包工具创建一个 <em>源代码</em> <a class="reference internal" href="glossary.html#term-8"><span class="xref std std-term">分发包</span></a>，简称 <em>sdist</em> 。</p>
+<p>Python 的 <em>sdist</em> 是压缩档案文件（ <code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> 文件），其中包含一个或多个包或模块。如果您的代码是纯 Python 的，并且只依赖其他 Python 包，您可以查阅 <span class="xref std std-ref">源代码分发格式</span> 规范了解更多信息。</p>
+<p>如果您的代码依赖任何非 Python 代码或非 Python 包（例如 <a class="reference external" href="https://pypi.org/project/lxml/">lxml</a> 中的 <a class="reference external" href="https://en.wikipedia.org/wiki/Libxml2">libxml2</a>，或 <a class="reference external" href="https://pypi.org/project/numpy">numpy</a> 中的 BLAS 库），您将需要使用下一节中介绍的格式，这对于纯 Python 库也有许多优点。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Python 和 PyPI 支持多种分发方式，提供相同包的不同实现。例如，已不再维护但具有重要意义的 <a class="reference external" href="https://pypi.org/project/PIL/">PIL 分发包</a> 提供了 PIL 包，而 <a class="reference external" href="https://pypi.org/project/Pillow/">Pillow</a> 是 PIL 的一个活跃维护的分支！</p>
+<p>这个 Python 打包的超级能力使得 Pillow 可以作为 PIL 的即插即用替代品，只需更改项目的 <code class="docutils literal notranslate"><span class="pre">install_requires</span></code> 或 <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>If your code consists of multiple Python files, it's usually organized
+into a directory structure. Any directory containing Python files can
+comprise an <a class="reference internal" href="glossary.html#term-Import-Package"><span class="xref std std-term">Import Package</span></a>.</p>
+<p>Because packages consist of multiple files, they are harder to
+distribute. Most protocols support transferring only one file at a
+time (when was the last time you clicked a link and it downloaded
+multiple files?). It's easier to get incomplete transfers, and harder
+to guarantee code integrity at the destination.</p>
+<p>So long as your code contains nothing but pure Python code, and you
+know your deployment environment supports your version of Python, then
+you can use Python's native packaging tools to create a <em>source</em>
+<a class="reference internal" href="glossary.html#term-Distribution-Package"><span class="xref std std-term">Distribution Package</span></a>, or <em>sdist</em> for short.</p>
+<p>Python's <em>sdists</em> are compressed archives (<code class="docutils literal notranslate"><span class="pre">.tar.gz</span></code> files)
+containing one or more packages or modules. If your code is
+pure-Python, and you only depend on other Python packages, you can
+go to the <a class="reference internal" href="specifications/source-distribution-format.html#source-distribution-format"><span class="std std-ref">源分发格式</span></a> specification to learn more.</p>
+<p>If you rely on any non-Python code, or non-Python packages (such as
+<a class="reference external" href="https://en.wikipedia.org/wiki/Libxml2">libxml2</a> in the case of
+<a class="reference external" href="https://pypi.org/project/lxml/">lxml</a>, or BLAS libraries in the
+case of <a class="reference external" href="https://pypi.org/project/numpy">numpy</a>), you will need to
+use the format detailed in the next section, which also has many
+advantages for pure-Python libraries.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Python and PyPI support multiple distributions providing
+different implementations of the same package. For instance the
+unmaintained-but-seminal <a class="reference external" href="https://pypi.org/project/PIL/">PIL distribution</a> provides the PIL package, and so
+does <a class="reference external" href="https://pypi.org/project/Pillow/">Pillow</a>, an
+actively-maintained fork of PIL!</p>
+<p>This Python packaging superpower makes it possible for Pillow to be
+a drop-in replacement for PIL, just by changing your project's
+<code class="docutils literal notranslate"><span class="pre">install_requires</span></code> or <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="id9">
+<h3>Python 二进制发行版<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<p><strong>Python binary distributions</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>Python 的实际能力在于它能够与软件生态系统集成，尤其是与用 C、C++、Fortran、Rust 和其他语言编写的库进行集成。</p>
+<p>并不是所有开发者都有构建这些用编译语言编写的组件的工具或经验，因此 Python 创建了 <span class="xref std std-term">Wheel`（轮子），一种旨在传输包含编译产物的库的包格式。事实上，Python 的包安装器 ``pip`</span> 总是优先使用 Wheel 格式，因为安装速度更快，因此即使是纯 Python 包，使用 Wheel 格式也能更好地工作。</p>
+<p>二进制分发包在与源代码分发包一起提供时效果最好。即使您没有为每个操作系统上传您的代码的 Wheel 文件，通过上传 sdist，您仍然能让其他平台的用户自行构建您的代码。建议默认同时发布 sdist 和 wheel 文件， <em>除非</em> 您正在为一个特定的用例创建构件，并且知道接收方只需要其中之一。</p>
+<p>Python 和 PyPI 使得同时上传 Wheel 和 sdist 文件变得非常简单。只需按照 <a class="reference internal" href="tutorials/packaging-projects.html"><span class="doc">打包Python项目</span></a> 中的教程操作。</p>
+<figure class="align-default" id="id57">
+<a class="reference internal image-reference" href="_images/py_pkg_tools_and_libs.png"><img alt="Python 的工具和库打包能力概览。" src="_images/py_pkg_tools_and_libs.png" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Python 推荐的内置库和工具打包技术。摘自 <a class="reference external" href="https://www.youtube.com/watch?v=iLVNWfPWAC8">The Packaging Gradient (2017)</a>。</span><a class="headerlink" href="#id57" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>So much of Python's practical power comes from its ability to
+integrate with the software ecosystem, in particular libraries written
+in C, C++, Fortran, Rust, and other languages.</p>
+<p>Not all developers have the right tools or experiences to build these
+components written in these compiled languages, so Python created the
+<a class="reference internal" href="glossary.html#term-Wheel"><span class="xref std std-term">Wheel</span></a>, a package format designed to ship libraries with
+compiled artifacts. In fact, Python's package installer, <code class="docutils literal notranslate"><span class="pre">pip</span></code>,
+always prefers wheels because installation is always faster, so even
+pure-Python packages work better with wheels.</p>
+<p>Binary distributions are best when they come with source distributions
+to match. Even if you don't upload wheels of your code for every
+operating system, by uploading the sdist, you're enabling users of
+other platforms to still build it for themselves. Default to
+publishing both sdist and wheel archives together, <em>unless</em> you're
+creating artifacts for a very specific use case where you know the
+recipient only needs one or the other.</p>
+<p>Python and PyPI make it easy to upload both wheels and sdists
+together. Just follow the <a class="reference internal" href="tutorials/packaging-projects.html"><span class="doc">打包Python项目</span></a>
+tutorial.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="_images/py_pkg_tools_and_libs.png"><img alt="A summary of Python's packaging capabilities for tools and libraries." src="_images/py_pkg_tools_and_libs.png" style="width: 80%;" />
+</a>
+</figure>
+</div>
+</div>
+</section>
+</section>
+<section id="packaging-applications">
+<span id="id11"></span><h2>打包 Python 应用程序<a class="headerlink" href="#packaging-applications" title="Link to this heading">¶</a></h2>
+<p><strong>Packaging Python applications</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>到目前为止，我们只讨论了 Python 的原生分发工具。根据我们的介绍，您可以推断出这些内置方法仅适用于具有 Python 环境并且懂得如何安装 Python 包的用户。</p>
+<p>考虑到操作系统、配置和使用者的多样性，只有在面向开发者用户时，这种假设才是安全的。</p>
+<p>Python 的原生打包方式主要是为了在开发者之间分发可重用的代码，即库。您可以利用 Python 的库打包技术，借助像 <a class="reference external" href="https://setuptools.pypa.io/en/latest/userguide/entry_point.html" title="（在 setuptools v75.5.0.post20241113）"><span class="xref std std-doc">setuptools entry_points</span></a> 这样的工具，将 <strong>工具</strong> 或开发者的基础应用程序构建在其上。</p>
+<p>库是构建块，而不是完整的应用程序。对于应用程序的分发，存在着一系列全新的技术可供选择。</p>
+<p>接下来的几个部分将根据目标环境的依赖关系来整理这些应用程序打包选项，帮助您为项目选择合适的解决方案。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>So far we've only discussed Python's native distribution tools. Based
+on our introduction, you would be correct to infer these built-in
+approaches only target environments which have Python, and an
+audience who knows how to install Python packages.</p>
+<p>With the variety of operating systems, configurations, and people out
+there, this assumption is only safe when targeting a developer
+audience.</p>
+<p>Python's native packaging is mostly built for distributing reusable
+code, called libraries, between developers. You can piggyback
+<strong>tools</strong>, or basic applications for developers, on top of Python's
+library packaging, using technologies like
+<a class="reference external" href="https://setuptools.pypa.io/en/latest/userguide/entry_point.html" title="（在 setuptools v75.5.0.post20241113）"><span class="xref std std-doc">setuptools entry_points</span></a>.</p>
+<p>Libraries are building blocks, not complete applications. For
+distributing applications, there's a whole new world of technologies
+out there.</p>
+<p>The next few sections organize these application packaging options
+according to their dependencies on the target environment,
+so you can choose the right one for your project.</p>
+</div>
+</div>
+<section id="id12">
+<h3>取决于框架<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<p><strong>Depending on a framework</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>某些类型的 Python 应用程序，如网站后端和其他网络服务，足够常见，因此它们有相应的框架来支持开发和打包。其他类型的应用程序，如动态网页前端和移动客户端，因其复杂性而使框架不仅仅是一个便利工具。</p>
+<p>在所有这些情况下，从框架的打包和部署方式出发倒推是一个合理的做法。一些框架包含了一个部署系统，这个系统封装了本指南中提到的技术。在这种情况下，您将希望参考框架的打包指南，以便获得最简单和最可靠的生产体验。</p>
+<p>如果您曾经好奇这些平台和框架是如何在幕后工作的，您可以随时阅读接下来的章节。</p>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>Some types of Python applications, like web site backends and other
+network services, are common enough that they have frameworks to
+enable their development and packaging. Other types of applications,
+like dynamic web frontends and mobile clients, are complex enough to
+target that a framework becomes more than a convenience.</p>
+<p>In all these cases, it makes sense to work backwards, from the
+framework's packaging and deployment story. Some frameworks include a
+deployment system which wraps the technologies outlined in the rest of
+the guide. In these cases, you'll want to defer to your framework's
+packaging guide for the easiest and most reliable production experience.</p>
+<p>If you ever wonder how these platforms and frameworks work under the
+hood, you can always read the sections beyond.</p>
+</div>
+</div>
+<section id="id13">
+<h4>服务平台<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
+<p><strong>Service platforms</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>如果您正在为“ <a class="reference external" href="https://en.wikipedia.org/wiki/Platform_as_a_service">平台即服务(Platform-as-a-Service : PaaS)</a> ”开发应用程序，您需要遵循各自的打包指南。这类平台会处理打包和部署，只要您遵循它们的模式。大多数软件并不符合这些模板，因此才会有下面介绍的其他选项。</p>
+<p>如果您正在开发将部署到您自己拥有的机器、用户的个人计算机或其他任何安排的应用程序，请继续阅读。</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>If you're developing for a
+&quot;<a class="reference external" href="https://en.wikipedia.org/wiki/Platform_as_a_service">Platform-as-a-Service</a>&quot;
+or &quot;PaaS&quot;, you are going to want to follow their respective packaging
+guides. These types of platforms take care of packaging and deployment,
+as long as you follow their patterns. Most software does not fit one of
+these templates, hence the existence of all the other options below.</p>
+<p>If you're developing software that will be deployed to machines you
+own, users' personal computers, or any other arrangement, read on.</p>
+</div>
+</div>
+</section>
+<section id="web">
+<h4>Web 浏览器和移动应用程序<a class="headerlink" href="#web" title="Link to this heading">¶</a></h4>
+<p><strong>Web browsers and mobile applications</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>Python 的持续进步正在将它引入新的领域。如今，您可以使用 Python 编写移动应用程序或 Web 应用程序的前端。虽然语言本身可能很熟悉，但打包和部署的实践却是全新的。</p>
+<p>如果您计划在这些新领域发布应用程序，您将需要查看以下框架，并参考它们的打包指南：</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://kivy.org/">Kivy</a></p></li>
+<li><p><a class="reference external" href="https://pybee.org/">Beeware</a></p></li>
+<li><p><a class="reference external" href="https://brython.info/">Brython</a></p></li>
+<li><p><a class="reference external" href="https://flexx.readthedocs.io/en/latest/">Flexx</a></p></li>
+</ul>
+<p>如果您不打算使用框架或平台，或者仅仅对上述框架使用的一些技术和方法感兴趣，继续阅读下面的内容。</p>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>Python's steady advances are leading it into new spaces. These days
+you can write a mobile app or web application frontend in
+Python. While the language may be familiar, the packaging and
+deployment practices are brand new.</p>
+<p>If you're planning on releasing to these new frontiers, you'll want to
+check out the following frameworks, and refer to their packaging
+guides:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://kivy.org/">Kivy</a></p></li>
+<li><p><a class="reference external" href="https://pybee.org/">Beeware</a></p></li>
+<li><p><a class="reference external" href="https://brython.info/">Brython</a></p></li>
+<li><p><a class="reference external" href="https://flexx.readthedocs.io/en/latest/">Flexx</a></p></li>
+</ul>
+<p>If you are <em>not</em> interested in using a framework or platform, or just
+wonder about some of the technologies and techniques utilized by the
+frameworks above, continue reading below.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id18">
+<h3>取决于预安装的 Python<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
+<p><strong>Depending on a pre-installed Python</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>选择一台任意计算机，根据上下文，很有可能 Python 已经预先安装。多年来，Python 默认包含在大多数 Linux 和 Mac 操作系统中，因此您可以合理地依赖它已经存在于数据中心或开发者和数据科学家的个人机器上。</p>
+<p>支持此模型的技术包括：</p>
+<ul class="simple">
+<li><p><a class="extlink-gh reference external" href="https://github.com/pantsbuild/pex#user-content-pex">PEX</a> （Python 可执行文件）</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/zipapp.html" title="（在 Python v3.13）"><span class="xref std std-doc">zipapp</span></a> （不帮助管理依赖项，要求 Python 3.5+）</p></li>
+<li><p><a class="extlink-gh reference external" href="https://github.com/linkedin/shiv#user-content-shiv">shiv</a> （要求 Python 3）</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>在这里的所有方法中，依赖预安装 Python 最依赖目标环境。当然，这也使得包的体积最小，可能只有几兆字节，甚至是几千字节。</p>
+<p>一般来说，减少对目标系统的依赖会增加包的大小，因此这些解决方案大致按输出大小递增的顺序排列。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<p>Pick an arbitrary computer, and depending on the context, there's a very
+good chance Python is already installed. Included by default in most
+Linux and Mac operating systems for many years now, you can reasonably
+depend on Python preexisting in your data centers or on the personal
+machines of developers and data scientists.</p>
+<p>Technologies which support this model:</p>
+<ul class="simple">
+<li><p><a class="extlink-gh reference external" href="https://github.com/pantsbuild/pex#user-content-pex">PEX</a> (Python EXecutable)</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/zh-cn/3/library/zipapp.html" title="（在 Python v3.13）"><span class="xref std std-doc">zipapp</span></a> (does not help manage dependencies, requires Python 3.5+)</p></li>
+<li><p><a class="extlink-gh reference external" href="https://github.com/linkedin/shiv#user-content-shiv">shiv</a> (requires Python 3)</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>Of all the approaches here, depending on a pre-installed
+Python relies the most on the target environment. Of course,
+this also makes for the smallest package, as small as
+single-digit megabytes, or even kilobytes.</p>
+<p>In general, decreasing the dependency on the target system
+increases the size of our package, so the solutions here
+are roughly arranged by increasing size of output.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="depending-on-a-separate-ecosystem">
+<span id="id19"></span><h3>取决于单独的软件发行生态系统<a class="headerlink" href="#depending-on-a-separate-ecosystem" title="Link to this heading">¶</a></h3>
+<p><strong>Depending on a separate software distribution ecosystem</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">中文</label><div class="tab-content docutils container">
+<p>长期以来，许多操作系统，包括 Mac 和 Windows，都缺乏内置的包管理功能。直到最近，这些操作系统才获得了所谓的“应用商店”，但即便如此，这些商店也主要集中于消费者应用程序，对于开发者的支持非常有限。</p>
+<p>开发者长期寻求解决方案，在这场斗争中，他们推出了自己的包管理工具，如 <a class="reference external" href="https://brew.sh/">Homebrew</a>。对于 Python 开发者来说，最相关的替代方案是一个叫做 <a class="reference external" href="https://en.wikipedia.org/wiki/Anaconda_(Python_distribution)">Anaconda</a> 的包生态系统。Anaconda 以 Python 为基础，已经在学术、分析和其他数据导向的环境中越来越普遍，甚至逐步进入了 <a class="reference external" href="https://web.archive.org/web/20190403064038/https://www.paypal-engineering.com/2016/09/07/python-packaging-at-paypal/">面向服务器的环境</a>。</p>
+<p>关于如何为 Anaconda 生态系统构建和发布的说明：</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/index.html">使用 conda 构建库和应用程序</a></p></li>
+<li><p><a class="reference external" href="https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html">将原生 Python 包迁移到 Anaconda</a></p></li>
+</ul>
+<p>另一种类似的模式是安装一个替代的 Python 发行版，但不支持操作系统级别的任意包：</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.activestate.com/products/python/">ActiveState ActivePython</a></p></li>
+<li><p><a class="reference external" href="http://winpython.github.io/">WinPython</a></p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--11-input--2" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--2">英文</label><div class="tab-content docutils container">
+<p>For a long time many operating systems, including Mac and Windows,
+lacked built-in package management. Only recently did these OSes gain
+so-called &quot;app stores&quot;, but even those focus on consumer applications
+and offer little for developers.</p>
+<p>Developers long sought remedies, and in this struggle, emerged with
+their own package management solutions, such as <a class="reference external" href="https://brew.sh/">Homebrew</a>. The most relevant alternative for Python
+developers is a package ecosystem called <a class="reference external" href="https://en.wikipedia.org/wiki/Anaconda_(Python_distribution)">Anaconda</a>. Anaconda
+is built around Python and is increasingly common in academic,
+analytical, and other data-oriented environments, even making its way
+<a class="reference external" href="https://web.archive.org/web/20190403064038/https://www.paypal-engineering.com/2016/09/07/python-packaging-at-paypal/">into server-oriented environments</a>.</p>
+<p>Instructions on building and publishing for the Anaconda ecosystem:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/index.html">Building libraries and applications with conda</a></p></li>
+<li><p><a class="reference external" href="https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html">Transitioning a native Python package to Anaconda</a></p></li>
+</ul>
+<p>A similar model involves installing an alternative Python
+distribution, but does not support arbitrary operating system-level
+packages:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.activestate.com/products/python/">ActiveState ActivePython</a></p></li>
+<li><p><a class="reference external" href="http://winpython.github.io/">WinPython</a></p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="bringing-your-own-python">
+<span id="id25"></span><h3>自带 Python 可执行文件<a class="headerlink" href="#bringing-your-own-python" title="Link to this heading">¶</a></h3>
+<p><strong>Bringing your own Python executable</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">中文</label><div class="tab-content docutils container">
+<p>计算机的定义是能够执行程序。每个操作系统都原生支持一种或多种可以本地执行的程序格式。</p>
+<p>有许多技术和工具将你的 Python 程序转换为这些格式，大多数方法涉及将 Python 解释器和其他依赖项嵌入到一个单独的可执行文件中。</p>
+<p>这种方法被称为 <em>冻结(freezing)</em>，它提供了广泛的兼容性和无缝的用户体验，但通常需要多种技术，并且需要投入相当的精力。</p>
+<p>以下是一些 Python 冻结工具：</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pyinstaller.readthedocs.io/en/stable/">pyInstaller</a> - 跨平台</p></li>
+<li><p><a class="reference external" href="https://marcelotduarte.github.io/cx_Freeze/">cx_Freeze</a> - 跨平台</p></li>
+<li><p><a class="reference external" href="https://github.com/conda/constructor">constructor</a> - 用于命令行安装程序</p></li>
+<li><p><a class="reference external" href="http://www.py2exe.org/">py2exe</a> - 仅限 Windows</p></li>
+<li><p><a class="reference external" href="https://py2app.readthedocs.io/en/latest/">py2app</a> - 仅限 Mac</p></li>
+<li><p><a class="reference external" href="https://github.com/jamesabel/osnap">osnap</a> - Windows 和 Mac</p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/pynsist/">pynsist</a> - 仅限 Windows</p></li>
+</ul>
+<p>上述大多数工具都假设是单用户部署。对于多组件服务器应用程序，参见 <a class="extlink-gh reference external" href="https://github.com/chef/omnibus#user-content--omnibus">Chef Omnibus</a>。</p>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">英文</label><div class="tab-content docutils container">
+<p>Computing as we know it is defined by the ability to execute
+programs. Every operating system natively supports one or more formats
+of programs they can natively execute.</p>
+<p>There are many techniques and technologies which turn your Python
+program into one of these formats, most of which involve embedding the
+Python interpreter and any other dependencies into a single executable
+file.</p>
+<p>This approach, called <em>freezing</em>, offers wide compatibility and
+seamless user experience, though often requires multiple technologies,
+and a good amount of effort.</p>
+<p>A selection of Python freezers:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pyinstaller.readthedocs.io/en/stable/">pyInstaller</a> - Cross-platform</p></li>
+<li><p><a class="reference external" href="https://marcelotduarte.github.io/cx_Freeze/">cx_Freeze</a> - Cross-platform</p></li>
+<li><p><a class="reference external" href="https://github.com/conda/constructor">constructor</a> - For command-line installers</p></li>
+<li><p><a class="reference external" href="http://www.py2exe.org/">py2exe</a> - Windows only</p></li>
+<li><p><a class="reference external" href="https://py2app.readthedocs.io/en/latest/">py2app</a> - Mac only</p></li>
+<li><p><a class="reference external" href="https://github.com/jamesabel/osnap">osnap</a> - Windows and Mac</p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/pynsist/">pynsist</a> - Windows only</p></li>
+</ul>
+<p>Most of the above imply single-user deployments. For multi-component
+server applications, see <a class="extlink-gh reference external" href="https://github.com/chef/omnibus#user-content--omnibus">Chef Omnibus</a>.</p>
+</div>
+</div>
+</section>
+<section id="id33">
+<h3>自带用户空间<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h3>
+<p><strong>Bringing your own userspace</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--13-input--1" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--1">中文</label><div class="tab-content docutils container">
+<p>越来越多的操作系统——包括 Linux、Mac OS 和 Windows——可以通过使用一种相对较新的方式，称为 <a class="reference external" href="https://en.wikipedia.org/wiki/Operating-system-level_virtualization">操作系统级虚拟化</a> 或 <em>容器化(containerization)</em> ，来运行作为轻量级镜像打包的应用程序。</p>
+<p>这些技术大多与 Python 无关，因为它们打包的是整个操作系统文件系统，而不仅仅是 Python 或 Python 包。</p>
+<p>这种技术在 Linux 服务器中应用最为广泛，因为它最初源于此，并且以下技术在这里效果最佳：</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://appimage.org/">AppImage</a></p></li>
+<li><p><a class="reference external" href="https://www.fullstackpython.com/docker.html">Docker</a></p></li>
+<li><p><a class="reference external" href="https://flatpak.org/">Flatpak</a></p></li>
+<li><p><a class="reference external" href="https://snapcraft.io/">Snapcraft</a></p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--13-input--2" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--2">英文</label><div class="tab-content docutils container">
+<p>An increasing number of operating systems -- including Linux, Mac OS,
+and Windows -- can be set up to run applications packaged as
+lightweight images, using a relatively modern arrangement often
+referred to as <a class="reference external" href="https://en.wikipedia.org/wiki/Operating-system-level_virtualization">operating-system-level virtualization</a>,
+or <em>containerization</em>.</p>
+<p>These techniques are mostly Python agnostic, because they package
+whole OS filesystems, not just Python or Python packages.</p>
+<p>Adoption is most extensive among Linux servers, where the technology
+originated and where the technologies below work best:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://appimage.org/">AppImage</a></p></li>
+<li><p><a class="reference external" href="https://www.fullstackpython.com/docker.html">Docker</a></p></li>
+<li><p><a class="reference external" href="https://flatpak.org/">Flatpak</a></p></li>
+<li><p><a class="reference external" href="https://snapcraft.io/">Snapcraft</a></p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="id39">
+<h3>自带内核<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h3>
+<p><strong>Bringing your own kernel</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--14-input--1" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--1">中文</label><div class="tab-content docutils container">
+<p>大多数操作系统支持某种形式的经典虚拟化，运行打包为包含完整操作系统的镜像的应用程序。这些虚拟机（VM）的运行是一种成熟的方法，在数据中心环境中广泛应用。</p>
+<p>这些技术主要用于数据中心的大规模部署，尽管某些复杂应用程序可以从这种打包方式中受益。这些技术与 Python 无关，包括：</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.vagrantup.com/">Vagrant</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/VHD_(file_format)">VHD</a> 、 <a class="reference external" href="https://en.wikipedia.org/wiki/Amazon_Machine_Image">AMI</a> 和 <a class="reference external" href="https://docs.openstack.org/glance/latest/user/formats.html" title="（在 glance v29.1.0.dev21）"><span class="xref std std-doc">其他格式</span></a></p></li>
+<li><p><a class="reference external" href="https://www.redhat.com/en/topics/openstack">OpenStack</a> - 一种 Python 编写的云管理系统，具有广泛的虚拟机支持</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--14-input--2" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--2">英文</label><div class="tab-content docutils container">
+<p>Most operating systems support some form of classical virtualization,
+running applications packaged as images containing a full operating
+system of their own. Running these virtual machines, or VMs, is a
+mature approach, widespread in data center environments.</p>
+<p>These techniques are mostly reserved for larger scale deployments in
+data centers, though certain complex applications can benefit from
+this packaging. The technologies are Python agnostic, and include:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.vagrantup.com/">Vagrant</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/VHD_(file_format)">VHD</a>, <a class="reference external" href="https://en.wikipedia.org/wiki/Amazon_Machine_Image">AMI</a>, and <a class="reference external" href="https://docs.openstack.org/glance/latest/user/formats.html" title="（在 glance v29.1.0.dev21）"><span class="xref std std-doc">other formats</span></a></p></li>
+<li><p><a class="reference external" href="https://www.redhat.com/en/topics/openstack">OpenStack</a> - A cloud management system in Python, with extensive VM support</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="id44">
+<h3>自带硬件<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h3>
+<p><strong>Bringing your own hardware</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--15-input--1" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--1">中文</label><div class="tab-content docutils container">
+<p>将软件以已安装在硬件上的方式进行交付，是最全面的方式。通过这种方式，用户只需要电力即可使用您的软件。</p>
+<p>与上述主要面向技术人员的虚拟机不同，硬件设备已被广泛应用，从最先进的数据中心到最年轻的儿童都能看到其身影。</p>
+<p>您可以将代码嵌入到 <a class="extlink-gh reference external" href="https://github.com/adafruit/circuitpython">Adafruit</a>、 <a class="reference external" href="https://micropython.org/">MicroPython</a> 或其他更强大的运行 Python 的硬件中，然后将其交付到数据中心或用户家中。他们插电即用，您也可以高枕无忧。</p>
+<figure class="align-default" id="id58">
+<a class="reference internal image-reference" href="_images/py_pkg_applications.png"><img alt="用于打包 Python 应用程序的技术概述。" src="_images/py_pkg_applications.png" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">用于打包 Python 应用程序的技术的简化范畴。</span><a class="headerlink" href="#id58" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</div>
+<input class="tab-input" id="tab-set--15-input--2" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--2">英文</label><div class="tab-content docutils container">
+<p>The most all-encompassing way to ship your software would be to ship
+it already-installed on some hardware. This way, your software's user
+would require only electricity.</p>
+<p>Whereas the virtual machines described above are primarily reserved
+for the tech-savvy, you can find hardware appliances being used by
+everyone from the most advanced data centers to the youngest children.</p>
+<p>Embed your code on an <a class="extlink-gh reference external" href="https://github.com/adafruit/circuitpython">Adafruit</a>,
+<a class="reference external" href="https://micropython.org/">MicroPython</a>, or more-powerful hardware
+running Python, then ship it to the datacenter or your users'
+homes. They plug and play, and you can call it a day.</p>
+<figure class="align-default" id="id59">
+<a class="reference internal image-reference" href="_images/py_pkg_applications.png"><img alt="A summary of technologies used to package Python applications." src="_images/py_pkg_applications.png" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The simplified gamut of technologies used to package Python applications.</span><a class="headerlink" href="#id59" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+</section>
+<section id="id46">
+<h2>那么...<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h2>
+<p><strong>What about...</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--16-input--1" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--1">中文</label><div class="tab-content docutils container">
+<p>上面的部分只能总结这么多，您可能会对一些更明显的差距感到疑惑。</p>
+</div>
+<input class="tab-input" id="tab-set--16-input--2" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--2">英文</label><div class="tab-content docutils container">
+<p>The sections above can only summarize so much, and you might be
+wondering about some of the more conspicuous gaps.</p>
+</div>
+</div>
+<section id="id47">
+<h3>操作系统包<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h3>
+<p><strong>Operating system packages</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--17-input--1" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--1">中文</label><div class="tab-content docutils container">
+<p>如在 <a class="reference internal" href="#depending-on-a-separate-ecosystem"><span class="std std-ref">取决于单独的软件发行生态系统</span></a> 中提到的，某些操作系统拥有自己的包管理器。如果您非常确定目标操作系统，可以直接依赖像 <a class="reference external" href="https://en.wikipedia.org/wiki/Deb_(file_format)">deb</a> （用于 Debian、Ubuntu 等）或 <a class="reference external" href="https://en.wikipedia.org/wiki/RPM_Package_Manager">RPM</a> （用于 Red Hat、Fedora 等）这样的格式，并使用该内置包管理器来处理安装，甚至部署。您甚至可以使用 <a class="reference external" href="https://fpm.readthedocs.io/en/latest/cli-reference.html#virtualenv">FPM</a> 从相同的源生成 deb 和 RPM 包。</p>
+<p>在大多数部署流水线中，操作系统包管理器只是其中的一部分。</p>
+</div>
+<input class="tab-input" id="tab-set--17-input--2" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--2">英文</label><div class="tab-content docutils container">
+<p>As mentioned in <a class="reference internal" href="#depending-on-a-separate-ecosystem"><span class="std std-ref">取决于单独的软件发行生态系统</span></a> above, some operating
+systems have package managers of their own. If you're very sure of the
+operating system you're targeting, you can depend directly on a format
+like <a class="reference external" href="https://en.wikipedia.org/wiki/Deb_(file_format)">deb</a> (for
+Debian, Ubuntu, etc.) or <a class="reference external" href="https://en.wikipedia.org/wiki/RPM_Package_Manager">RPM</a> (for Red Hat,
+Fedora, etc.), and use that built-in package manager to take care of
+installation, and even deployment. You can even use <a class="reference external" href="https://fpm.readthedocs.io/en/latest/cli-reference.html#virtualenv">FPM</a> to
+generate both deb and RPMs from the same source.</p>
+<p>In most deployment pipelines, the OS package manager is just one piece
+of the puzzle.</p>
+</div>
+</div>
+</section>
+<section id="id51">
+<h3>虚拟环境<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h3>
+<p><strong>virtualenv</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--18-input--1" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--1">中文</label><div class="tab-content docutils container">
+<p><a class="reference external" href="https://docs.python-guide.org/dev/virtualenvs/" title="（在 pythonguide v0.0.1）"><span class="xref std std-doc">Virtualenvs</span></a> 一直是多代 Python 开发者不可或缺的工具，但随着更高层次的工具逐渐取代它们，虚拟环境的使用逐渐淡出了视野。在包装方面，虚拟环境作为一种原始工具，通常被包装在 <a class="reference external" href="https://dh-virtualenv.readthedocs.io/en/latest/tutorial.html" title="（在 dh_virtualenv v1.2）"><span class="xref std std-doc">dh-virtualenv 工具</span></a> 和 <a class="reference external" href="https://github.com/jamesabel/osnap">osnap</a> 中，二者都以自包含的方式包装了虚拟环境。</p>
+<p>对于生产部署，切勿像在开发环境中那样依赖使用 <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span></code> 从互联网安装包到虚拟环境中。上面的概述提供了许多更好的解决方案。</p>
+</div>
+<input class="tab-input" id="tab-set--18-input--2" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--2">英文</label><div class="tab-content docutils container">
+<p><a class="reference external" href="https://docs.python-guide.org/dev/virtualenvs/" title="（在 pythonguide v0.0.1）"><span class="xref std std-doc">Virtualenvs</span></a> have
+been an indispensable tool for multiple generations of Python
+developer, but are slowly fading from view, as they are being wrapped
+by higher-level tools. With packaging in particular, virtualenvs are
+used as a primitive in <a class="reference external" href="https://dh-virtualenv.readthedocs.io/en/latest/tutorial.html" title="（在 dh_virtualenv v1.2）"><span class="xref std std-doc">the dh-virtualenv tool</span></a> and
+<a class="reference external" href="https://github.com/jamesabel/osnap">osnap</a>, both of which wrap
+virtualenvs in a self-contained way.</p>
+<p>For production deployments, do not rely on running <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">pip</span> <span class="pre">install</span></code>
+from the Internet into a virtualenv, as one might do in a development
+environment. The overview above is full of much better solutions.</p>
+</div>
+</div>
+</section>
+<section id="id54">
+<h3>安全<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h3>
+<p><strong>Security</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--19-input--1" name="tab-set--19" type="radio"><label class="tab-label" for="tab-set--19-input--1">中文</label><div class="tab-content docutils container">
+<p>随着您深入了解这一梯度，更新包的组件变得越来越困难，因为所有内容都被更加紧密地绑定在一起。</p>
+<p>例如，如果出现内核安全问题并且您部署的是容器，那么主机系统的内核可以更新，而无需为应用程序重新构建。如果您部署的是虚拟机镜像，则需要重新构建。关于这一动态是否使某种选项更安全，仍然是一个存在争议的老问题，回溯至尚未解决的 <a class="reference external" href="https://www.google.com/search?channel=fs&amp;q=static+vs+dynamic+linking">静态链接与动态链接的对比</a> 。</p>
+</div>
+<input class="tab-input" id="tab-set--19-input--2" name="tab-set--19" type="radio"><label class="tab-label" for="tab-set--19-input--2">英文</label><div class="tab-content docutils container">
+<p>The further down the gradient you come, the harder it gets to update
+components of your package. Everything is more tightly bound together.</p>
+<p>For example, if a kernel security issue emerges, and you're deploying
+containers, the host system's kernel can be updated without requiring
+a new build on behalf of the application. If you deploy VM images,
+you'll need a new build. Whether or not this dynamic makes one option
+more secure is still a bit of an old debate, going back to the
+still-unsettled matter of <a class="reference external" href="https://www.google.com/search?channel=fs&amp;q=static+vs+dynamic+linking">static versus dynamic linking</a>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id56">
+<h2>总结<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h2>
+<p><strong>Wrap up</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--20-input--1" name="tab-set--20" type="radio"><label class="tab-label" for="tab-set--20-input--1">中文</label><div class="tab-content docutils container">
+<p>Python 的打包系统有时给人一种颠簸的感觉。这种印象主要是因为 Python 的多功能性而产生的副作用。一旦你理解了不同打包方案之间的自然边界，你会发现，Python 程序员为了使用这种最平衡、最灵活的语言之一，而付出的代价，实际上是非常小的。</p>
+</div>
+<input class="tab-input" id="tab-set--20-input--2" name="tab-set--20" type="radio"><label class="tab-label" for="tab-set--20-input--2">英文</label><div class="tab-content docutils container">
+<p>Packaging in Python has a bit of a reputation for being a bumpy
+ride. This impression is mostly a byproduct of Python's
+versatility. Once you understand the natural boundaries between each
+packaging solution, you begin to realize that the varied landscape is
+a small price Python programmers pay for using one of the most
+balanced, flexible languages available.</p>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="flow.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">打包流程</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Home</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2013–2020, PyPA
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2024 年 11 月 15 日</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">概述</a><ul>
+<li><a class="reference internal" href="#id2">考虑部署</a></li>
+<li><a class="reference internal" href="#python">打包 Python 库和工具</a><ul>
+<li><a class="reference internal" href="#id3">Python 模块</a></li>
+<li><a class="reference internal" href="#id4">Python 源代码发行版</a></li>
+<li><a class="reference internal" href="#id9">Python 二进制发行版</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#packaging-applications">打包 Python 应用程序</a><ul>
+<li><a class="reference internal" href="#id12">取决于框架</a><ul>
+<li><a class="reference internal" href="#id13">服务平台</a></li>
+<li><a class="reference internal" href="#web">Web 浏览器和移动应用程序</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id18">取决于预安装的 Python</a></li>
+<li><a class="reference internal" href="#depending-on-a-separate-ecosystem">取决于单独的软件发行生态系统</a></li>
+<li><a class="reference internal" href="#bringing-your-own-python">自带 Python 可执行文件</a></li>
+<li><a class="reference internal" href="#id33">自带用户空间</a></li>
+<li><a class="reference internal" href="#id39">自带内核</a></li>
+<li><a class="reference internal" href="#id44">自带硬件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id46">那么...</a><ul>
+<li><a class="reference internal" href="#id47">操作系统包</a></li>
+<li><a class="reference internal" href="#id51">虚拟环境</a></li>
+<li><a class="reference internal" href="#id54">安全</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id56">总结</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=7d86a446"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="_static/tabs.js?v=3ee01567"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=cb5fb026"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    </body>
+</html>

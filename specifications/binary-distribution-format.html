@@ -1,0 +1,1108 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="next" title="包索引接口" href="section-package-indices.html" /><link rel="prev" title="源分发格式" href="source-distribution-format.html" />
+
+    <link rel="shortcut icon" href="../_static/py.png"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>二进制分发格式 - Python Packaging User Guide</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Python Packaging User Guide</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">Python Packaging User Guide</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow.html">打包流程</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/installing-packages.html">安装软件包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/managing-dependencies.html">管理依赖项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/packaging-projects.html">打包Python项目</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../guides/index.html">指南</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-install.html">安装</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 安装</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-pip-and-virtual-environments.html">使用 pip 和 venv 在虚拟环境中安装软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-virtualenv.html">使用虚拟环境安装包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-stand-alone-command-line-tools.html">安装独立的命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-linux-tools.html">使用 Linux 包管理器安装 pip/setuptools/wheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-scientific-packages.html">安装科学软件包</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-build-and-publish.html">构建和发布</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 构建和发布</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/writing-pyproject-toml.html">编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/distributing-packages-using-setuptools.html">打包和分发项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/dropping-older-python-versions.html">放弃对旧版 Python 的支持</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/packaging-binary-extensions.html">打包二进制扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/packaging-namespace-packages.html">打包命名空间包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/creating-command-line-tools.html">创建和打包命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/creating-and-discovering-plugins.html">创建和发现插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/using-testpypi.html">使用 TestPyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/making-a-pypi-friendly-readme.html">制作适合 PyPI 的 README</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows.html">使用 GitHub Actions CI/CD 工作流发布软件包分发版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/modernize-setup-py-project.html">如何使基于 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 的项目现代化？</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-hosting.html">托管</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of 托管</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/index-mirrors-and-caches.html">包索引镜像和缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/hosting-your-own-index.html">托管您自己的简单存储库</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/tool-recommendations.html">工具推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/analyzing-pypi-package-downloads.html">分析 PyPI 软件包下载</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discussions/index.html">讨论</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 讨论</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/versioning.html">版本控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/deploying-python-applications.html">部署 Python 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/pip-vs-easy-install.html">pip vs easy_install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/install-requires-vs-requirements.html">install_requires 与需求文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/distribution-package-vs-import-package.html">分发包与导入包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/package-formats.html">软件包格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/src-layout-vs-flat-layout.html">src 布局与平面布局</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/setup-py-deprecated.html"><code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 已被弃用吗？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/single-source-version.html">单一来源项目版本</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">PyPA 规范</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of PyPA 规范</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-distribution-metadata.html">包分发元数据</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 包分发元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="name-normalization.html">名称和规范化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core-metadata.html">核心元数据规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="version-specifiers.html">版本标识符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dependency-specifiers.html">依赖说明符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyproject-toml.html"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inline-script-metadata.html">内联脚本元数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="platform-compatibility-tags.html">平台兼容性标签</a></li>
+<li class="toctree-l3"><a class="reference internal" href="well-known-project-urls.html">元数据中的知名项目 URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-installation-metadata.html">包安装元数据</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 包安装元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="recording-installed-packages.html">记录已安装的项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entry-points.html">入口点规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="direct-url.html">记录已安装发行版的直接 URL 来源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="direct-url-data-structure.html">直接 URL 数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="virtual-environments.html">Python 虚拟环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="externally-managed-environments.html">外部管理环境</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="section-distribution-formats.html">包分发文件格式</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 包分发文件格式</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="source-distribution-format.html">源分发格式</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">二进制分发格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-package-indices.html">包索引接口</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of 包索引接口</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypirc.html"><code class="file docutils literal notranslate"><span class="pre">.pypirc</span></code> 文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="simple-repository-api.html">Simple 仓库 API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../key_projects.html">项目摘要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">如何获取支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">为本指南做出贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">新闻</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/specifications/binary-distribution-format.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="binary-distribution-format">
+<span id="id1"></span><h1>二进制分发格式<a class="headerlink" href="#binary-distribution-format" title="Link to this heading">¶</a></h1>
+<p><strong>Binary distribution format</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>本页面规范了 Python 包的二进制分发格式，也称为 wheel 格式。</p>
+<p>Wheel 是一个 ZIP 格式的归档文件，具有特别格式化的文件名和 <code class="docutils literal notranslate"><span class="pre">.whl</span></code> 扩展名。它包含一个几乎与根据 PEP 376 安装方案安装的分发相同的内容。尽管推荐使用专门的安装工具，但 wheel 文件也可以通过标准的 'unzip' 工具直接解压到 site-packages 目录中，同时保留足够的信息，以便在任何以后时刻将其内容展开到最终路径。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>This page specifies the binary distribution format for Python packages,
+also called the wheel format.</p>
+<p>A wheel is a ZIP-format archive with a specially formatted file name and
+the <code class="docutils literal notranslate"><span class="pre">.whl</span></code> extension.  It contains a single distribution nearly as it
+would be installed according to PEP 376 with a particular installation
+scheme.  Although a specialized installer is recommended, a wheel file
+may be installed by simply unpacking into site-packages with the standard
+'unzip' tool while preserving enough information to spread its contents
+out onto their final paths at any later time.</p>
+</div>
+</div>
+<section id="id2">
+<h2>详细信息<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<p><strong>Details</strong></p>
+<section id="wheel-distribution-1-0-py32-none-any-whl">
+<h3>安装 wheel 'distribution-1.0-py32-none-any.whl'<a class="headerlink" href="#wheel-distribution-1-0-py32-none-any-whl" title="Link to this heading">¶</a></h3>
+<p><strong>Installing a wheel 'distribution-1.0-py32-none-any.whl'</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>Wheel 安装大致分为两个阶段：</p>
+<ul class="simple">
+<li><p>解压。</p></li>
+</ul>
+<ol class="loweralpha simple">
+<li><p>解析 <code class="docutils literal notranslate"><span class="pre">distribution-1.0.dist-info/WHEEL</span></code> 文件。</p></li>
+<li><p>检查安装程序与 Wheel-Version 的兼容性。如果次版本大于当前版本则发出警告，若主版本大于则中止。</p></li>
+<li><p>如果 Root-Is-Purelib 为 'true'，则将归档解压到 purelib（site-packages）。</p></li>
+<li><p>否则将归档解压到 platlib（site-packages）。</p></li>
+</ol>
+<ul class="simple">
+<li><p>分发。</p></li>
+</ul>
+<ol class="loweralpha simple">
+<li><p>解压的归档包含 <code class="docutils literal notranslate"><span class="pre">distribution-1.0.dist-info/</span></code> 和（如果有数据的话） <code class="docutils literal notranslate"><span class="pre">distribution-1.0.data/</span></code>。</p></li>
+<li><p>将 <code class="docutils literal notranslate"><span class="pre">distribution-1.0.data/</span></code> 的每个子树移动到其目标路径。<code class="docutils literal notranslate"><span class="pre">distribution-1.0.data/</span></code> 的每个子目录都是一个目标目录字典的键，例如 <code class="docutils literal notranslate"><span class="pre">distribution-1.0.data/(purelib|platlib|headers|scripts|data)</span></code>。这些子目录是 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/sysconfig.html#installation-paths" title="（在 Python v3.13）"><span class="xref std std-ref">sysconfig 定义的安装路径</span></a>。</p></li>
+<li><p>如果适用，更新以 <code class="docutils literal notranslate"><span class="pre">#!python</span></code> 开头的脚本指向正确的解释器。</p></li>
+<li><p>更新 <code class="docutils literal notranslate"><span class="pre">distribution-1.0.dist-info/RECORD</span></code>，记录已安装路径。</p></li>
+<li><p>删除空的 <code class="docutils literal notranslate"><span class="pre">distribution-1.0.data</span></code> 目录。</p></li>
+<li><p>将已安装的 .py 文件编译为 .pyc 文件。（卸载程序应该足够智能，能够在 RECORD 中未提到的情况下删除 .pyc 文件。）</p></li>
+</ol>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>Wheel installation notionally consists of two phases:</p>
+<ul>
+<li><p>Unpack.</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li><p>Parse <code class="docutils literal notranslate"><span class="pre">distribution-1.0.dist-info/WHEEL</span></code>.</p></li>
+<li><p>Check that installer is compatible with Wheel-Version.  Warn if
+minor version is greater, abort if major version is greater.</p></li>
+<li><p>If Root-Is-Purelib == 'true', unpack archive into purelib
+(site-packages).</p></li>
+<li><p>Else unpack archive into platlib (site-packages).</p></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p>Spread.</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li><p>Unpacked archive includes <code class="docutils literal notranslate"><span class="pre">distribution-1.0.dist-info/</span></code> and (if
+there is data) <code class="docutils literal notranslate"><span class="pre">distribution-1.0.data/</span></code>.</p></li>
+<li><p>Move each subtree of <code class="docutils literal notranslate"><span class="pre">distribution-1.0.data/</span></code> onto its
+destination path. Each subdirectory of <code class="docutils literal notranslate"><span class="pre">distribution-1.0.data/</span></code>
+is a key into a dict of destination directories, such as
+<code class="docutils literal notranslate"><span class="pre">distribution-1.0.data/(purelib|platlib|headers|scripts|data)</span></code>.
+These subdirectories are <a class="reference external" href="https://docs.python.org/zh-cn/3/library/sysconfig.html#installation-paths" title="（在 Python v3.13）"><span class="xref std std-ref">installation paths defined by sysconfig</span></a>.</p></li>
+<li><p>If applicable, update scripts starting with <code class="docutils literal notranslate"><span class="pre">#!python</span></code> to point
+to the correct interpreter.</p></li>
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">distribution-1.0.dist-info/RECORD</span></code> with the installed
+paths.</p></li>
+<li><p>Remove empty <code class="docutils literal notranslate"><span class="pre">distribution-1.0.data</span></code> directory.</p></li>
+<li><p>Compile any installed .py to .pyc. (Uninstallers should be smart
+enough to remove .pyc even if it is not mentioned in RECORD.)</p></li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+<section id="id3">
+<h4>推荐的安装程序功能<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<p><strong>Recommended installer features</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<dl>
+<dt>重写 <code class="docutils literal notranslate"><span class="pre">#!python</span></code>。</dt><dd><p>在 wheel 中，脚本打包在 <code class="docutils literal notranslate"><span class="pre">{distribution}-{version}.data/scripts/</span></code> 目录下。如果 <code class="docutils literal notranslate"><span class="pre">scripts/</span></code> 中的文件的第一行正好以 <code class="docutils literal notranslate"><span class="pre">b'#!python'</span></code> 开头，则将其重写为指向正确的解释器。Unix 安装程序可能需要为这些文件添加可执行位（+x），如果归档文件是在 Windows 上创建的。</p>
+<p>允许使用 <code class="docutils literal notranslate"><span class="pre">b'#!pythonw'</span></code> 约定。<code class="docutils literal notranslate"><span class="pre">b'#!pythonw'</span></code> 表示一个 GUI 脚本，而不是控制台脚本。</p>
+</dd>
+<dt>生成脚本包装器。</dt><dd><p>在 wheel 中，打包在 Unix 系统上的脚本通常不会有附带的 .exe 包装器。Windows 安装程序可能希望在安装过程中添加这些包装器。</p>
+</dd>
+</dl>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<dl>
+<dt>Rewrite <code class="docutils literal notranslate"><span class="pre">#!python</span></code>.</dt><dd><p>In wheel, scripts are packaged in
+<code class="docutils literal notranslate"><span class="pre">{distribution}-{version}.data/scripts/</span></code>.  If the first line of
+a file in <code class="docutils literal notranslate"><span class="pre">scripts/</span></code> starts with exactly <code class="docutils literal notranslate"><span class="pre">b'#!python'</span></code>, rewrite to
+point to the correct interpreter.  Unix installers may need to add
+the +x bit to these files if the archive was created on Windows.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">b'#!pythonw'</span></code> convention is allowed. <code class="docutils literal notranslate"><span class="pre">b'#!pythonw'</span></code> indicates
+a GUI script instead of a console script.</p>
+</dd>
+<dt>Generate script wrappers.</dt><dd><p>In wheel, scripts packaged on Unix systems will certainly not have
+accompanying .exe wrappers.  Windows installers may want to add them
+during install.</p>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+<section id="id4">
+<h4>推荐的归档器功能<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<p><strong>Recommended archiver features</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<dl class="simple">
+<dt>将 <code class="docutils literal notranslate"><span class="pre">.dist-info</span></code> 放在归档的末尾。</dt><dd><p>鼓励归档工具将 <code class="docutils literal notranslate"><span class="pre">.dist-info</span></code> 文件物理地放在归档的末尾。这可以实现一些潜在有趣的 ZIP 技巧，包括在不重写整个归档文件的情况下修改元数据。</p>
+</dd>
+</dl>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<dl class="simple">
+<dt>Place <code class="docutils literal notranslate"><span class="pre">.dist-info</span></code> at the end of the archive.</dt><dd><p>Archivers are encouraged to place the <code class="docutils literal notranslate"><span class="pre">.dist-info</span></code> files physically
+at the end of the archive.  This enables some potentially interesting
+ZIP tricks including the ability to amend the metadata without
+rewriting the entire archive.</p>
+</dd>
+</dl>
+</div>
+</div>
+</section>
+</section>
+<section id="id5">
+<h3>文件格式<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<p><strong>File Format</strong></p>
+<section id="wheel-file-name-spec">
+<span id="id6"></span><h4>文件名约定<a class="headerlink" href="#wheel-file-name-spec" title="Link to this heading">¶</a></h4>
+<p><strong>File name convention</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>wheel 文件名为 <code class="docutils literal notranslate"><span class="pre">{distribution}-{version}(-{build</span> <span class="pre">tag})?-{python</span> <span class="pre">tag}-{abi</span> <span class="pre">tag}-{platform</span> <span class="pre">tag}.whl</span></code>。</p>
+<dl>
+<dt>distribution</dt><dd><p>分发包名称，例如 'django'，'pyramid'。</p>
+</dd>
+<dt>version</dt><dd><p>分发包版本，例如 1.0。</p>
+</dd>
+<dt>build tag</dt><dd><p>可选的构建编号。必须以数字开头。当两个 wheel 文件名在其他方面（例如名称、版本和其他标签）相同的时候，构建标签作为区分依据。未指定时，按空元组排序；否则，按两项元组排序，第一项为数字部分（<code class="docutils literal notranslate"><span class="pre">int</span></code> 类型），第二项为剩余部分（<code class="docutils literal notranslate"><span class="pre">str</span></code> 类型）。</p>
+<p>构建编号的常见用途是由于构建环境变化（例如使用 manylinux 镜像重新构建分发包）而重建二进制分发包。</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>构建编号不是分发版本的一部分，因此在外部引用时会很困难，尤其是在 Python 生态系统之外的工具和标准中。
+一个常见的需要外部引用的情况是解决安全漏洞。</p>
+<p>由于这一限制，需要外部引用的新分发包 <strong>不应</strong> 在构建时使用构建编号。
+而应为这种情况创建一个 <strong>新的分发版本</strong> 。</p>
+</div>
+</dd>
+<dt>language implementation and version tag</dt><dd><p>例如 'py27'，'py2'，'py3'。</p>
+</dd>
+<dt>abi tag</dt><dd><p>例如 'cp33m'，'abi3'，'none'。</p>
+</dd>
+<dt>platform tag</dt><dd><p>例如 'linux_x86_64'，'any'。</p>
+</dd>
+</dl>
+<p>例如，<code class="docutils literal notranslate"><span class="pre">distribution-1.0-1-py27-none-any.whl</span></code> 是名为 'distribution' 的包的第一个构建，并且兼容 Python 2.7（任何 Python 2.7 实现），没有 ABI（纯 Python），适用于任何 CPU 架构。</p>
+<p>文件名中的后三个组件（在扩展名之前）称为 &quot;兼容性标签&quot;。这些兼容性标签表示包的基本解释器要求，详细信息请参见 PEP 425。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>The wheel filename is <code class="docutils literal notranslate"><span class="pre">{distribution}-{version}(-{build</span>
+<span class="pre">tag})?-{python</span> <span class="pre">tag}-{abi</span> <span class="pre">tag}-{platform</span> <span class="pre">tag}.whl</span></code>.</p>
+<dl>
+<dt>distribution</dt><dd><p>Distribution name, e.g. 'django', 'pyramid'.</p>
+</dd>
+<dt>version</dt><dd><p>Distribution version, e.g. 1.0.</p>
+</dd>
+<dt>build tag</dt><dd><p>Optional build number.  Must start with a digit.  Acts as a
+tie-breaker if two wheel file names are the same in all other
+respects (i.e. name, version, and other tags).  Sort as an
+empty tuple if unspecified, else sort as a two-item tuple with
+the first item being the initial digits as an <code class="docutils literal notranslate"><span class="pre">int</span></code>, and the
+second item being the remainder of the tag as a <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p>
+<p>A common use-case for build numbers is rebuilding a binary
+distribution due to a change in the build environment,
+like when using the manylinux image to build
+distributions using pre-release CPython versions.</p>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Build numbers are not a part of the distribution version and thus are difficult
+to reference externally, especially so outside the Python ecosystem of tools and standards.
+A common case where a distribution would need to referenced externally is when
+resolving a security vulnerability.</p>
+<p>Due to this limitation, new distributions which need to be referenced externally
+<strong>should not</strong> use build numbers when building the new distribution.
+Instead a <strong>new distribution version</strong> should be created for such cases.</p>
+</div>
+</dd>
+<dt>language implementation and version tag</dt><dd><p>E.g. 'py27', 'py2', 'py3'.</p>
+</dd>
+<dt>abi tag</dt><dd><p>E.g. 'cp33m', 'abi3', 'none'.</p>
+</dd>
+<dt>platform tag</dt><dd><p>E.g. 'linux_x86_64', 'any'.</p>
+</dd>
+</dl>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">distribution-1.0-1-py27-none-any.whl</span></code> is the first
+build of a package called 'distribution', and is compatible with
+Python 2.7 (any Python 2.7 implementation), with no ABI (pure Python),
+on any CPU architecture.</p>
+<p>The last three components of the filename before the extension are
+called &quot;compatibility tags.&quot;  The compatibility tags express the
+package's basic interpreter requirements and are detailed in PEP 425.</p>
+</div>
+</div>
+</section>
+<section id="unicode">
+<h4>转义和 Unicode<a class="headerlink" href="#unicode" title="Link to this heading">¶</a></h4>
+<p><strong>Escaping and Unicode</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>由于文件名的各个组件由破折号（<code class="docutils literal notranslate"><span class="pre">-</span></code>，HYPHEN-MINUS）分隔，因此此字符不能出现在任何组件内。对此的处理方法如下：</p>
+<ul class="simple">
+<li><p>在分发包名称中，连续的 <code class="docutils literal notranslate"><span class="pre">-_.</span></code> 字符（HYPHEN-MINUS，LOW LINE 和 FULL STOP）应替换为 <code class="docutils literal notranslate"><span class="pre">_</span></code> （LOW LINE），并且大写字母应替换为相应的小写字母。这相当于常规的 <a class="reference internal" href="name-normalization.html#name-normalization"><span class="std std-ref">名称规范化</span></a>，然后将 <code class="docutils literal notranslate"><span class="pre">-</span></code> 替换为 <code class="docutils literal notranslate"><span class="pre">_</span></code>。然而，工具在处理 wheel 时必须能够接受 <code class="docutils literal notranslate"><span class="pre">.</span></code> （FULL STOP）和大写字母，因为这些字符曾在早期版本的规范中是允许的。</p></li>
+<li><p>版本号应根据 <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">版本规范</span></a> 进行规范化。规范化后的版本号不能包含 <code class="docutils literal notranslate"><span class="pre">-</span></code>。</p></li>
+<li><p>其他组件不能包含 <code class="docutils literal notranslate"><span class="pre">-</span></code> 字符，因此无需进行转义。</p></li>
+</ul>
+<p>生成 wheel 文件的工具应验证文件名组件中是否包含 <code class="docutils literal notranslate"><span class="pre">-</span></code>，如果包含，生成的文件可能无法正确处理。</p>
+<p>归档文件名是 Unicode 编码的。虽然更新工具以支持非 ASCII 文件名仍需时间，但此规范已支持这种情况。</p>
+<p>归档中的文件名使用 UTF-8 编码。尽管一些常用的 ZIP 客户端未能正确显示 UTF-8 文件名，但 ZIP 规范和 Python 的 <code class="docutils literal notranslate"><span class="pre">zipfile</span></code> 模块都支持此编码。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>As the components of the filename are separated by a dash (<code class="docutils literal notranslate"><span class="pre">-</span></code>, HYPHEN-MINUS),
+this character cannot appear within any component. This is handled as follows:</p>
+<ul class="simple">
+<li><p>In distribution names, any run of <code class="docutils literal notranslate"><span class="pre">-_.</span></code> characters (HYPHEN-MINUS, LOW LINE</p></li>
+</ul>
+<p>and FULL STOP) should be replaced with <code class="docutils literal notranslate"><span class="pre">_</span></code> (LOW LINE), and uppercase
+characters should be replaced with corresponding lowercase ones. This is
+equivalent to regular <a class="reference internal" href="name-normalization.html#name-normalization"><span class="std std-ref">name normalization</span></a> followed by replacing <code class="docutils literal notranslate"><span class="pre">-</span></code> with <code class="docutils literal notranslate"><span class="pre">_</span></code>.
+Tools consuming wheels must be prepared to accept <code class="docutils literal notranslate"><span class="pre">.</span></code> (FULL STOP) and
+uppercase letters, however, as these were allowed by an earlier version of
+this specification.
+- Version numbers should be normalised according to the <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">Version specifier
+specification</span></a>. Normalised version numbers cannot contain <code class="docutils literal notranslate"><span class="pre">-</span></code>.
+- The remaining components may not contain <code class="docutils literal notranslate"><span class="pre">-</span></code> characters, so no escaping
+is necessary.</p>
+<p>Tools producing wheels should verify that the filename components do not contain
+<code class="docutils literal notranslate"><span class="pre">-</span></code>, as the resulting file may not be processed correctly if they do.</p>
+<p>The archive filename is Unicode.  It will be some time before the tools
+are updated to support non-ASCII filenames, but they are supported in
+this specification.</p>
+<p>The filenames <em>inside</em> the archive are encoded as UTF-8.  Although some
+ZIP clients in common use do not properly display UTF-8 filenames,
+the encoding is supported by both the ZIP specification and Python's
+<code class="docutils literal notranslate"><span class="pre">zipfile</span></code>.</p>
+</div>
+</div>
+</section>
+<section id="id7">
+<h4>文件内容<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h4>
+<p><strong>File contents</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>一个 wheel 文件的内容，其中 {distribution} 替换为包的名称，例如 <code class="docutils literal notranslate"><span class="pre">beaglevote</span></code>，{version} 替换为其版本，例如 <code class="docutils literal notranslate"><span class="pre">1.0.0</span></code>，包括以下部分：</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">/</span></code>，归档的根目录，包含所有要安装到 <code class="docutils literal notranslate"><span class="pre">purelib</span></code> 或 <code class="docutils literal notranslate"><span class="pre">platlib</span></code> 中的文件，如 <code class="docutils literal notranslate"><span class="pre">WHEEL</span></code> 文件中指定的。通常，<code class="docutils literal notranslate"><span class="pre">purelib</span></code> 和 <code class="docutils literal notranslate"><span class="pre">platlib</span></code> 都是 <code class="docutils literal notranslate"><span class="pre">site-packages</span></code>。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{distribution}-{version}.dist-info/</span></code> 包含元数据。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{distribution}-{version}.data/</span></code> 包含每个非空安装方案键对应的一个子目录，其中子目录名称是指向安装路径字典（如 <code class="docutils literal notranslate"><span class="pre">data</span></code>、<code class="docutils literal notranslate"><span class="pre">scripts</span></code>、<code class="docutils literal notranslate"><span class="pre">headers</span></code>、<code class="docutils literal notranslate"><span class="pre">purelib</span></code>、<code class="docutils literal notranslate"><span class="pre">platlib</span></code>）的索引。</p></li>
+<li><p>Python 脚本必须出现在 <code class="docutils literal notranslate"><span class="pre">scripts</span></code> 目录中，并且第一行必须是 <code class="docutils literal notranslate"><span class="pre">b'#!python'</span></code>，以便在安装时享受脚本包装器生成和 <code class="docutils literal notranslate"><span class="pre">#!python</span></code> 重写。它们可以有任何扩展名或没有扩展名。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{distribution}-{version}.dist-info/METADATA</span></code> 是格式为版本 1.1 或更高版本的元数据。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{distribution}-{version}.dist-info/WHEEL</span></code> 是有关归档本身的元数据，采用相同的基本键：值格式，如下所示:</p>
+<p>Wheel-Version: 1.0
+Generator: bdist_wheel 1.0
+Root-Is-Purelib: true
+Tag: py2-none-any
+Tag: py3-none-any
+Build: 1</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Wheel-Version</span></code> 是 Wheel 规范的版本号。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Generator</span></code> 是生成归档的工具的名称，且可选择包含其版本。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Root-Is-Purelib</span></code> 如果归档的顶级目录应该安装到 purelib，则为 true；否则，顶级目录应安装到 platlib。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Tag</span></code> 是 wheel 的扩展兼容性标签；例如，文件名将包含 <code class="docutils literal notranslate"><span class="pre">py2.py3-none-any</span></code>。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Build</span></code> 是构建号，如果没有构建号，则省略。</p></li>
+<li><p>如果 Wheel-Version 大于安装程序支持的版本，wheel 安装程序应发出警告；如果 Wheel-Version 的主版本大于安装程序支持的版本，则必须失败。</p></li>
+<li><p>Wheel 作为一个旨在跨多个 Python 版本工作的安装格式，通常不包括 .pyc 文件。</p></li>
+<li><p>Wheel 不包含 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 或 <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>。</p></li>
+</ol>
+<p>这一版本的 wheel 规范基于 distutils 安装方案，并未定义如何将文件安装到其他位置。该布局提供了现有 wininst 和 egg 二进制格式的功能超集。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>The contents of a wheel file, where {distribution} is replaced with the
+name of the package, e.g. <code class="docutils literal notranslate"><span class="pre">beaglevote</span></code> and {version} is replaced with
+its version, e.g. <code class="docutils literal notranslate"><span class="pre">1.0.0</span></code>, consist of:</p>
+<ol class="arabic">
+<li><p><code class="docutils literal notranslate"><span class="pre">/</span></code>, the root of the archive, contains all files to be installed in
+<code class="docutils literal notranslate"><span class="pre">purelib</span></code> or <code class="docutils literal notranslate"><span class="pre">platlib</span></code> as specified in <code class="docutils literal notranslate"><span class="pre">WHEEL</span></code>.  <code class="docutils literal notranslate"><span class="pre">purelib</span></code> and
+<code class="docutils literal notranslate"><span class="pre">platlib</span></code> are usually both <code class="docutils literal notranslate"><span class="pre">site-packages</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{distribution}-{version}.dist-info/</span></code> contains metadata.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{distribution}-{version}.data/</span></code> contains one subdirectory
+for each non-empty install scheme key not already covered, where
+the subdirectory name is an index into a dictionary of install paths
+(e.g. <code class="docutils literal notranslate"><span class="pre">data</span></code>, <code class="docutils literal notranslate"><span class="pre">scripts</span></code>, <code class="docutils literal notranslate"><span class="pre">headers</span></code>, <code class="docutils literal notranslate"><span class="pre">purelib</span></code>, <code class="docutils literal notranslate"><span class="pre">platlib</span></code>).</p></li>
+<li><p>Python scripts must appear in <code class="docutils literal notranslate"><span class="pre">scripts</span></code> and begin with exactly
+<code class="docutils literal notranslate"><span class="pre">b'#!python'</span></code> in order to enjoy script wrapper generation and
+<code class="docutils literal notranslate"><span class="pre">#!python</span></code> rewriting at install time.  They may have any or no
+extension.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{distribution}-{version}.dist-info/METADATA</span></code> is Metadata version 1.1
+or greater format metadata.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{distribution}-{version}.dist-info/WHEEL</span></code> is metadata about the archive
+itself in the same basic key: value format:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Wheel-Version: 1.0
+Generator: bdist_wheel 1.0
+Root-Is-Purelib: true
+Tag: py2-none-any
+Tag: py3-none-any
+Build: 1
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Wheel-Version</span></code> is the version number of the Wheel specification.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Generator</span></code> is the name and optionally the version of the software
+that produced the archive.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Root-Is-Purelib</span></code> is true if the top level directory of the archive
+should be installed into purelib; otherwise the root should be installed
+into platlib.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Tag</span></code> is the wheel's expanded compatibility tags; in the example the
+filename would contain <code class="docutils literal notranslate"><span class="pre">py2.py3-none-any</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Build</span></code> is the build number and is omitted if there is no build number.</p></li>
+<li><p>A wheel installer should warn if Wheel-Version is greater than the
+version it supports, and must fail if Wheel-Version has a greater
+major version than the version it supports.</p></li>
+<li><p>Wheel, being an installation format that is intended to work across
+multiple versions of Python, does not generally include .pyc files.</p></li>
+<li><p>Wheel does not contain setup.py or setup.cfg.</p></li>
+</ol>
+<p>This version of the wheel specification is based on the distutils install
+schemes and does not define how to install files to other locations.
+The layout offers a superset of the functionality provided by the existing
+wininst and egg binary formats.</p>
+</div>
+</div>
+<section id="dist-info">
+<h5>.dist-info 目录<a class="headerlink" href="#dist-info" title="Link to this heading">¶</a></h5>
+<p><strong>The .dist-info directory</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<ol class="arabic simple">
+<li><p>Wheel 的 .dist-info 目录至少包括 METADATA、WHEEL 和 RECORD 文件。</p></li>
+<li><p>METADATA 是包的元数据，格式与在源分发包根目录中找到的 PKG-INFO 相同。</p></li>
+<li><p>WHEEL 是与该包的构建相关的 wheel 元数据。</p></li>
+<li><p>RECORD 是 wheel 中（几乎）所有文件的列表及其安全哈希值。与 PEP 376 不同，除了 RECORD 文件本身外，其他所有文件都必须包括其哈希值。哈希算法必须是 sha256 或更强；具体来说，不允许使用 md5 和 sha1，因为签名的 wheel 文件依赖于 RECORD 中的强哈希来验证归档的完整性。</p></li>
+<li><p>PEP 376 中的 INSTALLER 和 REQUESTED 文件不包括在归档中。</p></li>
+<li><p>RECORD.jws 用于数字签名，但不在 RECORD 中提及。</p></li>
+<li><p>RECORD.p7s 作为对希望使用 S/MIME 签名来保护其 wheel 文件的用户的照顾，允许存在，但不在 RECORD 中提及。</p></li>
+<li><p>在提取过程中，wheel 安装程序会验证 RECORD 中所有哈希值是否与文件内容匹配。除了 RECORD 及其签名外，如果归档中的任何文件未被提及或未正确哈希，安装将失败。</p></li>
+</ol>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<ol class="arabic simple">
+<li><p>Wheel .dist-info directories include at a minimum METADATA, WHEEL,
+and RECORD.</p></li>
+<li><p>METADATA is the package metadata, the same format as PKG-INFO as
+found at the root of sdists.</p></li>
+<li><p>WHEEL is the wheel metadata specific to a build of the package.</p></li>
+<li><p>RECORD is a list of (almost) all the files in the wheel and their
+secure hashes.  Unlike PEP 376, every file except RECORD, which
+cannot contain a hash of itself, must include its hash.  The hash
+algorithm must be sha256 or better; specifically, md5 and sha1 are
+not permitted, as signed wheel files rely on the strong hashes in
+RECORD to validate the integrity of the archive.</p></li>
+<li><p>PEP 376's INSTALLER and REQUESTED are not included in the archive.</p></li>
+<li><p>RECORD.jws is used for digital signatures.  It is not mentioned in
+RECORD.</p></li>
+<li><p>RECORD.p7s is allowed as a courtesy to anyone who would prefer to
+use S/MIME signatures to secure their wheel files.  It is not
+mentioned in RECORD.</p></li>
+<li><p>During extraction, wheel installers verify all the hashes in RECORD
+against the file contents.  Apart from RECORD and its signatures,
+installation will fail if any file in the archive is not both
+mentioned and correctly hashed in RECORD.</p></li>
+</ol>
+</div>
+</div>
+</section>
+<section id="data">
+<h5>.data 目录<a class="headerlink" href="#data" title="Link to this heading">¶</a></h5>
+<p><strong>The .data directory</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>任何通常不会安装到 <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> 中的文件都放入 <code class="docutils literal notranslate"><span class="pre">.data</span></code> 目录，该目录的命名方式与 <code class="docutils literal notranslate"><span class="pre">.dist-info</span></code> 目录相同，但以 <code class="docutils literal notranslate"><span class="pre">.data/</span></code> 为扩展名:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>distribution-1.0.dist-info/
+distribution-1.0.data/
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">.data</span></code> 目录包含来自分发包的子目录，如脚本、头文件、文档等。在安装过程中，这些子目录的内容会被移动到它们的目标路径。</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>Any file that is not normally installed inside site-packages goes into
+the .data directory, named as the .dist-info directory but with the
+.data/ extension:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>distribution-1.0.dist-info/
+
+distribution-1.0.data/
+</pre></div>
+</div>
+<p>The .data directory contains subdirectories with the scripts, headers,
+documentation and so forth from the distribution.  During installation the
+contents of these subdirectories are moved onto their destination paths.</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="wheel">
+<h3>签名的 wheel 文件<a class="headerlink" href="#wheel" title="Link to this heading">¶</a></h3>
+<p><strong>Signed wheel files</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>Wheel 文件包含一个扩展的 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code>，以支持数字签名。PEP 376 的 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> 被修改，第二列包含一个安全哈希 <code class="docutils literal notranslate"><span class="pre">digestname=urlsafe_b64encode_nopad(digest)</span></code> （不带尾随的 <code class="docutils literal notranslate"><span class="pre">=</span></code> 字符的 URL 安全 Base64 编码），代替了原来的 md5sum。所有可能的条目都会进行哈希，包括任何生成的文件（如 <code class="docutils literal notranslate"><span class="pre">.pyc</span></code> 文件），但不包括 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> 文件本身，因为它不能包含自己的哈希。例如：</p>
+<blockquote>
+<div><p>file.py,sha256=AVTFPZpEKzuHr7OvQZmhaU3LvwKz06AJw8mT_pNh2yI,3144
+distribution-1.0.dist-info/RECORD,,</p>
+</div></blockquote>
+<p>签名文件 <code class="docutils literal notranslate"><span class="pre">RECORD.jws</span></code> 和 <code class="docutils literal notranslate"><span class="pre">RECORD.p7s</span></code> 不会出现在 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> 中，因为它们只能在生成 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> 后添加。存档中的每个其他文件必须在 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> 中有正确的哈希，否则安装将失败。</p>
+<p>如果使用 JSON Web 签名（JWS），一个或多个 JWS JSON 序列化签名会存储在 <code class="docutils literal notranslate"><span class="pre">RECORD.jws</span></code> 文件中，紧邻 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> 文件。JWS 用来通过将 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> 的 SHA-256 哈希作为签名的 JSON 有效负载来签署 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;hash&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sha256=ADD-r2urObZHcxBW3Cr-vDCu5RJwT4CaRTHiFmbcIYY&quot;</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>（哈希值与 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> 中使用的格式相同。）</p>
+<p>如果使用 <code class="docutils literal notranslate"><span class="pre">RECORD.p7s</span></code>，它必须包含 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> 的分离 S/MIME 格式签名。</p>
+<p>Wheel 安装程序不需要理解数字签名，但必须验证 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> 中的哈希与提取的文件内容是否一致。当安装程序检查文件哈希与 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> 是否匹配时，一个单独的签名检查器只需要验证 <code class="docutils literal notranslate"><span class="pre">RECORD</span></code> 是否与签名匹配。</p>
+<p>参考资料：</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc7515">https://datatracker.ietf.org/doc/html/rfc7515</a></p></li>
+<li><p><a class="reference external" href="https://datatracker.ietf.org/doc/html/draft-jones-json-web-signature-json-serialization-01">https://datatracker.ietf.org/doc/html/draft-jones-json-web-signature-json-serialization-01</a></p></li>
+<li><p><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc7517">https://datatracker.ietf.org/doc/html/rfc7517</a></p></li>
+<li><p><a class="reference external" href="https://datatracker.ietf.org/doc/html/draft-jones-jose-json-private-key-01">https://datatracker.ietf.org/doc/html/draft-jones-jose-json-private-key-01</a></p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>Wheel files include an extended RECORD that enables digital
+signatures.  PEP 376's RECORD is altered to include a secure hash
+<code class="docutils literal notranslate"><span class="pre">digestname=urlsafe_b64encode_nopad(digest)</span></code> (urlsafe base64
+encoding with no trailing = characters) as the second column instead
+of an md5sum.  All possible entries are hashed, including any
+generated files such as .pyc files, but not RECORD which cannot contain its
+own hash. For example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>file.py,sha256=AVTFPZpEKzuHr7OvQZmhaU3LvwKz06AJw8mT\_pNh2yI,3144
+distribution-1.0.dist-info/RECORD,,
+</pre></div>
+</div>
+<p>The signature file(s) RECORD.jws and RECORD.p7s are not mentioned in
+RECORD at all since they can only be added after RECORD is generated.
+Every other file in the archive must have a correct hash in RECORD
+or the installation will fail.</p>
+<p>If JSON web signatures are used, one or more JSON Web Signature JSON
+Serialization (JWS-JS) signatures is stored in a file RECORD.jws adjacent
+to RECORD.  JWS is used to sign RECORD by including the SHA-256 hash of
+RECORD as the signature's JSON payload:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;hash&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sha256=ADD-r2urObZHcxBW3Cr-vDCu5RJwT4CaRTHiFmbcIYY&quot;</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>(The hash value is the same format used in RECORD.)</p>
+<p>If RECORD.p7s is used, it must contain a detached S/MIME format signature
+of RECORD.</p>
+<p>A wheel installer is not required to understand digital signatures but
+MUST verify the hashes in RECORD against the extracted file contents.
+When the installer checks file hashes against RECORD, a separate signature
+checker only needs to establish that RECORD matches the signature.</p>
+<p>See</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc7515">https://datatracker.ietf.org/doc/html/rfc7515</a></p></li>
+<li><p><a class="reference external" href="https://datatracker.ietf.org/doc/html/draft-jones-json-web-signature-json-serialization-01">https://datatracker.ietf.org/doc/html/draft-jones-json-web-signature-json-serialization-01</a></p></li>
+<li><p><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc7517">https://datatracker.ietf.org/doc/html/rfc7517</a></p></li>
+<li><p><a class="reference external" href="https://datatracker.ietf.org/doc/html/draft-jones-jose-json-private-key-01">https://datatracker.ietf.org/doc/html/draft-jones-jose-json-private-key-01</a></p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="id8">
+<h2>常见问题<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
+<p><strong>FAQ</strong></p>
+<section id="wheel-data">
+<h3>Wheel 定义了一个 .data 目录。我应该把所有的数据都放在那里吗？<a class="headerlink" href="#wheel-data" title="Link to this heading">¶</a></h3>
+<p><strong>Wheel defines a .data directory.  Should I put all my data there?</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>本规范并不对如何组织您的代码提供意见。<code class="xref any docutils literal notranslate"><span class="pre">.data</span></code> 目录仅用于存放任何不通常安装在 <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> 或 PYTHONPATH 中的文件。换句话说，您可以继续使用 <code class="docutils literal notranslate"><span class="pre">pkgutil.get_data(package,</span> <span class="pre">resource)</span></code>，即使 <em>这些</em> 文件通常不会分发到 <em>wheel</em> 的 <code class="docutils literal notranslate"><span class="pre">.data</span></code> 目录中。</p>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<p>This specification does not have an opinion on how you should organize
+your code.  The .data directory is just a place for any files that are
+not normally installed inside <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> or on the PYTHONPATH.
+In other words, you may continue to use <code class="docutils literal notranslate"><span class="pre">pkgutil.get_data(package,</span>
+<span class="pre">resource)</span></code> even though <em>those</em> files will usually not be distributed
+in <em>wheel's</em> <code class="docutils literal notranslate"><span class="pre">.data</span></code> directory.</p>
+</div>
+</div>
+</section>
+<section id="id9">
+<h3>为什么 wheel 包含附加的签名？<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
+<p><strong>Why does wheel include attached signatures?</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">中文</label><div class="tab-content docutils container">
+<p>附加签名比独立签名更方便，因为它们与归档文件一起传输。由于只有单个文件被签名，因此可以重新压缩归档文件，而不会使签名失效，或者可以在不需要下载整个归档文件的情况下验证单个文件。</p>
+</div>
+<input class="tab-input" id="tab-set--11-input--2" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--2">英文</label><div class="tab-content docutils container">
+<p>Attached signatures are more convenient than detached signatures
+because they travel with the archive.  Since only the individual files
+are signed, the archive can be recompressed without invalidating
+the signature or individual files can be verified without having
+to download the whole archive.</p>
+</div>
+</div>
+</section>
+<section id="wheel-jws">
+<h3>为什么 wheel 允许 JWS 签名？<a class="headerlink" href="#wheel-jws" title="Link to this heading">¶</a></h3>
+<p><strong>Why does wheel allow JWS signatures?</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">中文</label><div class="tab-content docutils container">
+<p>JWS 是 JOSE 规范的一部分，其设计目标是易于实现，这也是 wheel 的主要设计目标之一。JWS 提供了一个实用、简洁的纯 Python 实现。</p>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">英文</label><div class="tab-content docutils container">
+<p>The JOSE specifications of which JWS is a part are designed to be easy to implement, a feature that is also one of wheel's primary design goals.  JWS yields a useful, concise pure-Python implementation.</p>
+</div>
+</div>
+</section>
+<section id="wheel-s-mime">
+<h3>为什么 wheel 还允许 S/MIME 签名？<a class="headerlink" href="#wheel-s-mime" title="Link to this heading">¶</a></h3>
+<p><strong>Why does wheel also allow S/MIME signatures?</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--13-input--1" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--1">中文</label><div class="tab-content docutils container">
+<p>对于需要或想要将现有公钥基础设施与 wheel 结合使用的用户，可以使用 S/MIME 签名。</p>
+<p>签名软件包只是安全软件包更新系统中的基本构建块。Wheel 仅提供构建块。</p>
+</div>
+<input class="tab-input" id="tab-set--13-input--2" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--2">英文</label><div class="tab-content docutils container">
+<p>S/MIME signatures are allowed for users who need or want to use existing public key infrastructure with wheel.</p>
+<p>Signed packages are only a basic building block in a secure package update system.  Wheel only provides the building block.</p>
+</div>
+</div>
+</section>
+<section id="purelibplatlib">
+<h3>“purelib”和“platlib”有什么区别？<a class="headerlink" href="#purelibplatlib" title="Link to this heading">¶</a></h3>
+<p><strong>What's the deal with &quot;purelib&quot; vs. &quot;platlib&quot;?</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--14-input--1" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--1">中文</label><div class="tab-content docutils container">
+<p>Wheel 保留了 &quot;purelib&quot; 与 &quot;platlib&quot; 的区分，这在某些平台上是有意义的。例如，Fedora 将纯 Python 包安装到 '/usr/lib/pythonX.Y/site-packages'，将平台相关的包安装到 '/usr/lib64/pythonX.Y/site-packages'。</p>
+<p>一个 &quot;Root-Is-Purelib: false&quot; 的 wheel，其所有文件都在 <code class="docutils literal notranslate"><span class="pre">{name}-{version}.data/purelib</span></code> 中，等效于一个 &quot;Root-Is-Purelib: true&quot; 的 wheel，这两个 wheel 都有相同的文件在根目录下，并且可以同时存在 &quot;purelib&quot; 和 &quot;platlib&quot; 类别中的文件。</p>
+<p>实际上，一个 wheel 应该只有 &quot;purelib&quot; 或 &quot;platlib&quot; 之一，取决于它是否是纯 Python 包，这些文件应位于根目录，并且根据 &quot;Root-Is-Purelib&quot; 设置相应的值。</p>
+</div>
+<input class="tab-input" id="tab-set--14-input--2" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--2">英文</label><div class="tab-content docutils container">
+<p>Wheel preserves the &quot;purelib&quot; vs. &quot;platlib&quot; distinction, which is significant on some platforms. For example, Fedorainstalls pure Python packages to '/usr/lib/pythonX.Y/site-packages' and platform dependent packages to '/usr/lib64/pythonX.Y/site-packages'.</p>
+<p>A wheel with &quot;Root-Is-Purelib: false&quot; with all its files in <code class="docutils literal notranslate"><span class="pre">{name}-{version}.data/purelib</span></code> is equivalent to a wheelwith &quot;Root-Is-Purelib: true&quot; with those same files in the root, and it is legal to have files in both the &quot;purelib&quot; and &quot;platlib&quot; categories.</p>
+<p>In practice a wheel should have only one of &quot;purelib&quot; or &quot;platlib&quot; depending on whether it is pure Python or not andthose files should be at the root with the appropriate setting given for &quot;Root-is-purelib&quot;.</p>
+</div>
+</div>
+</section>
+<section id="wheel-python">
+<span id="binary-distribution-format-import-wheel"></span><h3>是否可以直接从 wheel 文件导入 Python 代码？<a class="headerlink" href="#wheel-python" title="Link to this heading">¶</a></h3>
+<p><strong>Is it possible to import Python code directly from a wheel file?</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--15-input--1" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--1">中文</label><div class="tab-content docutils container">
+<p>从技术上讲，由于支持通过简单解压安装并使用与 <code class="docutils literal notranslate"><span class="pre">zipimport</span></code> 兼容的归档格式，部分 wheel 文件 <em>确实</em> 支持直接放置在 <code class="docutils literal notranslate"><span class="pre">sys.path</span></code> 上。然而，虽然这种行为是格式设计的自然结果，但通常不建议依赖它。</p>
+<p>首先，wheel <em>确实</em> 主要作为一种分发格式设计，因此跳过安装步骤也意味着故意避免依赖假定完全安装的特性（例如，能够使用像 <code class="docutils literal notranslate"><span class="pre">pip</span></code> 和 <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> 这样的标准工具捕获和管理依赖，并以一种可以正确追踪的方式进行审计和安全更新，或通过将头文件发布到适当的位置，完全集成到标准构建机制中以支持 C 扩展）。</p>
+<p>其次，尽管有些 Python 软件被编写为支持直接从 zip 归档运行，但仍然常见的是，代码假设它已经完全安装。当这个假设通过尝试从 zip 归档运行软件被打破时，失败往往是隐晦且难以诊断的（尤其是在第三方库中）。造成此问题的两个最常见原因是：从 zip 归档中导入 C 扩展 <em>不</em> 被 CPython 支持（因为这种做法没有得到任何平台上动态加载机制的直接支持），以及从 zip 归档运行时， <code class="docutils literal notranslate"><span class="pre">__file__</span></code> 属性不再指向普通的文件系统路径，而是指向一个组合路径，该路径包括文件系统上 zip 归档的位置和归档内模块的相对路径。即使软件在内部正确使用了抽象资源 API，与外部组件的接口仍然可能需要实际的磁盘文件。</p>
+<p>像元类、猴子补丁和元路径导入器一样，如果你不确定自己是否需要利用这个特性，那么你几乎肯定不需要它。如果你 <em>确实</em> 决定使用它，务必意识到，许多项目在接受它作为真正的 bug 之前，要求能够用完全安装的包重现失败。</p>
+</div>
+<input class="tab-input" id="tab-set--15-input--2" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--2">英文</label><div class="tab-content docutils container">
+<p>Technically, due to the combination of supporting installation via
+simple extraction and using an archive format that is compatible with
+<code class="docutils literal notranslate"><span class="pre">zipimport</span></code>, a subset of wheel files <em>do</em> support being placed directly
+on <code class="docutils literal notranslate"><span class="pre">sys.path</span></code>. However, while this behaviour is a natural consequence
+of the format design, actually relying on it is generally discouraged.</p>
+<p>Firstly, wheel <em>is</em> designed primarily as a distribution format, so
+skipping the installation step also means deliberately avoiding any
+reliance on features that assume full installation (such as being able
+to use standard tools like <code class="docutils literal notranslate"><span class="pre">pip</span></code> and <code class="docutils literal notranslate"><span class="pre">virtualenv</span></code> to capture and
+manage dependencies in a way that can be properly tracked for auditing
+and security update purposes, or integrating fully with the standard
+build machinery for C extensions by publishing header files in the
+appropriate place).</p>
+<p>Secondly, while some Python software is written to support running
+directly from a zip archive, it is still common for code to be written
+assuming it has been fully installed. When that assumption is broken
+by trying to run the software from a zip archive, the failures can often
+be obscure and hard to diagnose (especially when they occur in third
+party libraries). The two most common sources of problems with this
+are the fact that importing C extensions from a zip archive is <em>not</em>
+supported by CPython (since doing so is not supported directly by the
+dynamic loading machinery on any platform) and that when running from
+a zip archive the <code class="docutils literal notranslate"><span class="pre">__file__</span></code> attribute no longer refers to an
+ordinary filesystem path, but to a combination path that includes
+both the location of the zip archive on the filesystem and the
+relative path to the module inside the archive. Even when software
+correctly uses the abstract resource APIs internally, interfacing with
+external components may still require the availability of an actual
+on-disk file.</p>
+<p>Like metaclasses, monkeypatching and metapath importers, if you're not
+already sure you need to take advantage of this feature, you almost
+certainly don't need it. If you <em>do</em> decide to use it anyway, be
+aware that many projects will require a failure to be reproduced with
+a fully installed package before accepting it as a genuine bug.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id10">
+<h2>历史<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h2>
+<p><strong>History</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--16-input--1" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--1">中文</label><div class="tab-content docutils container">
+<ul class="simple">
+<li><p>2013年2月：该规范通过 <span class="target" id="index-0"></span><a class="pep reference external" href="https://peps.python.org/pep-0427/"><strong>PEP 427</strong></a> 获得批准。</p></li>
+<li><p>2021年2月：对 wheel 文件名中的转义规则进行了修订，以使其与流行工具的实际做法保持一致。</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--16-input--2" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--2">英文</label><div class="tab-content docutils container">
+<ul class="simple">
+<li><p>February 2013: This specification was approved through <span class="target" id="index-1"></span><a class="pep reference external" href="https://peps.python.org/pep-0427/"><strong>PEP 427</strong></a>.</p></li>
+<li><p>February 2021: The rules on escaping in wheel filenames were revised, to bring them into line with what popular tools actually do.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="id11">
+<h2>附录<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h2>
+<p><strong>Appendix</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--17-input--1" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--1">中文</label><div class="tab-content docutils container">
+<p>urlsafe-base64-nopad 实现示例:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># urlsafe-base64-nopad for Python 3
+import base64
+
+def urlsafe_b64encode_nopad(data):
+   return base64.urlsafe_b64encode(data).rstrip(b&#39;=&#39;)
+
+def urlsafe_b64decode_nopad(data):
+   pad = b&#39;=&#39; * (4 - (len(data) &amp; 3))
+   return base64.urlsafe_b64decode(data + pad)
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--17-input--2" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--2">英文</label><div class="tab-content docutils container">
+<p>Example urlsafe-base64-nopad implementation:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># urlsafe-base64-nopad for Python 3
+import base64
+
+def urlsafe_b64encode_nopad(data):
+   return base64.urlsafe_b64encode(data).rstrip(b&#39;=&#39;)
+
+def urlsafe_b64decode_nopad(data):
+   pad = b&#39;=&#39; * (4 - (len(data) &amp; 3))
+   return base64.urlsafe_b64decode(data + pad)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="section-package-indices.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">包索引接口</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="source-distribution-format.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">源分发格式</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2013–2020, PyPA
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2024 年 11 月 15 日</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">二进制分发格式</a><ul>
+<li><a class="reference internal" href="#id2">详细信息</a><ul>
+<li><a class="reference internal" href="#wheel-distribution-1-0-py32-none-any-whl">安装 wheel 'distribution-1.0-py32-none-any.whl'</a><ul>
+<li><a class="reference internal" href="#id3">推荐的安装程序功能</a></li>
+<li><a class="reference internal" href="#id4">推荐的归档器功能</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id5">文件格式</a><ul>
+<li><a class="reference internal" href="#wheel-file-name-spec">文件名约定</a></li>
+<li><a class="reference internal" href="#unicode">转义和 Unicode</a></li>
+<li><a class="reference internal" href="#id7">文件内容</a><ul>
+<li><a class="reference internal" href="#dist-info">.dist-info 目录</a></li>
+<li><a class="reference internal" href="#data">.data 目录</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#wheel">签名的 wheel 文件</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id8">常见问题</a><ul>
+<li><a class="reference internal" href="#wheel-data">Wheel 定义了一个 .data 目录。我应该把所有的数据都放在那里吗？</a></li>
+<li><a class="reference internal" href="#id9">为什么 wheel 包含附加的签名？</a></li>
+<li><a class="reference internal" href="#wheel-jws">为什么 wheel 允许 JWS 签名？</a></li>
+<li><a class="reference internal" href="#wheel-s-mime">为什么 wheel 还允许 S/MIME 签名？</a></li>
+<li><a class="reference internal" href="#purelibplatlib">“purelib”和“platlib”有什么区别？</a></li>
+<li><a class="reference internal" href="#wheel-python">是否可以直接从 wheel 文件导入 Python 代码？</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id10">历史</a></li>
+<li><a class="reference internal" href="#id11">附录</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=cb5fb026"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    </body>
+</html>

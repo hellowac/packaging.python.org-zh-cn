@@ -1,0 +1,1875 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="next" title="项目摘要" href="../key_projects.html" /><link rel="prev" title=".pypirc 文件" href="pypirc.html" />
+
+    <link rel="shortcut icon" href="../_static/py.png"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>Simple 仓库 API - Python Packaging User Guide</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Python Packaging User Guide</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">Python Packaging User Guide</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow.html">打包流程</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/installing-packages.html">安装软件包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/managing-dependencies.html">管理依赖项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/packaging-projects.html">打包Python项目</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../guides/index.html">指南</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-install.html">安装</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 安装</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-pip-and-virtual-environments.html">使用 pip 和 venv 在虚拟环境中安装软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-virtualenv.html">使用虚拟环境安装包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-stand-alone-command-line-tools.html">安装独立的命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-using-linux-tools.html">使用 Linux 包管理器安装 pip/setuptools/wheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/installing-scientific-packages.html">安装科学软件包</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-build-and-publish.html">构建和发布</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 构建和发布</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/writing-pyproject-toml.html">编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/distributing-packages-using-setuptools.html">打包和分发项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/dropping-older-python-versions.html">放弃对旧版 Python 的支持</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/packaging-binary-extensions.html">打包二进制扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/packaging-namespace-packages.html">打包命名空间包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/creating-command-line-tools.html">创建和打包命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/creating-and-discovering-plugins.html">创建和发现插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/using-testpypi.html">使用 TestPyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/making-a-pypi-friendly-readme.html">制作适合 PyPI 的 README</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows.html">使用 GitHub Actions CI/CD 工作流发布软件包分发版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/modernize-setup-py-project.html">如何使基于 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 的项目现代化？</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../guides/section-hosting.html">托管</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of 托管</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../guides/index-mirrors-and-caches.html">包索引镜像和缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../guides/hosting-your-own-index.html">托管您自己的简单存储库</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/tool-recommendations.html">工具推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../guides/analyzing-pypi-package-downloads.html">分析 PyPI 软件包下载</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discussions/index.html">讨论</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 讨论</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/versioning.html">版本控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/deploying-python-applications.html">部署 Python 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/pip-vs-easy-install.html">pip vs easy_install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/install-requires-vs-requirements.html">install_requires 与需求文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/distribution-package-vs-import-package.html">分发包与导入包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/package-formats.html">软件包格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/src-layout-vs-flat-layout.html">src 布局与平面布局</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/setup-py-deprecated.html"><code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 已被弃用吗？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/single-source-version.html">单一来源项目版本</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">PyPA 规范</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of PyPA 规范</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-distribution-metadata.html">包分发元数据</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 包分发元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="name-normalization.html">名称和规范化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core-metadata.html">核心元数据规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="version-specifiers.html">版本标识符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dependency-specifiers.html">依赖说明符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyproject-toml.html"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="inline-script-metadata.html">内联脚本元数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="platform-compatibility-tags.html">平台兼容性标签</a></li>
+<li class="toctree-l3"><a class="reference internal" href="well-known-project-urls.html">元数据中的知名项目 URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-installation-metadata.html">包安装元数据</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 包安装元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="recording-installed-packages.html">记录已安装的项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="entry-points.html">入口点规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="direct-url.html">记录已安装发行版的直接 URL 来源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="direct-url-data-structure.html">直接 URL 数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="virtual-environments.html">Python 虚拟环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="externally-managed-environments.html">外部管理环境</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-distribution-formats.html">包分发文件格式</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 包分发文件格式</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="source-distribution-format.html">源分发格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="binary-distribution-format.html">二进制分发格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="section-package-indices.html">包索引接口</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of 包索引接口</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pypirc.html"><code class="file docutils literal notranslate"><span class="pre">.pypirc</span></code> 文件</a></li>
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">Simple 仓库 API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../key_projects.html">项目摘要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">如何获取支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">为本指南做出贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">新闻</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/specifications/simple-repository-api.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="simple-api">
+<span id="simple-repository-api"></span><h1>Simple 仓库 API<a class="headerlink" href="#simple-api" title="Link to this heading">¶</a></h1>
+<p><strong>Simple repository API</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>查询可用包版本和从索引服务器检索包的界面有两种形式：HTML 和 JSON。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>The interface for querying available package versions and
+retrieving packages from an index server comes in two forms:
+HTML and JSON.</p>
+</div>
+</div>
+<section id="html-api">
+<span id="simple-repository-api-base"></span><h2>基本 HTML API<a class="headerlink" href="#html-api" title="Link to this heading">¶</a></h2>
+<p><strong>Base HTML API</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>一个实现 Simple API 的仓库通过其基本 URL 定义，这个 URL 是所有附加 URL 所在的顶层 URL。这个 API 被称为 &quot;simple&quot; 仓库，因为 PyPI 的基本 URL 是 <code class="docutils literal notranslate"><span class="pre">https://pypi.org/simple/</span></code>。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>本文档中后续出现的所有 URL 都将相对于这个基本 URL（因此给定 PyPI 的 URL，<code class="docutils literal notranslate"><span class="pre">/foo/</span></code> 的 URL 将是 <code class="docutils literal notranslate"><span class="pre">https://pypi.org/simple/foo/</span></code>）。</p>
+</div>
+<p>在仓库中，根 URL（本规范中的 <code class="docutils literal notranslate"><span class="pre">/</span></code> 代表基本 URL） <strong>必须</strong> 是一个有效的 HTML5 页面，每个项目都应有一个单独的锚点元素。锚点的文本 <strong>必须</strong> 是项目的名称，href 属性 <strong>必须</strong> 链接到该项目的 URL。示例如下:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;a href=&quot;/frob/&quot;&gt;frob&lt;/a&gt;
+    &lt;a href=&quot;/spamspamspam/&quot;&gt;spamspamspam&lt;/a&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+</div>
+<p>在根 URL 之下，每个仓库中的单独项目将有一个对应的 URL。该 URL 的格式为 <code class="docutils literal notranslate"><span class="pre">/&lt;project&gt;/</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> 替换为该项目的规范化名称，因此一个名为 &quot;HolyGrail&quot; 的项目将有一个类似 <code class="docutils literal notranslate"><span class="pre">/holygrail/</span></code> 的 URL。该 URL 必须返回一个有效的 HTML5 页面，每个文件都有一个单独的锚点元素。锚点的 href 属性 <strong>必须</strong> 是指向该文件下载位置的 URL，并且锚点文本 <strong>必须</strong> 与该 URL 的最后一个路径组件（即文件名）匹配。该 URL <strong>应该</strong> 包括一个哈希，格式为 URL 片段，语法为：<code class="docutils literal notranslate"><span class="pre">#&lt;hashname&gt;=&lt;hashvalue&gt;</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">&lt;hashname&gt;</span></code> 是哈希函数的名称（如 <code class="docutils literal notranslate"><span class="pre">sha256</span></code>），<code class="docutils literal notranslate"><span class="pre">&lt;hashvalue&gt;</span></code> 是十六进制编码的摘要。</p>
+<p>除了上述要求外，API 还具有以下约束：</p>
+<ul>
+<li><p>所有返回 HTML5 页面的 URL <strong>必须</strong> 以 <code class="docutils literal notranslate"><span class="pre">/</span></code> 结尾，并且仓库 <strong>应该</strong> 将没有 <code class="docutils literal notranslate"><span class="pre">/</span></code> 结尾的 URL 重定向到带 <code class="docutils literal notranslate"><span class="pre">/</span></code> 的 URL。</p></li>
+<li><p>URL 可以是绝对 URL 或相对 URL，只要它们指向正确的位置。</p></li>
+<li><p>对文件必须托管在仓库相对位置的地方没有任何约束。</p></li>
+<li><p>API 页面可以有其他 HTML 元素，只要包含所需的锚点元素。</p></li>
+<li><p>仓库 <strong>可以</strong> 将未规范化的 URL 重定向到规范化的 URL（例如，<code class="docutils literal notranslate"><span class="pre">/Foobar/</span></code> 可以重定向到 <code class="docutils literal notranslate"><span class="pre">/foobar/</span></code>），然而客户端 <strong>不得</strong> 依赖此重定向， <strong>必须</strong> 请求规范化的 URL。</p></li>
+<li><p>仓库 <strong>应该</strong> 选择一个哈希函数，该哈希函数在 Python 标准库的 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/hashlib.html#module-hashlib" title="（在 Python v3.13）"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hashlib</span></code></a> 模块中可以保证可用（目前为 <code class="docutils literal notranslate"><span class="pre">md5</span></code>、<code class="docutils literal notranslate"><span class="pre">sha1</span></code>、<code class="docutils literal notranslate"><span class="pre">sha224</span></code>、<code class="docutils literal notranslate"><span class="pre">sha256</span></code>、<code class="docutils literal notranslate"><span class="pre">sha384</span></code>、<code class="docutils literal notranslate"><span class="pre">sha512</span></code>）。当前推荐使用 <code class="docutils literal notranslate"><span class="pre">sha256</span></code>。</p></li>
+<li><p>如果某个分发文件有 GPG 签名， <strong>必须</strong> 将其与该文件一起存放，文件名相同，但附加 <code class="docutils literal notranslate"><span class="pre">.asc</span></code> 后缀。因此，如果文件 <code class="docutils literal notranslate"><span class="pre">/packages/HolyGrail-1.0.tar.gz</span></code> 存在并且有关联的签名，则签名应位于 <code class="docutils literal notranslate"><span class="pre">/packages/HolyGrail-1.0.tar.gz.asc</span></code>。</p></li>
+<li><p>仓库 <strong>可以</strong> 在文件链接上包括 <code class="docutils literal notranslate"><span class="pre">data-gpg-sig</span></code> 属性，值为 <code class="docutils literal notranslate"><span class="pre">true</span></code> 或 <code class="docutils literal notranslate"><span class="pre">false</span></code>，以指示是否存在 GPG 签名。做此操作的仓库 <strong>应该</strong> 在每个链接上都包括此属性。</p></li>
+<li><p>仓库 <strong>可以</strong> 在文件链接上包括 <code class="docutils literal notranslate"><span class="pre">data-requires-python</span></code> 属性。这将公开相应发布的 <a class="reference internal" href="core-metadata.html#core-metadata-requires-python"><span class="std std-ref">Requires-Python</span></a> 元数据字段。若该属性存在，安装工具 <strong>应该</strong> 在安装时忽略不满足要求的 Python 版本。例如:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;...&quot;</span> <span class="n">data</span><span class="o">-</span><span class="n">requires</span><span class="o">-</span><span class="n">python</span><span class="o">=</span><span class="s2">&quot;&amp;gt;=3&quot;</span><span class="o">&gt;...&lt;/</span><span class="n">a</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>在属性值中，<code class="docutils literal notranslate"><span class="pre">&lt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> 必须分别 HTML 编码为 <code class="docutils literal notranslate"><span class="pre">&amp;lt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">&amp;gt;</span></code>。</p>
+</li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>A repository that implements the simple API is defined by its base URL, this is
+the top level URL that all additional URLs are below. The API is named the
+&quot;simple&quot; repository due to the fact that PyPI's base URL is
+<code class="docutils literal notranslate"><span class="pre">https://pypi.org/simple/</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>All subsequent URLs in this document will be relative to this base
+URL (so given PyPI's URL, a URL of <code class="docutils literal notranslate"><span class="pre">/foo/</span></code> would be
+<code class="docutils literal notranslate"><span class="pre">https://pypi.org/simple/foo/</span></code>.</p>
+</div>
+<p>Within a repository, the root URL (<code class="docutils literal notranslate"><span class="pre">/</span></code> for this spec which represents the base
+URL) <strong>MUST</strong> be a valid HTML5 page with a single anchor element per project in
+the repository. The text of the anchor tag <strong>MUST</strong> be the name of
+the project and the href attribute <strong>MUST</strong> link to the URL for that particular
+project. As an example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;a href=&quot;/frob/&quot;&gt;frob&lt;/a&gt;
+    &lt;a href=&quot;/spamspamspam/&quot;&gt;spamspamspam&lt;/a&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+</div>
+<p>Below the root URL is another URL for each individual project contained within
+a repository. The format of this URL is <code class="docutils literal notranslate"><span class="pre">/&lt;project&gt;/</span></code> where the <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code>
+is replaced by the normalized name for that project, so a project named
+&quot;HolyGrail&quot; would have a URL like <code class="docutils literal notranslate"><span class="pre">/holygrail/</span></code>. This URL must respond with
+a valid HTML5 page with a single anchor element per file for the project. The
+href attribute <strong>MUST</strong> be a URL that links to the location of the file for
+download, and the text of the anchor tag <strong>MUST</strong> match the final path
+component (the filename) of the URL. The URL <strong>SHOULD</strong> include a hash in the
+form of a URL fragment with the following syntax: <code class="docutils literal notranslate"><span class="pre">#&lt;hashname&gt;=&lt;hashvalue&gt;</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">&lt;hashname&gt;</span></code> is the lowercase name of the hash function (such as
+<code class="docutils literal notranslate"><span class="pre">sha256</span></code>) and <code class="docutils literal notranslate"><span class="pre">&lt;hashvalue&gt;</span></code> is the hex encoded digest.</p>
+<p>In addition to the above, the following constraints are placed on the API:</p>
+<ul>
+<li><p>All URLs which respond with an HTML5 page <strong>MUST</strong> end with a <code class="docutils literal notranslate"><span class="pre">/</span></code> and the
+repository <strong>SHOULD</strong> redirect the URLs without a <code class="docutils literal notranslate"><span class="pre">/</span></code> to add a <code class="docutils literal notranslate"><span class="pre">/</span></code> to the
+end.</p></li>
+<li><p>URLs may be either absolute or relative as long as they point to the correct
+location.</p></li>
+<li><p>There are no constraints on where the files must be hosted relative to the
+repository.</p></li>
+<li><p>There may be any other HTML elements on the API pages as long as the required
+anchor elements exist.</p></li>
+<li><p>Repositories <strong>MAY</strong> redirect unnormalized URLs to the canonical normalized
+URL (e.g. <code class="docutils literal notranslate"><span class="pre">/Foobar/</span></code> may redirect to <code class="docutils literal notranslate"><span class="pre">/foobar/</span></code>), however clients
+<strong>MUST NOT</strong> rely on this redirection and <strong>MUST</strong> request the normalized
+URL.</p></li>
+<li><p>Repositories <strong>SHOULD</strong> choose a hash function from one of the ones
+guaranteed to be available via the <a class="reference external" href="https://docs.python.org/zh-cn/3/library/hashlib.html#module-hashlib" title="（在 Python v3.13）"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hashlib</span></code></a> module in the Python standard
+library (currently <code class="docutils literal notranslate"><span class="pre">md5</span></code>, <code class="docutils literal notranslate"><span class="pre">sha1</span></code>, <code class="docutils literal notranslate"><span class="pre">sha224</span></code>, <code class="docutils literal notranslate"><span class="pre">sha256</span></code>, <code class="docutils literal notranslate"><span class="pre">sha384</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sha512</span></code>). The current recommendation is to use <code class="docutils literal notranslate"><span class="pre">sha256</span></code>.</p></li>
+<li><p>If there is a GPG signature for a particular distribution file it <strong>MUST</strong>
+live alongside that file with the same name with a <code class="docutils literal notranslate"><span class="pre">.asc</span></code> appended to it.
+So if the file <code class="docutils literal notranslate"><span class="pre">/packages/HolyGrail-1.0.tar.gz</span></code> existed and had an
+associated signature, the signature would be located at
+<code class="docutils literal notranslate"><span class="pre">/packages/HolyGrail-1.0.tar.gz.asc</span></code>.</p></li>
+<li><p>A repository <strong>MAY</strong> include a <code class="docutils literal notranslate"><span class="pre">data-gpg-sig</span></code> attribute on a file link with
+a value of either <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code> to indicate whether or not there is a
+GPG signature. Repositories that do this <strong>SHOULD</strong> include it on every link.</p></li>
+<li><p>A repository <strong>MAY</strong> include a <code class="docutils literal notranslate"><span class="pre">data-requires-python</span></code> attribute on a file
+link. This exposes the <a class="reference internal" href="core-metadata.html#core-metadata-requires-python"><span class="std std-ref">Requires-Python</span></a> metadata field
+for the corresponding release. Where this is present, installer tools
+<strong>SHOULD</strong> ignore the download when installing to a Python version that
+doesn't satisfy the requirement. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;...&quot;</span> <span class="n">data</span><span class="o">-</span><span class="n">requires</span><span class="o">-</span><span class="n">python</span><span class="o">=</span><span class="s2">&quot;&amp;gt;=3&quot;</span><span class="o">&gt;...&lt;/</span><span class="n">a</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>In the attribute value, &lt; and &gt; have to be HTML encoded as <code class="docutils literal notranslate"><span class="pre">&amp;lt;</span></code> and
+<code class="docutils literal notranslate"><span class="pre">&amp;gt;</span></code>, respectively.</p>
+</li>
+</ul>
+</div>
+</div>
+<section id="id1">
+<h3>规范化名称<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<p><strong>Normalized Names</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>本规范引用了“规范化”项目名称的概念。根据 <a class="reference internal" href="name-normalization.html#name-normalization"><span class="std std-ref">名称规范化规范</span></a>，名称中唯一有效的字符是 ASCII 字母、ASCII 数字、<code class="docutils literal notranslate"><span class="pre">.</span></code>、<code class="docutils literal notranslate"><span class="pre">-</span></code> 和 <code class="docutils literal notranslate"><span class="pre">_</span></code>。名称应该小写，并且所有连续的 <code class="docutils literal notranslate"><span class="pre">.</span></code>、<code class="docutils literal notranslate"><span class="pre">-</span></code> 或 <code class="docutils literal notranslate"><span class="pre">_</span></code> 字符应替换为单个 <code class="docutils literal notranslate"><span class="pre">-</span></code> 字符。这可以通过 Python 中的 <code class="docutils literal notranslate"><span class="pre">re</span></code> 模块实现:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[-_.]+&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>This spec references the concept of a &quot;normalized&quot; project name. As per
+<a class="reference internal" href="name-normalization.html#name-normalization"><span class="std std-ref">the name normalization specification</span></a>
+the only valid characters in a name are the ASCII alphabet, ASCII numbers,
+<code class="docutils literal notranslate"><span class="pre">.</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, and <code class="docutils literal notranslate"><span class="pre">_</span></code>. The name should be lowercased with all runs of the
+characters <code class="docutils literal notranslate"><span class="pre">.</span></code>, <code class="docutils literal notranslate"><span class="pre">-</span></code>, or <code class="docutils literal notranslate"><span class="pre">_</span></code> replaced with a single <code class="docutils literal notranslate"><span class="pre">-</span></code> character. This
+can be implemented in Python with the <code class="docutils literal notranslate"><span class="pre">re</span></code> module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[-_.]+&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="simple-api-yank">
+<span id="simple-repository-api-yank"></span><h2>向 Simple API 添加“Yank”支持<a class="headerlink" href="#simple-api-yank" title="Link to this heading">¶</a></h2>
+<p><strong>Adding &quot;Yank&quot; Support to the Simple API</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>简单仓库中的链接 <strong>MAY</strong> 包含一个 <code class="docutils literal notranslate"><span class="pre">data-yanked</span></code> 属性，该属性可以没有值，也可以有一个任意的字符串值。存在 <code class="docutils literal notranslate"><span class="pre">data-yanked</span></code> 属性时， <strong>SHOULD</strong> 解释为指示该链接指向的文件已被“撤回”（&quot;Yanked&quot;），并且通常不应被安装程序选择，除非在特定情况下。</p>
+<p>如果存在， <code class="docutils literal notranslate"><span class="pre">data-yanked</span></code> 属性的值是一个任意字符串，表示文件被撤回的原因。处理简单仓库 API 的工具 <strong>MAY</strong> 将此字符串展示给最终用户。</p>
+<p>一旦设置，撤回属性不是不可变的，未来可以被撤销（并且一旦撤销，也可以被重新设置）。因此，API 用户 <strong>MUST</strong> 能够处理被撤回的文件被“恢复” （甚至再次被撤回）的情况。</p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>Links in the simple repository <strong>MAY</strong> have a <code class="docutils literal notranslate"><span class="pre">data-yanked</span></code> attribute
+which may have no value, or may have an arbitrary string as a value. The
+presence of a <code class="docutils literal notranslate"><span class="pre">data-yanked</span></code> attribute <strong>SHOULD</strong> be interpreted as
+indicating that the file pointed to by this particular link has been
+&quot;Yanked&quot;, and should not generally be selected by an installer, except
+under specific scenarios.</p>
+<p>The value of the <code class="docutils literal notranslate"><span class="pre">data-yanked</span></code> attribute, if present, is an arbitrary
+string that represents the reason for why the file has been yanked. Tools
+that process the simple repository API <strong>MAY</strong> surface this string to
+end users.</p>
+<p>The yanked attribute is not immutable once set, and may be rescinded in
+the future (and once rescinded, may be reset as well). Thus API users
+<strong>MUST</strong> be able to cope with a yanked file being &quot;unyanked&quot; (and even
+yanked again).</p>
+</div>
+</div>
+<section id="id2">
+<h3>安装程序<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
+<p><strong>Installers</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>理想的用户体验是，一旦文件被撤回，当用户试图直接安装一个已被撤回的文件时，安装应当失败，就像该文件已被删除一样。然而，当用户在一段时间前进行此操作，而现在计算机只是继续机械地按照原始顺序安装现已被撤回的文件时，安装应当表现得就像文件没有被撤回一样。</p>
+<p>如果选择约束可以通过非撤回版本来满足，安装程序 <strong>MUST</strong> 忽略撤回的版本；如果这意味着无法完全满足请求，安装程序 <strong>MAY</strong> 拒绝使用撤回的版本。实现 <strong>SHOULD</strong> 选择遵循上述意图精神的策略，避免对撤回版本/文件的“新”依赖。</p>
+<p>这意味着的具体做法留给具体的安装程序决定，如何最好地融入其安装程序的整体使用。然而，有两种建议的方法：</p>
+<ol class="arabic simple">
+<li><p>撤回的文件始终被忽略，除非它是唯一符合精确版本指定符的文件，该版本指定符使用 <code class="docutils literal notranslate"><span class="pre">==</span></code> （没有任何使其成为范围的修饰符，例如  <code class="docutils literal notranslate"><span class="pre">.*</span></code> ）或 <code class="docutils literal notranslate"><span class="pre">===</span></code>。匹配该版本指定符应按 <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">版本指定符规范</span></a> 进行，考虑到本地版本、零填充等情况。</p></li>
+<li><p>撤回的文件始终被忽略，除非它是唯一符合锁定文件（如 <code class="docutils literal notranslate"><span class="pre">Pipfile.lock</span></code> 或 <code class="docutils literal notranslate"><span class="pre">poetry.lock</span></code>）中指定要安装的文件。在这种情况下，从某个输入文件或命令创建或更新锁定文件时，<strong>SHOULD</strong> 不使用撤回的文件。</p></li>
+</ol>
+<p>无论安装程序选择何种策略来决定何时安装撤回文件，安装程序 <strong>SHOULD</strong> 在决定安装撤回文件时发出警告。该警告 <strong>MAY</strong> 利用 <code class="docutils literal notranslate"><span class="pre">data-yanked</span></code> 属性的值（如果有值）来向用户提供更具体的反馈，解释该文件为何被撤回。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>The desirable experience for users is that once a file is yanked, when
+a human being is currently trying to directly install a yanked file, that
+it fails as if that file had been deleted. However, when a human did that
+awhile ago, and now a computer is just continuing to mechanically follow
+the original order to install the now yanked file, then it acts as if it
+had not been yanked.</p>
+<p>An installer <strong>MUST</strong> ignore yanked releases, if the selection constraints
+can be satisfied with a non-yanked version, and <strong>MAY</strong> refuse to use a
+yanked release even if it means that the request cannot be satisfied at all.
+An implementation <strong>SHOULD</strong> choose a policy that follows the spirit of the
+intention above, and that prevents &quot;new&quot; dependencies on yanked
+releases/files.</p>
+<p>What this means is left up to the specific installer, to decide how to best
+fit into the overall usage of their installer. However, there are two
+suggested approaches to take:</p>
+<ol class="arabic simple">
+<li><p>Yanked files are always ignored, unless they are the only file that</p></li>
+</ol>
+<blockquote>
+<div><p>matches a version specifier that &quot;pins&quot; to an exact version using
+either <code class="docutils literal notranslate"><span class="pre">==</span></code> (without any modifiers that make it a range, such as
+<code class="docutils literal notranslate"><span class="pre">.*</span></code>) or <code class="docutils literal notranslate"><span class="pre">===</span></code>. Matching this version specifier should otherwise
+be done as per <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">the version specifiers specification</span></a> for things like local versions, zero padding,
+etc.</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>Yanked files are always ignored, unless they are the only file that</p></li>
+</ol>
+<blockquote>
+<div><p>matches what a lock file (such as <code class="docutils literal notranslate"><span class="pre">Pipfile.lock</span></code> or <code class="docutils literal notranslate"><span class="pre">poetry.lock</span></code>)
+specifies to be installed. In this case, a yanked file <strong>SHOULD</strong> not
+be used when creating or updating a lock file from some input file or
+command.</p>
+</div></blockquote>
+<p>Regardless of the specific strategy that an installer chooses for deciding
+when to install yanked files, an installer <strong>SHOULD</strong> emit a warning when
+it does decide to install a yanked file. That warning <strong>MAY</strong> utilize the
+value of the <code class="docutils literal notranslate"><span class="pre">data-yanked</span></code> attribute (if it has a value) to provide more
+specific feedback to the user about why that file had been yanked.</p>
+</div>
+</div>
+</section>
+<section id="id3">
+<h3>镜像<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<p><strong>Mirrors</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>镜像通常可以以两种方式处理撤回的文件：</p>
+<ol class="arabic simple">
+<li><p>它们可以选择完全从其简单仓库 API 中省略撤回的文件，只提供一个显示“活动的”、未撤回文件的仓库视图。</p></li>
+<li><p>它们可以选择包含撤回的文件，并且还要镜像 <code class="docutils literal notranslate"><span class="pre">data-yanked</span></code> 属性。</p></li>
+</ol>
+<p>镜像 <strong>不得</strong> 在未镜像 <code class="docutils literal notranslate"><span class="pre">data-yanked</span></code> 属性的情况下镜像已撤回的文件。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Mirrors can generally treat yanked files one of two ways:</p>
+<ol class="arabic simple">
+<li><p>They may choose to omit them from their simple repository API completely,</p></li>
+</ol>
+<blockquote>
+<div><p>providing a view over the repository that shows only &quot;active&quot;, unyanked
+files.</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>They may choose to include yanked files, and additionally mirror the</p></li>
+</ol>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">data-yanked</span></code> attribute as well.</p>
+</div></blockquote>
+<p>Mirrors <strong>MUST NOT</strong> mirror a yanked file without also mirroring the <code class="docutils literal notranslate"><span class="pre">data-yanked</span></code> attribute for it.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="pypi-simple-api">
+<span id="simple-repository-api-versioning"></span><h2>PyPI Simple API 版本控制<a class="headerlink" href="#pypi-simple-api" title="Link to this heading">¶</a></h2>
+<p><strong>Versioning PyPI's Simple API</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>此规范提议在每个成功请求到简单 API 页面时的响应中包含一个 meta 标签，该标签具有名称属性 &quot;pypi:repository-version&quot;，其内容是一个与 <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">版本说明符规范</span></a> 兼容的版本号，进一步限制为仅支持 Major.Minor 版本，且不包含 <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">版本说明符规范</span></a> 支持的附加功能。</p>
+<p>最终效果类似于:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">meta</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;pypi:repository-version&quot;</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>解释仓库版本时：</p>
+<ul class="simple">
+<li><p>增加主版本号用于表示不兼容的变化，这样现有客户端将不再能够有意义地使用该 API。</p></li>
+<li><p>增加次版本号用于表示向后兼容的变化，这样现有客户端仍然可以有意义地使用该 API。</p></li>
+</ul>
+<p>具体什么变化构成不兼容或兼容的变化，留给未来规范的裁定，基本的建议是现有客户端将能够“有意义”地继续使用该 API，这可以包括添加、修改或删除现有功能。</p>
+<p>本规范期望主版本号永远不会增加，任何未来的主要 API 进化将采用不同的机制来演化 API。然而，包含主版本号是为了与未来的版本区分开（例如，假设的简单 API v2 位于 /v2/，但如果仓库版本设置为 &gt;= 2，则会造成混淆）。</p>
+<p>本规范将当前 API 版本设置为 &quot;1.0&quot;，并期望未来进一步演化简单 API 的规范将增加次版本号。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>This spec proposes the inclusion of a meta tag on the responses of every
+successful request to a simple API page, which contains a name attribute
+of &quot;pypi:repository-version&quot;, and a content that is a <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">version specifiers
+specification</span></a> compatible
+version number, which is further constrained to ONLY be Major.Minor, and
+none of the additional features supported by <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">the version specifiers
+specification</span></a>.</p>
+<p>This would end up looking like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">meta</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;pypi:repository-version&quot;</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>When interpreting the repository version:</p>
+<ul class="simple">
+<li><p>Incrementing the major version is used to signal a backwards
+incompatible change such that existing clients would no longer be
+expected to be able to meaningfully use the API.</p></li>
+<li><p>Incrementing the minor version is used to signal a backwards
+compatible change such that existing clients would still be
+expected to be able to meaningfully use the API.</p></li>
+</ul>
+<p>It is left up to the discretion of any future specs as to what
+specifically constitutes a backwards incompatible vs compatible change
+beyond the broad suggestion that existing clients will be able to
+&quot;meaningfully&quot; continue to use the API, and can include adding,
+modifying, or removing existing features.</p>
+<p>It is expectation of this spec that the major version will never be
+incremented, and any future major API evolutions would utilize a
+different mechanism for API evolution. However the major version
+is included to disambiguate with future versions (e.g. a hypothetical
+simple api v2 that lived at /v2/, but which would be confusing if the
+repository-version was set to a version &gt;= 2).</p>
+<p>This spec sets the current API version to &quot;1.0&quot;, and expects that
+future specs that further evolve the simple API will increment the
+minor version number.</p>
+</div>
+</div>
+<section id="id4">
+<h3>客户端<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<p><strong>Clients</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>与简单 API 交互的客户端 <strong>SHOULD</strong> 检查每个响应中的仓库版本，如果该数据不存在，<strong>MUST</strong> 假定版本为 1.0。</p>
+<p>当遇到大于预期的主版本时，客户端 <strong>MUST</strong> 以适当的错误信息硬性失败，并向用户显示。</p>
+<p>当遇到大于预期的次版本时，客户端 <strong>SHOULD</strong> 向用户发出适当的警告信息。</p>
+<p>客户端 <strong>MAY</strong> 仍然可以继续使用特性检测来确定仓库使用的功能。</p>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>Clients interacting with the simple API <strong>SHOULD</strong> introspect each
+response for the repository version, and if that data does not exist
+<strong>MUST</strong> assume that it is version 1.0.</p>
+<p>When encountering a major version greater than expected, clients
+<strong>MUST</strong> hard fail with an appropriate error message for the user.</p>
+<p>When encountering a minor version greater than expected, clients
+<strong>SHOULD</strong> warn users with an appropriate message.</p>
+<p>Clients <strong>MAY</strong> still continue to use feature detection in order to
+determine what features a repository uses.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="simple-repository-api-metadata-file">
+<span id="id5"></span><h2>在 Simple Repository API 中提供分发元数据<a class="headerlink" href="#simple-repository-api-metadata-file" title="Link to this heading">¶</a></h2>
+<p><strong>Serve Distribution Metadata in the Simple Repository API</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>在简单仓库的项目页面中，每个指向分发包的锚标签 <strong>可能(MAY)</strong> 具有一个 <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code> 属性。该属性的存在表示，锚标签所指示的分发包 <strong>必须(MUST)</strong> 包含一个核心元数据文件，该文件在分发包处理和/或安装时不会被修改。</p>
+<p>如果存在 <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code> 属性，则仓库 <strong>必须(MUST)</strong> 将分发包的核心元数据文件与分发包一起提供，并在文件名末尾添加 <code class="docutils literal notranslate"><span class="pre">.metadata</span></code>。例如，服务于 <code class="docutils literal notranslate"><span class="pre">/files/distribution-1.0-py3.none.any.whl</span></code> 的分发包的核心元数据文件将位于 <code class="docutils literal notranslate"><span class="pre">/files/distribution-1.0-py3.none.any.whl.metadata</span></code>。这类似于 <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">基础 HTML API 规范</span></a> 中指定 GPG 签名文件的位置。</p>
+<p>仓库 <strong>应该(SHOULD)</strong> 提供核心元数据文件的哈希值，作为 <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code> 属性的值，采用语法 <code class="docutils literal notranslate"><span class="pre">&lt;hashname&gt;=&lt;hashvalue&gt;</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">&lt;hashname&gt;</span></code> 是所用哈希函数的小写名称，<code class="docutils literal notranslate"><span class="pre">&lt;hashvalue&gt;</span></code> 是十六进制编码的摘要。如果无法提供哈希，仓库 <strong>可能(MAY)</strong> 使用 <code class="docutils literal notranslate"><span class="pre">true</span></code> 作为该属性的值。</p>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>In a simple repository's project page, each anchor tag pointing to a
+distribution <strong>MAY</strong> have a <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code> attribute. The
+presence of the attribute indicates the distribution represented by
+the anchor tag <strong>MUST</strong> contain a Core Metadata file that will not be
+modified when the distribution is processed and/or installed.</p>
+<p>If a <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code> attribute is present, the repository
+<strong>MUST</strong> serve the distribution's Core Metadata file alongside the
+distribution with a <code class="docutils literal notranslate"><span class="pre">.metadata</span></code> appended to the distribution's file
+name. For example, the Core Metadata of a distribution served at
+<code class="docutils literal notranslate"><span class="pre">/files/distribution-1.0-py3.none.any.whl</span></code> would be located at
+<code class="docutils literal notranslate"><span class="pre">/files/distribution-1.0-py3.none.any.whl.metadata</span></code>. This is similar
+to how <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the base HTML API specification</span></a>
+specifies the GPG signature file's location.</p>
+<p>The repository <strong>SHOULD</strong> provide the hash of the Core Metadata file
+as the <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code> attribute's value using the syntax
+<code class="docutils literal notranslate"><span class="pre">&lt;hashname&gt;=&lt;hashvalue&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;hashname&gt;</span></code> is the lower cased
+name of the hash function used, and <code class="docutils literal notranslate"><span class="pre">&lt;hashvalue&gt;</span></code> is the hex encoded
+digest. The repository <strong>MAY</strong> use <code class="docutils literal notranslate"><span class="pre">true</span></code> as the attribute's value
+if a hash is unavailable.</p>
+</div>
+</div>
+<section id="id6">
+<h3>向后兼容性<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<p><strong>Backwards Compatibility</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>如果锚标签缺少 <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code> 属性，工具应该恢复其当前行为，即下载分发包以检查元数据。</p>
+<p>不支持新 <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code> 属性的旧版工具应该忽略该属性，并保持其当前行为，即下载分发包以检查元数据。这类似于先前的 <code class="docutils literal notranslate"><span class="pre">data-</span></code> 属性添加期望现有工具操作的方式。</p>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>If an anchor tag lacks the <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code> attribute,
+tools are expected to revert to their current behaviour of downloading
+the distribution to inspect the metadata.</p>
+<p>Older tools not supporting the new <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code>
+attribute are expected to ignore the attribute and maintain their
+current behaviour of downloading the distribution to inspect the
+metadata. This is similar to how prior <code class="docutils literal notranslate"><span class="pre">data-</span></code> attribute additions
+expect existing tools to operate.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="json-python-simple-api">
+<span id="simple-repository-api-json"></span><h2>基于 JSON 的 Python 包索引 Simple API<a class="headerlink" href="#json-python-simple-api" title="Link to this heading">¶</a></h2>
+<p><strong>JSON-based Simple API for Python Package Indexes</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>为了仅使用标准库启用响应解析，本规范规定，所有响应（除了文件本身和 <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">基本 HTML API 规范</span></a> 中的 HTML 响应）应使用 <a class="reference external" href="https://www.json.org/">JSON</a> 序列化。</p>
+<p>为了实现零配置发现并最小化额外的 HTTP 请求，本规范扩展了 <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">基本 HTML API 规范</span></a>，使得所有 API 端点（文件本身除外）将利用 HTTP 内容协商，使客户端和服务器能够选择正确的序列化格式进行传输，即 HTML 或 JSON。</p>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<p>To enable response parsing with only the standard library, this spec specifies that
+all responses (besides the files themselves, and the HTML responses from
+<a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the base HTML API specification</span></a>) should be
+serialized using <a class="reference external" href="https://www.json.org/">JSON</a>.</p>
+<p>To enable zero configuration discovery and to minimize the amount of additional HTTP
+requests, this spec extends <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the base HTML API specification</span></a> such that all of the API endpoints (other than the
+files themselves) will utilize HTTP content negotiation to allow client and server to
+select the correct serialization format to serve, i.e. either HTML or JSON.</p>
+</div>
+</div>
+<section id="id8">
+<h3>版本控制<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<p><strong>Versioning</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">中文</label><div class="tab-content docutils container">
+<p>版本控制将遵循 <a class="reference internal" href="#simple-repository-api-versioning"><span class="std std-ref">API 版本控制规范</span></a> 格式（<code class="docutils literal notranslate"><span class="pre">Major.Minor</span></code>），该规范已将现有的 HTML 响应定义为 <code class="docutils literal notranslate"><span class="pre">1.0</span></code>。由于本规范并未为 API 引入新特性，而是描述了现有特性的不同序列化格式，因此本规范不会更改现有的 <code class="docutils literal notranslate"><span class="pre">1.0</span></code> 版本，而只是描述如何将其序列化为 JSON。</p>
+<p>类似于 <a class="reference internal" href="#simple-repository-api-versioning"><span class="std std-ref">API 版本控制规范</span></a>，如果新的格式变更会导致现有客户端无法继续有效理解该格式，则 <strong>必须(MUST)</strong> 增加主版本号。</p>
+<p>同样，如果格式中添加或移除了特性，但现有客户端仍然能够继续有效理解该格式，则 <strong>必须(MUST)</strong> 增加次版本号。</p>
+<p>不会导致现有客户端无法有效理解格式的变更，并且没有涉及特性添加或移除的，可以在不更改版本号的情况下进行。</p>
+<p>这一点故意模糊，因为本规范认为，最好的做法是由未来对 API 进行更改的规范来调查并决定是否应该增加主版本号或次版本号。</p>
+<p>API 的未来版本可能会添加一些只能在该版本的部分可用序列化方式中表示的内容。所有序列化的版本号，在同一主版本内， <strong>应该(SHOULD)</strong> 保持同步，但如何将特性序列化到每种格式的具体方式可能会有所不同，包括是否该特性在某些格式中完全缺失。</p>
+<p>本规范的意图是将 API 视为返回数据的 URL 端点，其解释由该数据的版本定义，然后序列化为目标序列化格式。</p>
+</div>
+<input class="tab-input" id="tab-set--11-input--2" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--2">英文</label><div class="tab-content docutils container">
+<p>Versioning will adhere to <a class="reference internal" href="#simple-repository-api-versioning"><span class="std std-ref">the API versioning specification</span></a> format (<code class="docutils literal notranslate"><span class="pre">Major.Minor</span></code>), which has defined the
+existing HTML responses to be <code class="docutils literal notranslate"><span class="pre">1.0</span></code>. Since this spec does not introduce new features
+into the API, rather it describes a different serialization format for the existing
+features, this spec does not change the existing <code class="docutils literal notranslate"><span class="pre">1.0</span></code> version, and instead just
+describes how to serialize that into JSON.</p>
+<p>Similar to <a class="reference internal" href="#simple-repository-api-versioning"><span class="std std-ref">the API versioning specification</span></a>, the major version number <strong>MUST</strong> be
+incremented if any
+changes to the new format would result in no longer being able to expect existing
+clients to meaningfully understand the format.</p>
+<p>Likewise, the minor version <strong>MUST</strong> be incremented if features are
+added or removed from the format, but existing clients would be expected to continue
+to meaningfully understand the format.</p>
+<p>Changes that would not result in existing clients being unable to meaningfully
+understand the format and which do not represent features being added or removed
+may occur without changing the version number.</p>
+<p>This is intentionally vague, as this spec believes it is best left up to future specs
+that make any changes to the API to investigate and decide whether or not that
+change should increment the major or minor version.</p>
+<p>Future versions of the API may add things that can only be represented in a subset
+of the available serializations of that version. All serializations version numbers,
+within a major version, <strong>SHOULD</strong> be kept in sync, but the specifics of how a
+feature serializes into each format may differ, including whether or not that feature
+is present at all.</p>
+<p>It is the intent of this spec that the API should be thought of as URL endpoints that
+return data, whose interpretation is defined by the version of that data, and then
+serialized into the target serialization format.</p>
+</div>
+</div>
+</section>
+<section id="json-serialization">
+<span id="id9"></span><h3>JSON 序列化<a class="headerlink" href="#json-serialization" title="Link to this heading">¶</a></h3>
+<p><strong>JSON Serialization</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">中文</label><div class="tab-content docutils container">
+<p>来自 <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">基础 HTML API 规范</span></a> 的 URL 结构仍然适用，因为本规范仅为已存在的 API 添加了额外的序列化格式。</p>
+<p>以下约束适用于本规范中描述的所有 JSON 序列化响应：</p>
+<ul class="simple">
+<li><p>所有 JSON 响应将 <em>始终</em> 是一个 JSON 对象，而不是数组或其他类型。</p></li>
+<li><p>虽然 JSON 原生不支持 URL 类型，但在此 API 中表示 URL 的任何值可以是绝对的或相对的，只要它们指向正确的位置。如果是相对路径，它们是相对于当前 URL 的，就像在 HTML 中一样。</p></li>
+<li><p>可以向 API 响应中的任何字典对象添加额外的键，且客户端 <strong>必须(MUST)</strong> 忽略它们不理解的键。</p></li>
+<li><p>所有 JSON 响应将包含一个 <code class="docutils literal notranslate"><span class="pre">meta</span></code> 键，该键包含与响应本身相关的信息，而不是响应内容。</p></li>
+<li><p>所有 JSON 响应将包含一个 <code class="docutils literal notranslate"><span class="pre">meta.api-version</span></code> 键，该键是一个字符串，包含 <a class="reference internal" href="#simple-repository-api-versioning"><span class="std std-ref">API 版本控制规范</span></a> 中的 <code class="docutils literal notranslate"><span class="pre">Major.Minor</span></code> 版本号，并具有与 <a class="reference internal" href="#simple-repository-api-versioning"><span class="std std-ref">API 版本控制规范</span></a> 中定义的相同的失败/警告语义。</p></li>
+<li><p>所有与 <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">基础 HTML API 规范</span></a> 相关的要求（非 HTML 特定要求）仍然适用。</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">英文</label><div class="tab-content docutils container">
+<p>The URL structure from <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the base HTML API specification</span></a> still applies, as this spec only adds an additional
+serialization format for the already existing API.</p>
+<p>The following constraints apply to all JSON serialized responses described in this
+spec:</p>
+<ul class="simple">
+<li><p>All JSON responses will <em>always</em> be a JSON object rather than an array or other
+type.</p></li>
+<li><p>While JSON doesn't natively support a URL type, any value that represents an
+URL in this API may be either absolute or relative as long as they point to
+the correct location. If relative, they are relative to the current URL as if
+it were HTML.</p></li>
+<li><p>Additional keys may be added to any dictionary objects in the API responses
+and clients <strong>MUST</strong> ignore keys that they don't understand.</p></li>
+<li><p>All JSON responses will have a <code class="docutils literal notranslate"><span class="pre">meta</span></code> key, which contains information related to
+the response itself, rather than the content of the response.</p></li>
+<li><p>All JSON responses will have a <code class="docutils literal notranslate"><span class="pre">meta.api-version</span></code> key, which will be a string that
+contains the <a class="reference internal" href="#simple-repository-api-versioning"><span class="std std-ref">API versioning specification</span></a> <code class="docutils literal notranslate"><span class="pre">Major.Minor</span></code> version number, with the
+same fail/warn semantics as defined in <a class="reference internal" href="#simple-repository-api-versioning"><span class="std std-ref">the API versioning specification</span></a>.</p></li>
+<li><p>All requirements of <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the base HTML API specification</span></a> that are not HTML specific still apply.</p></li>
+</ul>
+</div>
+</div>
+<section id="id10">
+<h4>项目列表<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<p><strong>Project List</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--13-input--1" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--1">中文</label><div class="tab-content docutils container">
+<p>此规范的根 URL <code class="docutils literal notranslate"><span class="pre">/</span></code> （代表基础 URL）将是一个 JSON 编码的字典，包含两个键：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">projects</span></code>：一个数组，其中每个条目是一个字典，字典中有一个键 <code class="docutils literal notranslate"><span class="pre">name</span></code>，表示项目名称的字符串。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">meta</span></code>：通用响应元数据，如 <a class="reference internal" href="#json-serialization">前面描述的</a>。</p></li>
+</ul>
+<p>例如：</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;api-version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;projects&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Frob&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;spamspamspam&quot;</span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><code class="docutils literal notranslate"><span class="pre">name</span></code> 字段与 <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">基础 HTML API 规范</span></a> 中的字段相同，该规范未明确规定它是未规范化的显示名称还是规范化名称。实际上，这些规范的不同实现对此有不同的选择，因此依赖于它是未规范化还是规范化的名称实际上是依赖于特定仓库的实现细节。</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>虽然 <code class="docutils literal notranslate"><span class="pre">projects</span></code> 键是一个数组，因此需要按某种顺序排列，但 <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">基础 HTML API 规范</span></a> 和本规范都没有要求任何特定的排序，也没有要求排序在每次请求之间保持一致。从逻辑上讲，这最好被认为是一个集合，但 JSON 和 HTML 都不支持集合功能。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--13-input--2" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--2">英文</label><div class="tab-content docutils container">
+<p>The root URL <code class="docutils literal notranslate"><span class="pre">/</span></code> for this spec (which represents the base URL) will be a JSON encoded
+dictionary which has a two keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">projects</span></code>: An array where each entry is a dictionary with a single key, <code class="docutils literal notranslate"><span class="pre">name</span></code>, which represents string of the project name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">meta</span></code>: The general response metadata as <a class="reference internal" href="#json-serialization">described earlier</a>.</p></li>
+</ul>
+<p>As an example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;api-version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;projects&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Frob&quot;</span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;spamspamspam&quot;</span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">name</span></code> field is the same as the one from <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the base HTML API
+specification</span></a>, which does not specify
+whether it is the non-normalized display name or the normalized name. In practice
+different implementations of these specs are choosing differently here, so relying
+on it being either non-normalized or normalized is relying on an implementation
+detail of the repository in question.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>While the <code class="docutils literal notranslate"><span class="pre">projects</span></code> key is an array, and thus is required to be in some kind
+of an order, neither <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the base HTML API specification</span></a> nor this spec requires any specific ordering nor
+that the ordering is consistent from one request to the next. Mentally this is
+best thought of as a set, but both JSON and HTML lack the functionality to have
+sets.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="id11">
+<h4>项目详细信息<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
+<p><strong>Project Detail</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--14-input--1" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--1">中文</label><div class="tab-content docutils container">
+<p>该 URL 的格式为 <code class="docutils literal notranslate"><span class="pre">/&lt;project&gt;/</span></code>，其中 <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> 被替换为
+<a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">基础 HTML API 规范</span></a> 中该项目的规范化名称，
+例如，名为 &quot;Silly_Walk&quot; 的项目将具有类似 <code class="docutils literal notranslate"><span class="pre">/silly-walk/</span></code> 的 URL。</p>
+<p>此 URL 必须响应一个 JSON 编码的字典，包含以下三个键：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>：项目的规范化名称。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">files</span></code>：一个字典列表，每个字典表示一个单独的文件。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">meta</span></code>：通用响应元数据，如 <a class="reference internal" href="#json-serialization">前面描述的</a>。</p></li>
+</ul>
+<p>每个单独文件的字典包含以下键：</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">filename</span></code>：表示的文件名。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">url</span></code>：文件可以从中下载的 URL。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hashes</span></code>：一个字典，将哈希名称映射到文件的十六进制编码摘要。
+可以包括多个哈希，客户端可以决定如何处理多个哈希（例如，可以验证所有哈希、部分哈希或不验证任何哈希）。这些哈希名称 <strong>SHOULD</strong> 始终规范化为小写。</p>
+<p><code class="docutils literal notranslate"><span class="pre">hashes</span></code> 字典 <strong>MUST</strong> 存在，即使文件没有可用的哈希，然而强烈建议始终至少包括一个安全且保证可用的哈希。</p>
+<p>默认情况下，任何通过 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/hashlib.html#module-hashlib" title="（在 Python v3.13）"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hashlib</span></code></a> 模块可用的哈希算法（特别是任何可以传递给 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/hashlib.html#hashlib.new" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">hashlib.new()</span></code></a> 且不需要附加参数的算法）都可以作为哈希字典的键。至少应该始终包括 <a class="reference external" href="https://docs.python.org/zh-cn/3/library/hashlib.html#hashlib.algorithms_guaranteed" title="（在 Python v3.13）"><code class="xref py py-data docutils literal notranslate"><span class="pre">hashlib.algorithms_guaranteed</span></code></a> 中的一个安全算法。目前，推荐使用 <code class="docutils literal notranslate"><span class="pre">sha256</span></code>。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">requires-python</span></code>：一个 <strong>可选</strong> 键，暴露 <span class="xref std std-ref">核心元数据-requires-python</span>
+元数据字段。如果此字段存在，则安装工具 <strong>SHOULD</strong> 在安装到不满足要求的 Python 版本时忽略该下载。</p>
+<p>与 <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">基础 HTML API 规范</span></a> 中的 <code class="docutils literal notranslate"><span class="pre">data-requires-python</span></code> 不同，<code class="docutils literal notranslate"><span class="pre">requires-python</span></code> 键除了 JSON 自然支持的任何转义外，不需要任何特殊的转义。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dist-info-metadata</span></code>：一个 <strong>可选</strong> 键，表示该文件有可用的元数据，
+该元数据位于与 <a class="reference internal" href="#simple-repository-api-metadata-file"><span class="std std-ref">API 元数据文件规范</span></a> 中指定的位置相同（<code class="docutils literal notranslate"><span class="pre">{file_url}.metadata</span></code>）。如果此字段存在，则 <strong>MUST</strong> 是布尔值，表示文件是否有相关的元数据文件，或者是一个字典，将哈希名称映射到元数据哈希的十六进制编码摘要。</p>
+<p>如果此字段是哈希字典而不是布尔值，则与 <code class="docutils literal notranslate"><span class="pre">hashes</span></code> 键相同的要求和建议也适用于此键。</p>
+<p>如果此字段缺失，则元数据文件可能存在也可能不存在。如果字段值为真值，则表示元数据文件存在；如果字段值为假值，则表示元数据文件不存在。</p>
+<p>建议服务器在可能的情况下提供元数据文件的哈希。</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gpg-sig</span></code>：一个 <strong>可选</strong> 键，作为布尔值，表示文件是否有相关的 GPG 签名。
+签名文件的 URL 跟随 <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">基础 HTML API 规范</span></a> 中指定的位置（<code class="docutils literal notranslate"><span class="pre">{file_url}.asc</span></code>）。如果此键不存在，则签名文件可能存在也可能不存在。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yanked</span></code>：一个 <strong>可选</strong> 键，可以是布尔值，表示文件是否已被撤销，或是一个非空但任意的字符串，表示文件因特定原因被撤销。如果 <code class="docutils literal notranslate"><span class="pre">yanked</span></code> 键存在且值为真，则 <strong>SHOULD</strong> 解释为表示该文件的 <code class="docutils literal notranslate"><span class="pre">url</span></code> 字段指向的文件已被 &quot;撤销&quot;，符合 <a class="reference internal" href="#simple-repository-api-yank"><span class="std std-ref">API 撤销规范</span></a>。</p></li>
+</ul>
+<p>例如：</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;api-version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;holygrail&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;holygrail-1.0.tar.gz&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/files/holygrail-1.0.tar.gz&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;hashes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;sha256&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;blake2b&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;requires-python&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&gt;=3.7&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;yanked&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Had a vulnerability&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;holygrail-1.0-py3-none-any.whl&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/files/holygrail-1.0-py3-none-any.whl&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;hashes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;sha256&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;blake2b&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;requires-python&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&gt;=3.7&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;dist-info-metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>虽然 <code class="docutils literal notranslate"><span class="pre">files</span></code> 键是一个数组，因此需要按某种顺序排列，但 <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">基础 HTML API 规范</span></a> 和本规范都没有要求任何特定的排序，也没有要求排序在每次请求之间保持一致。从逻辑上讲，这最好被认为是一个集合，但 JSON 和 HTML 都不支持集合功能。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--14-input--2" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--2">英文</label><div class="tab-content docutils container">
+<p>The format of this URL is <code class="docutils literal notranslate"><span class="pre">/&lt;project&gt;/</span></code> where the <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> is replaced by the
+<a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the base HTML API specification</span></a> normalized
+name for that project, so a project named &quot;Silly_Walk&quot; would
+have a URL like <code class="docutils literal notranslate"><span class="pre">/silly-walk/</span></code>.</p>
+<p>This URL must respond with a JSON encoded dictionary that has three keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: The normalized name of the project.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">files</span></code>: A list of dictionaries, each one representing an individual file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">meta</span></code>: The general response metadata as <a class="reference internal" href="#json-serialization">described earlier</a>.</p></li>
+</ul>
+<p>Each individual file dictionary has the following keys:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">filename</span></code>: The filename that is being represented.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">url</span></code>: The URL that the file can be fetched from.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hashes</span></code>: A dictionary mapping a hash name to a hex encoded digest of the file.
+Multiple hashes can be included, and it is up to the client to decide what to do
+with multiple hashes (it may validate all of them or a subset of them, or nothing
+at all). These hash names <strong>SHOULD</strong> always be normalized to be lowercase.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">hashes</span></code> dictionary <strong>MUST</strong> be present, even if no hashes are available
+for the file, however it is <strong>HIGHLY</strong> recommended that at least one secure,
+guaranteed-to-be-available hash is always included.</p>
+<p>By default, any hash algorithm available via <a class="reference external" href="https://docs.python.org/zh-cn/3/library/hashlib.html#module-hashlib" title="（在 Python v3.13）"><code class="xref py py-mod docutils literal notranslate"><span class="pre">hashlib</span></code></a> (specifically any that can
+be passed to <a class="reference external" href="https://docs.python.org/zh-cn/3/library/hashlib.html#hashlib.new" title="（在 Python v3.13）"><code class="xref py py-func docutils literal notranslate"><span class="pre">hashlib.new()</span></code></a> and do not require additional parameters) can
+be used as a key for the hashes dictionary. At least one secure algorithm from
+<a class="reference external" href="https://docs.python.org/zh-cn/3/library/hashlib.html#hashlib.algorithms_guaranteed" title="（在 Python v3.13）"><code class="xref py py-data docutils literal notranslate"><span class="pre">hashlib.algorithms_guaranteed</span></code></a> <strong>SHOULD</strong> always be included. At the time
+of this spec, <code class="docutils literal notranslate"><span class="pre">sha256</span></code> specifically is recommended.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">requires-python</span></code>: An <strong>optional</strong> key that exposes the
+<a class="reference internal" href="core-metadata.html#core-metadata-requires-python"><span class="std std-ref">Requires-Python</span></a>
+metadata field. Where this is present, installer tools
+<strong>SHOULD</strong> ignore the download when installing to a Python version that
+doesn't satisfy the requirement.</p>
+<p>Unlike <code class="docutils literal notranslate"><span class="pre">data-requires-python</span></code> in <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the base HTML API specification</span></a>, the <code class="docutils literal notranslate"><span class="pre">requires-python</span></code> key does not
+require any special escaping other than anything JSON does naturally.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dist-info-metadata</span></code>: An <strong>optional</strong> key that indicates
+that metadata for this file is available, via the same location as specified in
+<a class="reference internal" href="#simple-repository-api-metadata-file"><span class="std std-ref">the API metadata file specification</span></a> (<code class="docutils literal notranslate"><span class="pre">{file_url}.metadata</span></code>). Where this
+is present, it <strong>MUST</strong> be
+either a boolean to indicate if the file has an associated metadata file, or a
+dictionary mapping hash names to a hex encoded digest of the metadata's hash.</p>
+<p>When this is a dictionary of hashes instead of a boolean, then all the same
+requirements and recommendations as the <code class="docutils literal notranslate"><span class="pre">hashes</span></code> key hold true for this key as
+well.</p>
+<p>If this key is missing then the metadata file may or may not exist. If the key
+value is truthy, then the metadata file is present, and if it is falsey then it
+is not.</p>
+<p>It is recommended that servers make the hashes of the metadata file available if
+possible.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gpg-sig</span></code>: An <strong>optional</strong> key that acts a boolean to indicate if the file has
+an associated GPG signature or not. The URL for the signature file follows what
+is specified in <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the base HTML API specification</span></a> (<code class="docutils literal notranslate"><span class="pre">{file_url}.asc</span></code>). If this key does not exist, then
+the signature may or may not exist.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">yanked</span></code>: An <strong>optional</strong> key which may be either a boolean to indicate if the
+file has been yanked, or a non empty, but otherwise arbitrary, string to indicate
+that a file has been yanked with a specific reason. If the <code class="docutils literal notranslate"><span class="pre">yanked</span></code> key is present
+and is a truthy value, then it <strong>SHOULD</strong> be interpreted as indicating that the
+file pointed to by the <code class="docutils literal notranslate"><span class="pre">url</span></code> field has been &quot;Yanked&quot; as per <a class="reference internal" href="#simple-repository-api-yank"><span class="std std-ref">the API
+yank specification</span></a>.</p></li>
+</ul>
+<p>As an example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;api-version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.0&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;holygrail&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;files&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;holygrail-1.0.tar.gz&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/files/holygrail-1.0.tar.gz&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;hashes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;sha256&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;blake2b&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;requires-python&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&gt;=3.7&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;yanked&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Had a vulnerability&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;holygrail-1.0-py3-none-any.whl&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/files/holygrail-1.0-py3-none-any.whl&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;hashes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;sha256&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;blake2b&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;requires-python&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&gt;=3.7&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;dist-info-metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>While the <code class="docutils literal notranslate"><span class="pre">files</span></code> key is an array, and thus is required to be in some kind
+of an order, neither <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the base HTML API specification</span></a> nor this spec requires any specific ordering nor
+that the ordering is consistent from one request to the next. Mentally this is
+best thought of as a set, but both JSON and HTML lack the functionality to have
+sets.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="id12">
+<h3>内容类型<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<p><strong>Content-Types</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--15-input--1" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--1">中文</label><div class="tab-content docutils container">
+<p>本规范提议，所有来自 Simple API 的响应将具有一个标准的内容类型，描述响应的类型（Simple API 响应）、所代表的 API 版本，以及使用的序列化格式。</p>
+<p>该内容类型的结构将是：</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>application/vnd.pypi.simple.$version+format
+</pre></div>
+</div>
+<p>由于只有主版本可能会对试图理解这些 API 响应的客户端造成破坏性影响，因此内容类型中只会包含主版本，并且会以 <code class="docutils literal notranslate"><span class="pre">v</span></code> 为前缀，以澄清它是一个版本号。</p>
+<p>这意味着，对于现有的 1.0 版本 API，内容类型将是：</p>
+<ul class="simple">
+<li><p><strong>JSON:</strong> <code class="docutils literal notranslate"><span class="pre">application/vnd.pypi.simple.v1+json</span></code></p></li>
+<li><p><strong>HTML:</strong> <code class="docutils literal notranslate"><span class="pre">application/vnd.pypi.simple.v1+html</span></code></p></li>
+</ul>
+<p>除了上述内容外，还支持一个特殊的 &quot;meta&quot; 版本，命名为 <code class="docutils literal notranslate"><span class="pre">latest</span></code>，其目的是允许客户端请求最新的版本，而无需事先知道该版本是什么。然而，建议客户端明确指定它们支持的版本。</p>
+<p>为了支持期望现有 <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">基础 HTML API 规范</span></a> API 响应使用 <code class="docutils literal notranslate"><span class="pre">text/html</span></code> 内容类型的现有客户端，本规范进一步定义 <code class="docutils literal notranslate"><span class="pre">text/html</span></code> 作为 <code class="docutils literal notranslate"><span class="pre">application/vnd.pypi.simple.v1+html</span></code> 内容类型的别名。</p>
+</div>
+<input class="tab-input" id="tab-set--15-input--2" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--2">英文</label><div class="tab-content docutils container">
+<p>This spec proposes that all responses from the Simple API will have a standard
+content type that describes what the response is (a Simple API response), what
+version of the API it represents, and what serialization format has been used.</p>
+<p>The structure of this content type will be:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>application/vnd.pypi.simple.$version+format
+</pre></div>
+</div>
+<p>Since only major versions should be disruptive to clients attempting to
+understand one of these API responses, only the major version will be included
+in the content type, and will be prefixed with a <code class="docutils literal notranslate"><span class="pre">v</span></code> to clarify that it is a
+version number.</p>
+<p>Which means that for the existing 1.0 API, the content types would be:</p>
+<ul class="simple">
+<li><p><strong>JSON:</strong> <code class="docutils literal notranslate"><span class="pre">application/vnd.pypi.simple.v1+json</span></code></p></li>
+<li><p><strong>HTML:</strong> <code class="docutils literal notranslate"><span class="pre">application/vnd.pypi.simple.v1+html</span></code></p></li>
+</ul>
+<p>In addition to the above, a special &quot;meta&quot; version is supported named <code class="docutils literal notranslate"><span class="pre">latest</span></code>,
+whose purpose is to allow clients to request the absolute latest version, without
+having to know ahead of time what that version is. It is recommended however,
+that clients be explicit about what versions they support.</p>
+<p>To support existing clients which expect the existing <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the base HTML API
+specification</span></a> API responses to
+use the <code class="docutils literal notranslate"><span class="pre">text/html</span></code> content type, this spec further defines <code class="docutils literal notranslate"><span class="pre">text/html</span></code> as an alias
+for the <code class="docutils literal notranslate"><span class="pre">application/vnd.pypi.simple.v1+html</span></code> content type.</p>
+</div>
+</div>
+</section>
+<section id="id13">
+<h3>版本 + 格式选择<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h3>
+<p><strong>Version + Format Selection</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--16-input--1" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--1">中文</label><div class="tab-content docutils container">
+<p>现在，由于可能存在多种序列化格式，我们需要一个机制，让客户端能够指示它们能够理解哪些序列化格式。此外，如果将来有新的主版本添加到 API 中，能够避免破坏现有客户端对先前版本的期望将会非常有益。</p>
+<p>为此，本规范标准化了使用 HTTP 的 <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation">服务器驱动内容协商</a>。</p>
+<p>虽然本规范不会完全描述服务器驱动内容协商的所有细节，但大致流程如下：</p>
+<ol class="arabic simple">
+<li><p>客户端发出一个包含 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头的 HTTP 请求，该头列出了它们能够理解的所有版本+格式内容类型。</p></li>
+<li><p>服务器检查该头，选择列表中的一个内容类型，然后使用该内容类型返回响应（如果缺少 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头，则视为 <code class="docutils literal notranslate"><span class="pre">Accept:</span> <span class="pre">*/*</span></code>）。</p></li>
+<li><p>如果服务器不支持 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头中列出的任何内容类型，则它可以在以下三种不同选项中选择如何响应：</p>
+<ol class="loweralpha simple">
+<li><p>选择一个与客户端请求的不同的默认内容类型，并返回该内容类型的响应。</p></li>
+<li><p>返回 HTTP <code class="docutils literal notranslate"><span class="pre">406</span> <span class="pre">Not</span> <span class="pre">Acceptable</span></code> 响应，表示没有可用的请求内容类型，且服务器无法或不愿意选择一个默认的内容类型来响应。</p></li>
+<li><p>返回 HTTP <code class="docutils literal notranslate"><span class="pre">300</span> <span class="pre">Multiple</span> <span class="pre">Choices</span></code> 响应，包含一个所有可能的响应类型的列表，客户端可以选择其中之一。</p></li>
+</ol>
+</li>
+<li><p>客户端解析响应，处理服务器可能响应的不同类型的响应。</p></li>
+</ol>
+<p>本规范并未规定服务器在处理无法返回的内容类型时做出何种选择，客户端 <strong>SHOULD</strong> 准备好以最合适的方式处理所有可能的响应。</p>
+<p>然而，由于没有标准格式来解释 <code class="docutils literal notranslate"><span class="pre">300</span> <span class="pre">Multiple</span> <span class="pre">Choices</span></code> 响应，本规范强烈不建议服务器使用该选项，因为客户端无法理解并选择不同的内容类型来请求。此外，客户端 <em>不太可能</em> 理解不同的内容类型，因此，最好的情况下，客户端可能会将该响应视为 <code class="docutils literal notranslate"><span class="pre">406</span> <span class="pre">Not</span> <span class="pre">Acceptable</span></code> 错误。</p>
+<p>本规范 <strong>要求</strong> 如果使用了 <code class="docutils literal notranslate"><span class="pre">latest</span></code> 元版本，服务器 <strong>MUST</strong> 使用实际版本的内容类型来响应该请求（例如，一个 <code class="docutils literal notranslate"><span class="pre">Accept:</span> <span class="pre">application/vnd.pypi.simple.latest+json</span></code> 请求返回一个 <code class="docutils literal notranslate"><span class="pre">v1.x</span></code> 响应时，<code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> 应为 <code class="docutils literal notranslate"><span class="pre">application/vnd.pypi.simple.v1+json</span></code>）。</p>
+<p><code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头是一个逗号分隔的内容类型列表，表示客户端理解并能够处理的内容类型。它支持三种格式来指定每个请求的内容类型：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">$type/$subtype</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$type/*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*/*</span></code></p></li>
+</ul>
+<p>对于选择版本+格式，最有用的是 <code class="docutils literal notranslate"><span class="pre">$type/$subtype</span></code>，因为这是唯一可以实际指定所需版本和格式的方式。</p>
+<p><code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头中列出的内容类型的顺序没有任何特定含义，服务器 <strong>SHOULD</strong> 将它们视为同等有效的响应选项。如果客户端希望指定更倾向于某个特定的内容类型而非其他类型，它们可以使用 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头的 <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Glossary/Quality_values">质量值</a> 语法。</p>
+<p>这允许客户端在 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头中为某个特定条目指定优先级，方法是附加一个 <code class="docutils literal notranslate"><span class="pre">;q=</span></code> 后跟一个介于 <code class="docutils literal notranslate"><span class="pre">0</span></code> 和 <code class="docutils literal notranslate"><span class="pre">1</span></code> 之间（包括 <code class="docutils literal notranslate"><span class="pre">0</span></code> 和 <code class="docutils literal notranslate"><span class="pre">1</span></code>）的值，最多可以有三位小数。当解释这个值时，质量值更高的条目具有比质量值较低的条目更高的优先级，任何没有质量值的条目默认为质量值 <code class="docutils literal notranslate"><span class="pre">1</span></code>。</p>
+<p>然而，客户端应记住，服务器可以自由选择它们请求的 <strong>任何</strong> 内容类型，而不考虑其请求的优先级，甚至可能返回一个它们 <strong>没有</strong> 请求的内容类型。</p>
+<p>为了帮助客户端确定它们从 API 请求中收到的响应内容类型，本规范要求服务器始终包括一个 <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> 头，指示响应的内容类型。从技术上讲，这是一项向后不兼容的变更，但实际上 <a class="reference external" href="https://github.com/pypa/pip/blob/cf3696a81b341925f82f20cb527e656176987565/src/pip/_internal/index/collector.py#L123-L150">pip 已经强制执行了这一要求</a>，因此实际破坏的风险较低。</p>
+<p>客户端操作的示例如下：</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">email.message</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="k">def</span> <span class="nf">parse_content_type</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">Message</span><span class="p">()</span>
+    <span class="n">m</span><span class="p">[</span><span class="s2">&quot;content-type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span>
+    <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">get_content_type</span><span class="p">()</span>
+
+<span class="c1"># 构造我们可以接受的内容类型列表，我们希望优先</span>
+<span class="c1"># 获取一个使用 JSON 序列化的 v1 响应，但我们也</span>
+<span class="c1"># 支持使用 HTML 序列化的 v1 响应。为了兼容性，</span>
+<span class="c1"># 我们还请求了 text/html，但我们最不希望收到它，</span>
+<span class="c1"># 因为我们不知道它是否真的来自 Simple API 响应，</span>
+<span class="c1"># 还是由于配置错误获取的随机 HTML 页面。</span>
+<span class="n">CONTENT_TYPES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;application/vnd.pypi.simple.v1+json&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/vnd.pypi.simple.v1+html;q=0.2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;text/html;q=0.01&quot;</span><span class="p">,</span>  <span class="c1"># 为了兼容性</span>
+<span class="p">]</span>
+<span class="n">ACCEPT</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CONTENT_TYPES</span><span class="p">)</span>
+
+<span class="c1"># 实际发送请求到 API，请求所有我们认为可接受的内容类型，</span>
+<span class="c1"># 并让服务器从列表中选择其中一个返回。</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://pypi.org/simple/&quot;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="n">ACCEPT</span><span class="p">})</span>
+
+<span class="c1"># 如果服务器不支持您请求的任何内容类型，</span>
+<span class="c1"># 且它选择返回 HTTP 406 错误而不是默认响应，</span>
+<span class="c1"># 那么这将引发关于 406 错误的异常。</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
+<span class="c1"># 确定我们收到的响应类型，以确保它是我们可以支持的类型，</span>
+<span class="c1"># 如果是，就分发到能够理解该特定版本+序列化的函数。如果</span>
+<span class="c1"># 我们无法理解收到的内容类型，则会引发异常。</span>
+<span class="n">content_type</span> <span class="o">=</span> <span class="n">parse_content_type</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+<span class="k">match</span> <span class="n">content_type</span><span class="p">:</span>
+    <span class="k">case</span> <span class="s2">&quot;application/vnd.pypi.simple.v1+json&quot;</span><span class="p">:</span>
+        <span class="n">handle_v1_json</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+    <span class="k">case</span> <span class="s2">&quot;application/vnd.pypi.simple.v1+html&quot;</span> <span class="o">|</span> <span class="s2">&quot;text/html&quot;</span><span class="p">:</span>
+        <span class="n">handle_v1_html</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+    <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;未知的内容类型: </span><span class="si">{</span><span class="n">content_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>如果客户端只希望支持 HTML 或只支持 JSON，那么它们只需
+从 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头中删除不需要的内容类型，并将接收到它们时
+转化为错误。</p>
+</div>
+<input class="tab-input" id="tab-set--16-input--2" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that there is multiple possible serializations, we need a mechanism to allow
+clients to indicate what serialization formats they're able to understand. In
+addition, it would be beneficial if any possible new major version to the API can
+be added without disrupting existing clients expecting the previous API version.</p>
+<p>To enable this, this spec standardizes on the use of HTTP's
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation">Server-Driven Content Negotiation</a>.</p>
+<p>While this spec won't fully describe the entirety of server-driven content
+negotiation, the flow is roughly:</p>
+<ol class="arabic simple">
+<li><p>The client makes an HTTP request containing an <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header listing all</p></li>
+</ol>
+<blockquote>
+<div><p>of the version+format content types that they are able to understand.</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li><p>The server inspects that header, selects one of the listed content types,</p></li>
+</ol>
+<blockquote>
+<div><p>then returns a response using that content type (treating the absence of
+an <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header as <code class="docutils literal notranslate"><span class="pre">Accept:</span> <span class="pre">*/*</span></code>).</p>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li><p>If the server does not support any of the content types in the <code class="docutils literal notranslate"><span class="pre">Accept</span></code></p></li>
+</ol>
+<blockquote>
+<div><p>header then they are able to choose between 3 different options for how to
+respond:</p>
+<ol class="loweralpha simple">
+<li><dl class="simple">
+<dt>Select a default content type other than what the client has requested</dt><dd><p>and return a response with that.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Return a HTTP <code class="docutils literal notranslate"><span class="pre">406</span> <span class="pre">Not</span> <span class="pre">Acceptable</span></code> response to indicate that none of</dt><dd><p>the requested content types were available, and the server was unable
+or unwilling to select a default content type to respond with.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Return a HTTP <code class="docutils literal notranslate"><span class="pre">300</span> <span class="pre">Multiple</span> <span class="pre">Choices</span></code> response that contains a list of</dt><dd><p>all of the possible responses that could have been chosen.</p>
+</dd>
+</dl>
+</li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li><p>The client interprets the response, handling the different types of responses</p></li>
+</ol>
+<blockquote>
+<div><p>that the server may have responded with.</p>
+</div></blockquote>
+<p>This spec does not specify which choices the server makes in regards to handling
+a content type that it isn't able to return, and clients <strong>SHOULD</strong> be prepared
+to handle all of the possible responses in whatever way makes the most sense for
+that client.</p>
+<p>However, as there is no standard format for how a <code class="docutils literal notranslate"><span class="pre">300</span> <span class="pre">Multiple</span> <span class="pre">Choices</span></code>
+response can be interpreted, this spec highly discourages servers from utilizing
+that option, as clients will have no way to understand and select a different
+content-type to request. In addition, it's unlikely that the client <em>could</em>
+understand a different content type anyways, so at best this response would
+likely just be treated the same as a <code class="docutils literal notranslate"><span class="pre">406</span> <span class="pre">Not</span> <span class="pre">Acceptable</span></code> error.</p>
+<p>This spec <strong>does</strong> require that if the meta version <code class="docutils literal notranslate"><span class="pre">latest</span></code> is being used, the
+server <strong>MUST</strong> respond with the content type for the actual version that is
+contained in the response
+(i.e. an <code class="docutils literal notranslate"><span class="pre">Accept:</span> <span class="pre">application/vnd.pypi.simple.latest+json</span></code> request that returns
+a <code class="docutils literal notranslate"><span class="pre">v1.x</span></code> response should have a <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> of
+<code class="docutils literal notranslate"><span class="pre">application/vnd.pypi.simple.v1+json</span></code>).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header is a comma separated list of content types that the client
+understands and is able to process. It supports three different formats for each
+content type that is being requested:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">$type/$subtype</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$type/*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*/*</span></code></p></li>
+</ul>
+<p>For the use of selecting a version+format, the most useful of these is
+<code class="docutils literal notranslate"><span class="pre">$type/$subtype</span></code>, as that is the only way to actually specify the version
+and format you want.</p>
+<p>The order of the content types listed in the <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header does not have any
+specific meaning, and the server <strong>SHOULD</strong> consider all of them to be equally
+valid to respond with. If a client wishes to specify that they prefer a specific
+content type over another, they may use the <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header's
+<a class="reference external" href="https://developer.mozilla.org/en-US/docs/Glossary/Quality_values">quality value</a>
+syntax.</p>
+<p>This allows a client to specify a priority for a specific entry in their
+<code class="docutils literal notranslate"><span class="pre">Accept</span></code> header, by appending a <code class="docutils literal notranslate"><span class="pre">;q=</span></code> followed by a value between <code class="docutils literal notranslate"><span class="pre">0</span></code> and
+<code class="docutils literal notranslate"><span class="pre">1</span></code> inclusive, with up to 3 decimal digits. When interpreting this value,
+an entry with a higher quality has priority over an entry with a lower quality,
+and any entry without a quality present will default to a quality of <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+<p>However, clients should keep in mind that a server is free to select <strong>any</strong> of
+the content types they've asked for, regardless of their requested priority, and
+it may even return a content type that they did <strong>not</strong> ask for.</p>
+<p>To aid clients in determining the content type of the response that they have
+received from an API request, this spec requires that servers always include a
+<code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header indicating the content type of the response. This is
+technically a backwards incompatible change, however in practice
+<a class="reference external" href="https://github.com/pypa/pip/blob/cf3696a81b341925f82f20cb527e656176987565/src/pip/_internal/index/collector.py#L123-L150">pip has been enforcing this requirement</a>
+so the risks for actual breakages is low.</p>
+<p>An example of how a client can operate would look like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">email.message</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="k">def</span> <span class="nf">parse_content_type</span><span class="p">(</span><span class="n">header</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="n">Message</span><span class="p">()</span>
+    <span class="n">m</span><span class="p">[</span><span class="s2">&quot;content-type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">header</span>
+    <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">get_content_type</span><span class="p">()</span>
+
+<span class="c1"># Construct our list of acceptable content types, we want to prefer</span>
+<span class="c1"># that we get a v1 response serialized using JSON, however we also</span>
+<span class="c1"># can support a v1 response serialized using HTML. For compatibility</span>
+<span class="c1"># we also request text/html, but we prefer it least of all since we</span>
+<span class="c1"># don&#39;t know if it&#39;s actually a Simple API response, or just some</span>
+<span class="c1"># random HTML page that we&#39;ve gotten due to a misconfiguration.</span>
+<span class="n">CONTENT_TYPES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;application/vnd.pypi.simple.v1+json&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;application/vnd.pypi.simple.v1+html;q=0.2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;text/html;q=0.01&quot;</span><span class="p">,</span>  <span class="c1"># For legacy compatibility</span>
+<span class="p">]</span>
+<span class="n">ACCEPT</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">CONTENT_TYPES</span><span class="p">)</span>
+
+
+<span class="c1"># Actually make our request to the API, requesting all of the content</span>
+<span class="c1"># types that we find acceptable, and letting the server select one of</span>
+<span class="c1"># them out of the list.</span>
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://pypi.org/simple/&quot;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Accept&quot;</span><span class="p">:</span> <span class="n">ACCEPT</span><span class="p">})</span>
+
+<span class="c1"># If the server does not support any of the content types you requested,</span>
+<span class="c1"># AND it has chosen to return a HTTP 406 error instead of a default</span>
+<span class="c1"># response then this will raise an exception for the 406 error.</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+
+
+<span class="c1"># Determine what kind of response we&#39;ve gotten to ensure that it is one</span>
+<span class="c1"># that we can support, and if it is, dispatch to a function that will</span>
+<span class="c1"># understand how to interpret that particular version+serialization. If</span>
+<span class="c1"># we don&#39;t understand the content type we&#39;ve gotten, then we&#39;ll raise</span>
+<span class="c1"># an exception.</span>
+<span class="n">content_type</span> <span class="o">=</span> <span class="n">parse_content_type</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;content-type&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+<span class="k">match</span> <span class="n">content_type</span><span class="p">:</span>
+    <span class="k">case</span> <span class="s2">&quot;application/vnd.pypi.simple.v1+json&quot;</span><span class="p">:</span>
+        <span class="n">handle_v1_json</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+    <span class="k">case</span> <span class="s2">&quot;application/vnd.pypi.simple.v1+html&quot;</span> <span class="o">|</span> <span class="s2">&quot;text/html&quot;</span><span class="p">:</span>
+        <span class="n">handle_v1_html</span><span class="p">(</span><span class="n">resp</span><span class="p">)</span>
+    <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown content type: </span><span class="si">{</span><span class="n">content_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If a client wishes to only support HTML or only support JSON, then they would
+just remove the content types that they do not want from the <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header,
+and turn receiving them into an error.</p>
+</div>
+</div>
+<section id="id16">
+<h4>替代协商机制<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
+<p><strong>Alternative Negotiation Mechanisms</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--17-input--1" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--1">中文</label><div class="tab-content docutils container">
+<p>虽然使用 HTTP 的内容协商被认为是客户端和服务器协调的标准方式，以确保客户端能够理解 HTTP 响应，但在某些情况下，该机制可能不足以满足需求。对于这些情况，本规范提供了可选的替代协商机制，可以 <em>根据需要</em> 使用。</p>
+</div>
+<input class="tab-input" id="tab-set--17-input--2" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--2">英文</label><div class="tab-content docutils container">
+<p>While using HTTP's Content negotiation is considered the standard way for a client
+and server to coordinate to ensure that the client is getting an HTTP response that
+it is able to understand, there are situations where that mechanism may not be
+sufficient. For those cases this spec has alternative negotiation mechanisms that
+may <em>optionally</em> be used instead.</p>
+</div>
+</div>
+<section id="url">
+<h5>URL 参数<a class="headerlink" href="#url" title="Link to this heading">¶</a></h5>
+<p><strong>URL Parameter</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--18-input--1" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--1">中文</label><div class="tab-content docutils container">
+<p>实现 Simple API 的服务器可以选择支持一个名为 <code class="docutils literal notranslate"><span class="pre">format</span></code> 的 URL 参数，允许客户端请求 URL 的特定版本。</p>
+<p><code class="docutils literal notranslate"><span class="pre">format</span></code> 参数的值应为 <strong>一个</strong> 有效的内容类型。传递多个内容类型、通配符、质量值等 <strong>不</strong> 支持。</p>
+<p>支持此参数是可选的，客户端 <strong>不应</strong> 依赖此参数与 API 进行交互。此协商机制旨在简化浏览器中的 API 人机交互探索，或者允许文档或注释链接到特定的版本+格式。</p>
+<p>不支持此参数的服务器可以选择在该参数存在时返回错误，或者直接忽略该参数。</p>
+<p>当服务器实现此参数时， <strong>应</strong> 优先考虑 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头中的任何值，如果服务器不支持请求的格式，可以选择回退到 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头，或选择标准服务器驱动内容协商通常会有的任何错误处理方式（例如 <code class="docutils literal notranslate"><span class="pre">406</span> <span class="pre">Not</span> <span class="pre">Available</span></code>、 <code class="docutils literal notranslate"><span class="pre">303</span> <span class="pre">Multiple</span> <span class="pre">Choices</span></code> 或选择返回的默认类型）。</p>
+</div>
+<input class="tab-input" id="tab-set--18-input--2" name="tab-set--18" type="radio"><label class="tab-label" for="tab-set--18-input--2">英文</label><div class="tab-content docutils container">
+<p>Servers that implement the Simple API may choose to support a URL parameter named
+<code class="docutils literal notranslate"><span class="pre">format</span></code> to allow the clients to request a specific version of the URL.</p>
+<p>The value of the <code class="docutils literal notranslate"><span class="pre">format</span></code> parameter should be <strong>one</strong> of the valid content types.
+Passing multiple content types, wild cards, quality values, etc... is <strong>not</strong>
+supported.</p>
+<p>Supporting this parameter is optional, and clients <strong>SHOULD NOT</strong> rely on it for
+interacting with the API. This negotiation mechanism is intended to allow for easier
+human based exploration of the API within a browser, or to allow documentation or
+notes to link to a specific version+format.</p>
+<p>Servers that do not support this parameter may choose to return an error when it is
+present, or they may simple ignore its presence.</p>
+<p>When a server does implement this parameter, it <strong>SHOULD</strong> take precedence over any
+values in the client's <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header, and if the server does not support the
+requested format, it may choose to fall back to the <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header, or choose any
+of the error conditions that standard server-driven content negotiation typically
+has (e.g. <code class="docutils literal notranslate"><span class="pre">406</span> <span class="pre">Not</span> <span class="pre">Available</span></code>, <code class="docutils literal notranslate"><span class="pre">303</span> <span class="pre">Multiple</span> <span class="pre">Choices</span></code>, or selecting a default
+type to return).</p>
+</div>
+</div>
+</section>
+<section id="id17">
+<h5>端点配置<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h5>
+<p><strong>Endpoint Configuration</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--19-input--1" name="tab-set--19" type="radio"><label class="tab-label" for="tab-set--19-input--1">中文</label><div class="tab-content docutils container">
+<p>这个选项从技术上讲并不是一个特殊选项，它只是使用内容协商并允许服务器选择其默认内容类型的自然结果。</p>
+<p>如果服务器不愿意或无法实现服务器驱动的内容协商，而是希望要求用户明确配置客户端来选择他们想要的版本，那么这是一个支持的配置。</p>
+<p>为了实现这一点，服务器应该为他们希望支持的每个版本+格式创建多个端点（例如 <code class="docutils literal notranslate"><span class="pre">/simple/v1+html/</span></code> 和/或 <code class="docutils literal notranslate"><span class="pre">/simple/v1+json/</span></code>）。在该端点下，他们可以托管只支持一个（或一部分）内容类型的仓库副本。当客户端使用 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头发出请求时，服务器可以忽略它并返回与该端点对应的内容类型。</p>
+<p>对于希望要求特定配置的客户端，他们可以跟踪特定仓库 URL 被配置为哪个版本+格式，并在向该服务器发出请求时，发送仅包含正确内容类型的 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头。</p>
+</div>
+<input class="tab-input" id="tab-set--19-input--2" name="tab-set--19" type="radio"><label class="tab-label" for="tab-set--19-input--2">英文</label><div class="tab-content docutils container">
+<p>This option technically is not a special option at all, it is just a natural
+consequence of using content negotiation and allowing servers to select which of the
+available content types is their default.</p>
+<p>If a server is unwilling or unable to implement the server-driven content negotiation,
+and would instead rather require users to explicitly configure their client to select
+the version they want, then that is a supported configuration.</p>
+<p>To enable this, a server should make multiple endpoints (for instance,
+<code class="docutils literal notranslate"><span class="pre">/simple/v1+html/</span></code> and/or <code class="docutils literal notranslate"><span class="pre">/simple/v1+json/</span></code>) for each version+format that they
+wish to support. Under that endpoint, they can host a copy of their repository that
+only supports one (or a subset) of the content-types. When a client makes a request
+using the <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header, the server can ignore it and return the content type
+that corresponds to that endpoint.</p>
+<p>For clients that wish to require specific configuration, they can keep track of
+which version+format a specific repository URL was configured for, and when making
+a request to that server, emit an <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header that <em>only</em> includes the correct
+content type.</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="tuf-pep-458">
+<h3>TUF 支持 - PEP 458<a class="headerlink" href="#tuf-pep-458" title="Link to this heading">¶</a></h3>
+<p><strong>TUF Support - PEP 458</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--20-input--1" name="tab-set--20" type="radio"><label class="tab-label" for="tab-set--20-input--1">中文</label><div class="tab-content docutils container">
+<p><span class="target" id="index-0"></span><a class="pep reference external" href="https://peps.python.org/pep-0458/"><strong>PEP 458</strong></a> 要求所有 API 响应都是可哈希的，并且它们可以通过相对于仓库根目录的路径唯一标识。对于 Simple API 仓库，目标路径是我们的 API 根路径（例如 PyPI 上的 <code class="docutils literal notranslate"><span class="pre">/simple/</span></code>）。这在使用 TUF 客户端访问 API 时会带来挑战，因为 TUF 客户端无法处理目标可能有多个不同的表示，每个表示的哈希值不同。</p>
+<p><span class="target" id="index-1"></span><a class="pep reference external" href="https://peps.python.org/pep-0458/"><strong>PEP 458</strong></a> 并未指定 Simple API 的目标路径应该是什么，但 TUF 要求目标路径必须是“类文件的”，换句话说，路径如 <code class="docutils literal notranslate"><span class="pre">simple/PROJECT/</span></code> 是不可接受的，因为它技术上指向一个目录。</p>
+<p>幸运的是，目标路径并不 <em>必须</em> 与从 Simple API 获取的 URL 完全匹配，它可以只是一个符号，获取代码知道如何将其转换为实际需要获取的 URL。对于 HTTP 请求的其他方面，如 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头，情况也是如此。</p>
+<p>最终，如何将目录映射到文件名超出了本规范的范围（但这将属于 <span class="target" id="index-2"></span><a class="pep reference external" href="https://peps.python.org/pep-0458/"><strong>PEP 458</strong></a> 的范围），本规范将推迟做出如何在 <span class="target" id="index-3"></span><a class="pep reference external" href="https://peps.python.org/pep-0458/"><strong>PEP 458</strong></a> 元数据中准确表示这一点的决定。</p>
+<p>然而，似乎当前对 pip 进行的 WIP 分支尝试实现 <span class="target" id="index-4"></span><a class="pep reference external" href="https://peps.python.org/pep-0458/"><strong>PEP 458</strong></a> 时，使用了类似 <code class="docutils literal notranslate"><span class="pre">simple/PROJECT/index.html</span></code> 的目标路径。可以通过类似 <code class="docutils literal notranslate"><span class="pre">simple/PROJECT/vnd.pypi.simple.vN.FORMAT</span></code> 的方式进行修改，来包括 API 版本和序列化格式。所以 v1 HTML 格式将是 <code class="docutils literal notranslate"><span class="pre">simple/PROJECT/vnd.pypi.simple.v1.html</span></code>，v1 JSON 格式将是 <code class="docutils literal notranslate"><span class="pre">simple/PROJECT/vnd.pypi.simple.v1.json</span></code>。</p>
+<p>在这种情况下，由于 <code class="docutils literal notranslate"><span class="pre">text/html</span></code> 是与 <code class="docutils literal notranslate"><span class="pre">application/vnd.pypi.simple.v1+html</span></code> 的别名，当通过 TUF 进行交互时，规范化为更明确的名称可能是最有意义的。</p>
+<p>同样，<code class="docutils literal notranslate"><span class="pre">latest</span></code> 元版本不应包含在目标中，只应支持明确声明的版本。</p>
+</div>
+<input class="tab-input" id="tab-set--20-input--2" name="tab-set--20" type="radio"><label class="tab-label" for="tab-set--20-input--2">英文</label><div class="tab-content docutils container">
+<p><span class="target" id="index-5"></span><a class="pep reference external" href="https://peps.python.org/pep-0458/"><strong>PEP 458</strong></a> requires that all API responses are hashable and that they can be uniquely
+identified by a path relative to the repository root. For a Simple API repository, the
+target path is the Root of our API (e.g. <code class="docutils literal notranslate"><span class="pre">/simple/</span></code> on PyPI). This creates
+challenges when accessing the API using a TUF client instead of directly using a
+standard HTTP client, as the TUF client cannot handle the fact that a target could
+have multiple different representations that all hash differently.</p>
+<p><span class="target" id="index-6"></span><a class="pep reference external" href="https://peps.python.org/pep-0458/"><strong>PEP 458</strong></a> does not specify what the target path should be for the Simple API, but
+TUF requires that the target paths be &quot;file-like&quot;, in other words, a path like
+<code class="docutils literal notranslate"><span class="pre">simple/PROJECT/</span></code> is not acceptable, because it technically points to a
+directory.</p>
+<p>The saving grace is that the target path does not <em>have</em> to actually match the URL
+being fetched from the Simple API, and it can just be a sigil that the fetching code
+knows how to transform into the actual URL that needs to be fetched. This same thing
+can hold true for other aspects of the actual HTTP request, such as the <code class="docutils literal notranslate"><span class="pre">Accept</span></code>
+header.</p>
+<p>Ultimately figuring out how to map a directory to a filename is out of scope for this
+spec (but it would be in scope for <span class="target" id="index-7"></span><a class="pep reference external" href="https://peps.python.org/pep-0458/"><strong>PEP 458</strong></a>), and this spec defers making a decision
+about how exactly to represent this inside of <span class="target" id="index-8"></span><a class="pep reference external" href="https://peps.python.org/pep-0458/"><strong>PEP 458</strong></a> metadata.</p>
+<p>However, it appears that the current WIP branch against pip that attempts to implement
+<span class="target" id="index-9"></span><a class="pep reference external" href="https://peps.python.org/pep-0458/"><strong>PEP 458</strong></a> is using a target path like <code class="docutils literal notranslate"><span class="pre">simple/PROJECT/index.html</span></code>. This could be
+modified to include the API version and serialization format using something like
+<code class="docutils literal notranslate"><span class="pre">simple/PROJECT/vnd.pypi.simple.vN.FORMAT</span></code>. So the v1 HTML format would be
+<code class="docutils literal notranslate"><span class="pre">simple/PROJECT/vnd.pypi.simple.v1.html</span></code> and the v1 JSON format would be
+<code class="docutils literal notranslate"><span class="pre">simple/PROJECT/vnd.pypi.simple.v1.json</span></code>.</p>
+<p>In this case, since <code class="docutils literal notranslate"><span class="pre">text/html</span></code> is an alias to <code class="docutils literal notranslate"><span class="pre">application/vnd.pypi.simple.v1+html</span></code>
+when interacting through TUF, it likely will make the most sense to normalize to the
+more explicit name.</p>
+<p>Likewise the <code class="docutils literal notranslate"><span class="pre">latest</span></code> metaversion should not be included in the targets, only
+explicitly declared versions should be supported.</p>
+</div>
+</div>
+</section>
+<section id="id18">
+<h3>建议<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
+<p><strong>Recommendations</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--21-input--1" name="tab-set--21" type="radio"><label class="tab-label" for="tab-set--21-input--1">中文</label><div class="tab-content docutils container">
+<p>本节为非规范性内容，代表了规范作者认为在实现此规范时最佳的默认实现决策，但这并不代表必须遵循这些决策。</p>
+<p>这些决策的选择旨在最大限度地将请求迁移到 API 的最新版本，同时保持最大的兼容性。此外，还尝试使得使用 API 的过程中提供一些保护措施，促使客户端做出最佳选择。</p>
+<p>建议服务器：</p>
+<ul class="simple">
+<li><p>支持本规范中描述的所有 3 种内容类型，使用服务器驱动的内容协商，只要合理可行，或者至少在接收到使用 HTML 响应的非平凡流量时继续支持。</p></li>
+<li><p>当遇到不包含任何已知内容类型的 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头时，服务器不应返回 <code class="docutils literal notranslate"><span class="pre">300</span> <span class="pre">Multiple</span> <span class="pre">Choice</span></code> 响应，而应返回 <code class="docutils literal notranslate"><span class="pre">406</span> <span class="pre">Not</span> <span class="pre">Acceptable</span></code> 响应。</p>
+<ul>
+<li><p>然而，如果选择使用端点配置，服务器应尽量返回一个 <code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code> 响应，并使用该端点预期的内容类型。</p></li>
+</ul>
+</li>
+<li><p>在选择一个可接受版本时，服务器应选择客户端支持的最高版本，具有最具表现力/功能的序列化格式，同时考虑客户端请求的具体性以及它们表达的质量优先级值，并且只有在最后的手段下才使用 <code class="docutils literal notranslate"><span class="pre">text/html</span></code> 内容类型。</p></li>
+</ul>
+<p>建议客户端：</p>
+<ul>
+<li><p>支持本规范中描述的所有 3 种内容类型，使用服务器驱动的内容协商，只要合理可行。</p></li>
+<li><p>构造 <code class="docutils literal notranslate"><span class="pre">Accept</span></code> 头时，包含所有支持的内容类型。</p>
+<p>除非有特定的实现原因，通常不应为内容类型添加质量优先级值，除非你有实现特定的原因需要服务器考虑（例如，如果你使用的是标准库的 HTML 解析器，并且担心在某些边缘情况下无法解析某些类型的 HTML 响应）。</p>
+<p>唯一的例外是，建议在遗留的 <code class="docutils literal notranslate"><span class="pre">text/html</span></code> 内容类型上添加 <code class="docutils literal notranslate"><span class="pre">;q=0.01</span></code> 值，除非它是你唯一请求的内容类型。</p>
+</li>
+<li><p>明确选择要查找的版本，而不是在正常操作中使用 <code class="docutils literal notranslate"><span class="pre">latest</span></code> 元版本。</p></li>
+<li><p>检查响应的 <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code>，确保它与你预期的内容类型匹配。</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--21-input--2" name="tab-set--21" type="radio"><label class="tab-label" for="tab-set--21-input--2">英文</label><div class="tab-content docutils container">
+<p>This section is non-normative, and represents what the spec authors believe to be
+the best default implementation decisions for something implementing this spec, but
+it does <strong>not</strong> represent any sort of requirement to match these decisions.</p>
+<p>These decisions have been chosen to maximize the number of requests that can be
+moved onto the newest version of an API, while maintaining the greatest amount
+of compatibility. In addition, they've also tried to make using the API provide
+guardrails that attempt to push clients into making the best choices it can.</p>
+<p>It is recommended that servers:</p>
+<ul class="simple">
+<li><p>Support all 3 content types described in this spec, using server-driven
+content negotiation, for as long as they reasonably can, or at least as
+long as they're receiving non trivial traffic that uses the HTML responses.</p></li>
+<li><p>When encountering an <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header that does not contain any content types
+that it knows how to work with, the server should not ever return a
+<code class="docutils literal notranslate"><span class="pre">300</span> <span class="pre">Multiple</span> <span class="pre">Choice</span></code> response, and instead return a <code class="docutils literal notranslate"><span class="pre">406</span> <span class="pre">Not</span> <span class="pre">Acceptable</span></code>
+response.</p>
+<ul>
+<li><p>However, if choosing to use the endpoint configuration, you should prefer to
+return a <code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code> response in the expected content type for that endpoint.</p></li>
+</ul>
+</li>
+<li><p>When selecting an acceptable version, the server should choose the highest version
+that the client supports, with the most expressive/featureful serialization format,
+taking into account the specificity of the client requests as well as any
+quality priority values they have expressed, and it should only use the
+<code class="docutils literal notranslate"><span class="pre">text/html</span></code> content type as a last resort.</p></li>
+</ul>
+<p>It is recommended that clients:</p>
+<ul>
+<li><p>Support all 3 content types described in this spec, using server-driven
+content negotiation, for as long as they reasonably can.</p></li>
+<li><p>When constructing an <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header, include all of the content types
+that you support.</p>
+<p>You should generally <em>not</em> include a quality priority value for your content
+types, unless you have implementation specific reasons that you want the
+server to take into account (for example, if you're using the standard library
+HTML parser and you're worried that there may be some kinds of HTML responses
+that you're unable to parse in some edge cases).</p>
+<p>The one exception to this recommendation is that it is recommended that you
+<em>should</em> include a <code class="docutils literal notranslate"><span class="pre">;q=0.01</span></code> value on the legacy <code class="docutils literal notranslate"><span class="pre">text/html</span></code> content type,
+unless it is the only content type that you are requesting.</p>
+</li>
+<li><p>Explicitly select what versions they are looking for, rather than using the
+<code class="docutils literal notranslate"><span class="pre">latest</span></code> meta version during normal operation.</p></li>
+<li><p>Check the <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> of the response and ensure it matches something
+that you were expecting.</p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="id19">
+<h2>用于包索引的 Simple API 的附加字段<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h2>
+<p><strong>Additional Fields for the Simple API for Package Indexes</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--22-input--1" name="tab-set--22" type="radio"><label class="tab-label" for="tab-set--22-input--1">中文</label><div class="tab-content docutils container">
+<p>本规范定义了简单存储库 API 的 1.1 版本。对于 HTML 版本的 API，与 1.0 版本没有变化。对于 JSON 版本的 API，做出了以下更改：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">api-version</span></code> 必须指定版本 1.1 或更高版本。</p></li>
+<li><p>在顶级新增了一个 <code class="docutils literal notranslate"><span class="pre">versions</span></code> 键。</p></li>
+<li><p>在 <code class="docutils literal notranslate"><span class="pre">files</span></code> 数据中，新增了两个 &quot;文件信息&quot; 键：<code class="docutils literal notranslate"><span class="pre">size</span></code> 和 <code class="docutils literal notranslate"><span class="pre">upload-time</span></code>。</p></li>
+<li><p>带有前导下划线的键（在任何级别）被保留为索引服务器的私有键。未来的标准不会为任何此类键分配意义。</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">versions</span></code> 和 <code class="docutils literal notranslate"><span class="pre">size</span></code> 键是必需的。<code class="docutils literal notranslate"><span class="pre">upload-time</span></code> 键是可选的。</p>
+</div>
+<input class="tab-input" id="tab-set--22-input--2" name="tab-set--22" type="radio"><label class="tab-label" for="tab-set--22-input--2">英文</label><div class="tab-content docutils container">
+<p>This specification defines version 1.1 of the simple repository API. For the
+HTML version of the API, there is no change from version 1.0. For the JSON
+version of the API, the following changes are made:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">api-version</span></code> must specify version 1.1 or later.</p></li>
+<li><p>A new <code class="docutils literal notranslate"><span class="pre">versions</span></code> key is added at the top level.</p></li>
+<li><p>Two new &quot;file information&quot; keys, <code class="docutils literal notranslate"><span class="pre">size</span></code> and <code class="docutils literal notranslate"><span class="pre">upload-time</span></code>, are added to
+the <code class="docutils literal notranslate"><span class="pre">files</span></code> data.</p></li>
+<li><p>Keys (at any level) with a leading underscore are reserved as private for
+index server use. No future standard will assign a meaning to any such key.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">versions</span></code> and <code class="docutils literal notranslate"><span class="pre">size</span></code> keys are mandatory. The <code class="docutils literal notranslate"><span class="pre">upload-time</span></code> key is
+optional.</p>
+</div>
+</div>
+<section id="id20">
+<h3>版本<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h3>
+<p><strong>Versions</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--23-input--1" name="tab-set--23" type="radio"><label class="tab-label" for="tab-set--23-input--1">中文</label><div class="tab-content docutils container">
+<p>此外， <code class="docutils literal notranslate"><span class="pre">versions</span></code> 键必须在顶层存在，除了 <a class="reference internal" href="#simple-repository-api-json"><span class="std std-ref">JSON API 规范</span></a> 中定义的 <code class="docutils literal notranslate"><span class="pre">name</span></code>、 <code class="docutils literal notranslate"><span class="pre">files</span></code> 和 <code class="docutils literal notranslate"><span class="pre">meta</span></code> 键之外。此键必须包含一个版本字符串的列表，指定该项目上传的所有版本。该值逻辑上是一个集合，因此不能包含重复项，且值的顺序没有意义。</p>
+<p><code class="docutils literal notranslate"><span class="pre">files</span></code> 键中列出的所有文件必须与 <code class="docutils literal notranslate"><span class="pre">versions</span></code> 键中的某个版本关联。 <code class="docutils literal notranslate"><span class="pre">versions</span></code> 键可以包含没有关联文件的版本（用于表示没有上传文件的版本，如果服务器支持这种概念）。</p>
+<p>请注意，由于服务器可能持有采用 <a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">版本指定符规范（VSS）</span></a> 之前的 &quot;遗留&quot; 数据，因此当前不能要求版本字符串必须是有效的 VSS 版本，因此不能假设它们可以使用 VSS 规则进行排序。然而，服务器应尽可能使用规范化的 VSS 版本。</p>
+</div>
+<input class="tab-input" id="tab-set--23-input--2" name="tab-set--23" type="radio"><label class="tab-label" for="tab-set--23-input--2">英文</label><div class="tab-content docutils container">
+<p>An additional key, <code class="docutils literal notranslate"><span class="pre">versions</span></code> MUST be present at the top level, in addition to
+the keys <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">files</span></code> and <code class="docutils literal notranslate"><span class="pre">meta</span></code> defined in <a class="reference internal" href="#simple-repository-api-json"><span class="std std-ref">the JSON API
+specification</span></a>. This key MUST
+contain a list of version strings specifying all of the project versions uploaded
+for this project. The value is logically a set, and as such may not contain
+duplicates, and the order of the values is not significant.</p>
+<p>All of the files listed in the <code class="docutils literal notranslate"><span class="pre">files</span></code> key MUST be associated with one of the
+versions in the <code class="docutils literal notranslate"><span class="pre">versions</span></code> key. The <code class="docutils literal notranslate"><span class="pre">versions</span></code> key MAY contain versions with
+no associated files (to represent versions with no files uploaded, if the server
+has such a concept).</p>
+<p>Note that because servers may hold &quot;legacy&quot; data from before the adoption of
+<a class="reference internal" href="version-specifiers.html#version-specifiers"><span class="std std-ref">the version specifiers specification (VSS)</span></a>, version
+strings currently cannot be required to be valid VSS versions, and therefore
+cannot be assumed to be orderable using the VSS rules. However, servers SHOULD
+use normalised VSS versions where
+possible.</p>
+</div>
+</div>
+</section>
+<section id="id21">
+<h3>附加文件信息<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
+<p><strong>Additional file information</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--24-input--1" name="tab-set--24" type="radio"><label class="tab-label" for="tab-set--24-input--1">中文</label><div class="tab-content docutils container">
+<p>在 <code class="docutils literal notranslate"><span class="pre">files</span></code> 键中添加了两个新键。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>：此字段是必需的。它必须包含一个整数，表示文件的字节大小。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">upload-time</span></code>：此字段是可选的。如果存在，它必须包含一个有效的 ISO 8601 日期/时间字符串，格式为 <code class="docutils literal notranslate"><span class="pre">yyyy-mm-ddThh:mm:ss.ffffffZ</span></code>，表示文件上传到索引的时间。如 <code class="docutils literal notranslate"><span class="pre">Z</span></code> 后缀所示，上传时间必须使用 UTC 时区。时间戳的秒数部分（ <code class="docutils literal notranslate"><span class="pre">.ffffff</span></code> 部分）是可选的，如果存在，最多可包含 6 位精度。如果服务器没有记录文件的上传时间信息，可以省略 <code class="docutils literal notranslate"><span class="pre">upload-time</span></code> 键。</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--24-input--2" name="tab-set--24" type="radio"><label class="tab-label" for="tab-set--24-input--2">英文</label><div class="tab-content docutils container">
+<p>Two new keys are added to the <code class="docutils literal notranslate"><span class="pre">files</span></code> key.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">size</span></code>: This field is mandatory. It MUST contain an integer which is the
+file size in bytes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">upload-time</span></code>: This field is optional. If present, it MUST contain a valid
+ISO 8601 date/time string, in the format <code class="docutils literal notranslate"><span class="pre">yyyy-mm-ddThh:mm:ss.ffffffZ</span></code>,
+which represents the time the file was uploaded to the index. As indicated by
+the <code class="docutils literal notranslate"><span class="pre">Z</span></code> suffix, the upload time MUST use the UTC timezone. The fractional
+seconds part of the timestamp (the <code class="docutils literal notranslate"><span class="pre">.ffffff</span></code> part) is optional, and if
+present may contain up to 6 digits of precision. If a server does not record
+upload time information for a file, it MAY omit the <code class="docutils literal notranslate"><span class="pre">upload-time</span></code> key.</p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="simple-api-dist-info-metadata">
+<h2>在 Simple API 中重命名 dist-info-metadata<a class="headerlink" href="#simple-api-dist-info-metadata" title="Link to this heading">¶</a></h2>
+<p><strong>Rename dist-info-metadata in the Simple API</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--25-input--1" name="tab-set--25" type="radio"><label class="tab-label" for="tab-set--25-input--1">中文</label><div class="tab-content docutils container">
+<p>本文档中的关键词 &quot;<strong>MUST</strong>&quot;、&quot;<strong>MUST NOT</strong>&quot;、&quot;<strong>REQUIRED</strong>&quot;、&quot;<strong>SHALL</strong>&quot;、&quot;<strong>SHALL NOT</strong>&quot;、&quot;<strong>SHOULD</strong>&quot;、&quot;<strong>SHOULD NOT</strong>&quot;、&quot;<strong>RECOMMENDED</strong>&quot;、&quot;<strong>MAY</strong>&quot; 和 &quot;<strong>OPTIONAL</strong>&quot; 应按照 <span class="target" id="index-10"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc2119.html"><strong>RFC 2119</strong></a> 中的描述进行解释。</p>
+</div>
+<input class="tab-input" id="tab-set--25-input--2" name="tab-set--25" type="radio"><label class="tab-label" for="tab-set--25-input--2">英文</label><div class="tab-content docutils container">
+<p>The keywords &quot;<strong>MUST</strong>&quot;, &quot;<strong>MUST NOT</strong>&quot;, &quot;<strong>REQUIRED</strong>&quot;, &quot;<strong>SHALL</strong>&quot;,
+&quot;<strong>SHALL NOT</strong>&quot;, &quot;<strong>SHOULD</strong>&quot;, &quot;<strong>SHOULD NOT</strong>&quot;, &quot;<strong>RECOMMENDED</strong>&quot;, &quot;<strong>MAY</strong>&quot;,
+and &quot;<strong>OPTIONAL</strong>&quot;&quot; in this document are to be interpreted as described in
+<span class="target" id="index-11"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc2119.html"><strong>RFC 2119</strong></a>.</p>
+</div>
+</div>
+<section id="id22">
+<h3>服务器<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h3>
+<p><strong>Servers</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--26-input--1" name="tab-set--26" type="radio"><label class="tab-label" for="tab-set--26-input--1">中文</label><div class="tab-content docutils container">
+<p>当在 Simple API 的 HTML 表示中使用 <a class="reference internal" href="#simple-repository-api-metadata-file"><span class="std std-ref">API 元数据文件规范</span></a> 元数据时，<strong>MUST</strong> 使用属性名 <code class="docutils literal notranslate"><span class="pre">data-core-metadata</span></code> 输出，且支持的值保持不变。</p>
+<p>当在 <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">JSON API 规范</span></a> 的 JSON 表示中使用 <a class="reference internal" href="#simple-repository-api-metadata-file"><span class="std std-ref">API 元数据文件规范</span></a> 元数据时，<strong>MUST</strong> 使用键 <code class="docutils literal notranslate"><span class="pre">core-metadata</span></code> 输出，且支持的值保持不变。</p>
+<p>为了支持使用先前键名的客户端，HTML 表示 <strong>MAY</strong> 也可以使用 <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code> 输出，如果这样做，<strong>MUST</strong> 与 <code class="docutils literal notranslate"><span class="pre">data-core-metadata</span></code> 的值匹配。</p>
+</div>
+<input class="tab-input" id="tab-set--26-input--2" name="tab-set--26" type="radio"><label class="tab-label" for="tab-set--26-input--2">英文</label><div class="tab-content docutils container">
+<p>The <a class="reference internal" href="#simple-repository-api-metadata-file"><span class="std std-ref">the API metadata file specification</span></a> metadata, when used in the HTML
+representation of the Simple API,
+<strong>MUST</strong> be emitted using the attribute name <code class="docutils literal notranslate"><span class="pre">data-core-metadata</span></code>, with the
+supported values remaining the same.</p>
+<p>The <a class="reference internal" href="#simple-repository-api-metadata-file"><span class="std std-ref">the API metadata file specification</span></a> metadata, when used in the <a class="reference internal" href="#simple-repository-api-base"><span class="std std-ref">the
+JSON API specification</span></a> JSON representation of the
+Simple API, <strong>MUST</strong> be emitted using the key <code class="docutils literal notranslate"><span class="pre">core-metadata</span></code>, with the
+supported values remaining the same.</p>
+<p>To support clients that used the previous key names, the HTML representation
+<strong>MAY</strong> also be emitted using the <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code>, and if it does
+so it <strong>MUST</strong> match the value of <code class="docutils literal notranslate"><span class="pre">data-core-metadata</span></code>.</p>
+</div>
+</div>
+</section>
+<section id="id23">
+<h3>客户端<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h3>
+<p><strong>Clients</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--27-input--1" name="tab-set--27" type="radio"><label class="tab-label" for="tab-set--27-input--1">中文</label><div class="tab-content docutils container">
+<p>消费 Simple API 的任何 HTML 表示的客户端 <strong>MUST</strong> 从键 <code class="docutils literal notranslate"><span class="pre">data-core-metadata</span></code> 中读取 <a class="reference internal" href="#simple-repository-api-metadata-file"><span class="std std-ref">API 元数据文件规范</span></a> 元数据，如果该键存在。如果 <code class="docutils literal notranslate"><span class="pre">data-core-metadata</span></code> 不存在，客户端 <strong>MAY</strong> 可选择使用遗留的 <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code>。</p>
+<p>消费 Simple API JSON 表示的客户端 <strong>MUST</strong> 从键 <code class="docutils literal notranslate"><span class="pre">core-metadata</span></code> 中读取 <a class="reference internal" href="#simple-repository-api-metadata-file"><span class="std std-ref">API 元数据文件规范</span></a> 元数据，如果该键存在。如果 <code class="docutils literal notranslate"><span class="pre">core-metadata</span></code> 不存在，客户端 <strong>MAY</strong> 可选择使用遗留的 <code class="docutils literal notranslate"><span class="pre">dist-info-metadata</span></code> 键。</p>
+</div>
+<input class="tab-input" id="tab-set--27-input--2" name="tab-set--27" type="radio"><label class="tab-label" for="tab-set--27-input--2">英文</label><div class="tab-content docutils container">
+<p>Clients consuming any of the HTML representations of the Simple API <strong>MUST</strong>
+read the <a class="reference internal" href="#simple-repository-api-metadata-file"><span class="std std-ref">the API metadata file specification</span></a> metadata from the key
+<code class="docutils literal notranslate"><span class="pre">data-core-metadata</span></code> if it is
+present. They <strong>MAY</strong> optionally use the legacy <code class="docutils literal notranslate"><span class="pre">data-dist-info-metadata</span></code> if
+it is present but <code class="docutils literal notranslate"><span class="pre">data-core-metadata</span></code> is not.</p>
+<p>Clients consuming the JSON representation of the Simple API <strong>MUST</strong> read the
+<a class="reference internal" href="#simple-repository-api-metadata-file"><span class="std std-ref">the API metadata file specification</span></a> metadata from the key <code class="docutils literal notranslate"><span class="pre">core-metadata</span></code>
+if it is present. They
+<strong>MAY</strong> optionally use the legacy <code class="docutils literal notranslate"><span class="pre">dist-info-metadata</span></code> key if it is present
+but <code class="docutils literal notranslate"><span class="pre">core-metadata</span></code> is not.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id24">
+<h2>历史<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h2>
+<p><strong>History</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--28-input--1" name="tab-set--28" type="radio"><label class="tab-label" for="tab-set--28-input--1">中文</label><div class="tab-content docutils container">
+<ul class="simple">
+<li><p>2015年9月：HTML 格式的初始版本，在 <span class="target" id="index-12"></span><a class="pep reference external" href="https://peps.python.org/pep-0503/"><strong>PEP 503</strong></a> 中</p></li>
+<li><p>2016年7月：Requires-Python 元数据，更新至 <span class="target" id="index-13"></span><a class="pep reference external" href="https://peps.python.org/pep-0503/"><strong>PEP 503</strong></a></p></li>
+<li><p>2019年5月：“yank” 支持，在 <span class="target" id="index-14"></span><a class="pep reference external" href="https://peps.python.org/pep-0592/"><strong>PEP 592</strong></a> 中</p></li>
+<li><p>2020年7月：API 版本控制约定和元数据，并将 HTML 格式声明为 API v1，在 <span class="target" id="index-15"></span><a class="pep reference external" href="https://peps.python.org/pep-0629/"><strong>PEP 629</strong></a> 中</p></li>
+<li><p>2021年5月：提供独立于包的包元数据，在 <span class="target" id="index-16"></span><a class="pep reference external" href="https://peps.python.org/pep-0658/"><strong>PEP 658</strong></a> 中</p></li>
+<li><p>2022年5月：JSON 格式的初始版本，提供客户端选择机制，并将两种格式都声明为 API v1，在 <span class="target" id="index-17"></span><a class="pep reference external" href="https://peps.python.org/pep-0691/"><strong>PEP 691</strong></a> 中</p></li>
+<li><p>2022年10月：项目版本、文件大小和上传时间在 JSON 格式中的支持，在 <span class="target" id="index-18"></span><a class="pep reference external" href="https://peps.python.org/pep-0700/"><strong>PEP 700</strong></a> 中</p></li>
+<li><p>2023年6月：重命名提供独立于包的包元数据的字段，在 <span class="target" id="index-19"></span><a class="pep reference external" href="https://peps.python.org/pep-0714/"><strong>PEP 714</strong></a> 中</p></li>
+</ul>
+</div>
+<input class="tab-input" id="tab-set--28-input--2" name="tab-set--28" type="radio"><label class="tab-label" for="tab-set--28-input--2">英文</label><div class="tab-content docutils container">
+<ul class="simple">
+<li><p>September 2015: initial form of the HTML format, in <span class="target" id="index-20"></span><a class="pep reference external" href="https://peps.python.org/pep-0503/"><strong>PEP 503</strong></a></p></li>
+<li><p>July 2016: Requires-Python metadata, in an update to <span class="target" id="index-21"></span><a class="pep reference external" href="https://peps.python.org/pep-0503/"><strong>PEP 503</strong></a></p></li>
+<li><p>May 2019: &quot;yank&quot; support, in <span class="target" id="index-22"></span><a class="pep reference external" href="https://peps.python.org/pep-0592/"><strong>PEP 592</strong></a></p></li>
+<li><p>July 2020: API versioning convention and metadata, and declaring the HTML
+format as API v1, in <span class="target" id="index-23"></span><a class="pep reference external" href="https://peps.python.org/pep-0629/"><strong>PEP 629</strong></a></p></li>
+<li><p>May 2021: providing package metadata independently from a package, in
+<span class="target" id="index-24"></span><a class="pep reference external" href="https://peps.python.org/pep-0658/"><strong>PEP 658</strong></a></p></li>
+<li><p>May 2022: initial form of the JSON format, with a mechanism for clients to
+choose between them, and declaring both formats as API v1, in <span class="target" id="index-25"></span><a class="pep reference external" href="https://peps.python.org/pep-0691/"><strong>PEP 691</strong></a></p></li>
+<li><p>October 2022: project versions and file size and upload-time in the JSON
+format, in <span class="target" id="index-26"></span><a class="pep reference external" href="https://peps.python.org/pep-0700/"><strong>PEP 700</strong></a></p></li>
+<li><p>June 2023: renaming the field which provides package metadata independently
+from a package, in <span class="target" id="index-27"></span><a class="pep reference external" href="https://peps.python.org/pep-0714/"><strong>PEP 714</strong></a></p></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../key_projects.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">项目摘要</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="pypirc.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title"><code class="file docutils literal notranslate"><span class="pre">.pypirc</span></code> 文件</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2013–2020, PyPA
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2024 年 11 月 15 日</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Simple 仓库 API</a><ul>
+<li><a class="reference internal" href="#html-api">基本 HTML API</a><ul>
+<li><a class="reference internal" href="#id1">规范化名称</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#simple-api-yank">向 Simple API 添加“Yank”支持</a><ul>
+<li><a class="reference internal" href="#id2">安装程序</a></li>
+<li><a class="reference internal" href="#id3">镜像</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#pypi-simple-api">PyPI Simple API 版本控制</a><ul>
+<li><a class="reference internal" href="#id4">客户端</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#simple-repository-api-metadata-file">在 Simple Repository API 中提供分发元数据</a><ul>
+<li><a class="reference internal" href="#id6">向后兼容性</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#json-python-simple-api">基于 JSON 的 Python 包索引 Simple API</a><ul>
+<li><a class="reference internal" href="#id8">版本控制</a></li>
+<li><a class="reference internal" href="#json-serialization">JSON 序列化</a><ul>
+<li><a class="reference internal" href="#id10">项目列表</a></li>
+<li><a class="reference internal" href="#id11">项目详细信息</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id12">内容类型</a></li>
+<li><a class="reference internal" href="#id13">版本 + 格式选择</a><ul>
+<li><a class="reference internal" href="#id16">替代协商机制</a><ul>
+<li><a class="reference internal" href="#url">URL 参数</a></li>
+<li><a class="reference internal" href="#id17">端点配置</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tuf-pep-458">TUF 支持 - PEP 458</a></li>
+<li><a class="reference internal" href="#id18">建议</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id19">用于包索引的 Simple API 的附加字段</a><ul>
+<li><a class="reference internal" href="#id20">版本</a></li>
+<li><a class="reference internal" href="#id21">附加文件信息</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#simple-api-dist-info-metadata">在 Simple API 中重命名 dist-info-metadata</a><ul>
+<li><a class="reference internal" href="#id22">服务器</a></li>
+<li><a class="reference internal" href="#id23">客户端</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id24">历史</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=cb5fb026"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    </body>
+</html>

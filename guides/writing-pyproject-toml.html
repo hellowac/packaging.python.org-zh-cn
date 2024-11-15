@@ -1,0 +1,1197 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="../genindex.html" /><link rel="search" title="搜索" href="../search.html" /><link rel="next" title="打包和分发项目" href="distributing-packages-using-setuptools.html" /><link rel="prev" title="构建和发布" href="section-build-and-publish.html" />
+
+    <link rel="shortcut icon" href="../_static/py.png"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>编写你的 pyproject.toml - Python Packaging User Guide</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Python Packaging User Guide</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">Python Packaging User Guide</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../flow.html">打包流程</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/installing-packages.html">安装软件包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/managing-dependencies.html">管理依赖项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/packaging-projects.html">打包Python项目</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">指南</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-install.html">安装</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 安装</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="installing-using-pip-and-virtual-environments.html">使用 pip 和 venv 在虚拟环境中安装软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installing-using-virtualenv.html">使用虚拟环境安装包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installing-stand-alone-command-line-tools.html">安装独立的命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installing-using-linux-tools.html">使用 Linux 包管理器安装 pip/setuptools/wheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installing-scientific-packages.html">安装科学软件包</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="section-build-and-publish.html">构建和发布</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 构建和发布</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="distributing-packages-using-setuptools.html">打包和分发项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dropping-older-python-versions.html">放弃对旧版 Python 的支持</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packaging-binary-extensions.html">打包二进制扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packaging-namespace-packages.html">打包命名空间包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="creating-command-line-tools.html">创建和打包命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="creating-and-discovering-plugins.html">创建和发现插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-testpypi.html">使用 TestPyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="making-a-pypi-friendly-readme.html">制作适合 PyPI 的 README</a></li>
+<li class="toctree-l3"><a class="reference internal" href="publishing-package-distribution-releases-using-github-actions-ci-cd-workflows.html">使用 GitHub Actions CI/CD 工作流发布软件包分发版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modernize-setup-py-project.html">如何使基于 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 的项目现代化？</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="section-hosting.html">托管</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of 托管</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="index-mirrors-and-caches.html">包索引镜像和缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hosting-your-own-index.html">托管您自己的简单存储库</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tool-recommendations.html">工具推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyzing-pypi-package-downloads.html">分析 PyPI 软件包下载</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discussions/index.html">讨论</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 讨论</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/versioning.html">版本控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/deploying-python-applications.html">部署 Python 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/pip-vs-easy-install.html">pip vs easy_install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/install-requires-vs-requirements.html">install_requires 与需求文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/distribution-package-vs-import-package.html">分发包与导入包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/package-formats.html">软件包格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/src-layout-vs-flat-layout.html">src 布局与平面布局</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/setup-py-deprecated.html"><code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 已被弃用吗？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discussions/single-source-version.html">单一来源项目版本</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../specifications/index.html">PyPA 规范</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of PyPA 规范</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-distribution-metadata.html">包分发元数据</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 包分发元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/name-normalization.html">名称和规范化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/core-metadata.html">核心元数据规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/version-specifiers.html">版本标识符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/dependency-specifiers.html">依赖说明符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/pyproject-toml.html"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/inline-script-metadata.html">内联脚本元数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/platform-compatibility-tags.html">平台兼容性标签</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/well-known-project-urls.html">元数据中的知名项目 URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-installation-metadata.html">包安装元数据</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 包安装元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/recording-installed-packages.html">记录已安装的项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/entry-points.html">入口点规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/direct-url.html">记录已安装发行版的直接 URL 来源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/direct-url-data-structure.html">直接 URL 数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/virtual-environments.html">Python 虚拟环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/externally-managed-environments.html">外部管理环境</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-distribution-formats.html">包分发文件格式</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 包分发文件格式</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/source-distribution-format.html">源分发格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/binary-distribution-format.html">二进制分发格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../specifications/section-package-indices.html">包索引接口</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of 包索引接口</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/pypirc.html"><code class="file docutils literal notranslate"><span class="pre">.pypirc</span></code> 文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../specifications/simple-repository-api.html">Simple 仓库 API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../key_projects.html">项目摘要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../support.html">如何获取支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">为本指南做出贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../news.html">新闻</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../_sources/guides/writing-pyproject-toml.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="pyproject-toml">
+<span id="writing-pyproject-toml"></span><h1>编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code><a class="headerlink" href="#pyproject-toml" title="Link to this heading">¶</a></h1>
+<p><strong>Writing your</strong> <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 是一个配置文件，供打包工具以及其他工具（如代码检查工具、类型检查器等）使用。此文件中有三个可能的 TOML 表格。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">[build-system]</span></code> 表格是 <strong>强烈推荐</strong> 使用的。它允许你声明所使用的 <a class="reference internal" href="../glossary.html#term-Build-Backend"><span class="xref std std-term">构建后端</span></a> 以及构建项目所需的其他依赖项。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[project]</span></code> 表格是大多数构建后端用来指定项目基本元数据的格式，例如依赖项、你的名字等。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">[tool]</span></code> 表格包含工具特定的子表格，例如 <code class="docutils literal notranslate"><span class="pre">[tool.hatch]</span></code>、<code class="docutils literal notranslate"><span class="pre">[tool.black]</span></code>、<code class="docutils literal notranslate"><span class="pre">[tool.mypy]</span></code>。我们这里只是简要提到这个表格，因为其内容由每个工具定义。请参考特定工具的文档，了解它可能包含的内容。</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><code class="docutils literal notranslate"><span class="pre">[build-system]</span></code> 表格应该始终存在，无论你使用的是哪个构建后端（<code class="docutils literal notranslate"><span class="pre">[build-system]</span></code> <em>定义</em> 了你使用的构建工具）。</p>
+<p>另一方面， <code class="docutils literal notranslate"><span class="pre">[project]</span></code> 表格被 <em>大多数</em> 构建后端理解，但某些构建后端使用不同的格式。</p>
+<p>截至 2024 年 8 月，<a class="reference external" href="https://python-poetry.org">Poetry</a> 是一个不使用 <code class="docutils literal notranslate"><span class="pre">[project]</span></code> 表格的著名构建后端，它使用 <code class="docutils literal notranslate"><span class="pre">[tool.poetry]</span></code> 表格代替。此外，<a class="reference external" href="https://setuptools.pypa.io">setuptools</a> 构建后端支持 <code class="docutils literal notranslate"><span class="pre">[project]</span></code> 表格和 <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> 或 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 中的旧格式。</p>
+<p>对于新项目，建议使用 <code class="docutils literal notranslate"><span class="pre">[project]</span></code> 表格，并仅在需要某些编程配置（例如构建 C 扩展）时保留 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>，但 <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> 和 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 格式仍然有效。参见 <a class="reference internal" href="../discussions/setup-py-deprecated.html#setup-py-deprecated"><span class="std std-ref">setup.py 已被弃用吗？</span></a>。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> is a configuration file used by packaging tools, as
+well as other tools such as linters, type checkers, etc. There are
+three possible TOML tables in this file.</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">[build-system]</span></code> table is <strong>strongly recommended</strong>. It allows you to declare which <a class="reference internal" href="../glossary.html#term-Build-Backend"><span class="xref std std-term">build backend</span></a> you use and which other dependencies are needed to build your project.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">[project]</span></code> table is the format that most build backends use to specify your project's basic metadata, such as the dependencies, your name, etc.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">[tool]</span></code> table has tool-specific subtables, e.g., <code class="docutils literal notranslate"><span class="pre">[tool.hatch]</span></code>, <code class="docutils literal notranslate"><span class="pre">[tool.black]</span></code>, <code class="docutils literal notranslate"><span class="pre">[tool.mypy]</span></code>. We only touch upon this table here because its contents are defined by each tool. Consult the particular tool's documentation to know what it can contain.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">[build-system]</span></code> table should always be present,
+regardless of which build backend you use (<code class="docutils literal notranslate"><span class="pre">[build-system]</span></code> <em>defines</em> the
+build tool you use).</p>
+<p>On the other hand, the <code class="docutils literal notranslate"><span class="pre">[project]</span></code> table is understood by <em>most</em> build
+backends, but some build backends use a different format.</p>
+<p>As of August 2024, <a class="reference external" href="https://python-poetry.org">Poetry</a> is a notable build backend that does not use
+the <code class="docutils literal notranslate"><span class="pre">[project]</span></code> table, it uses the <code class="docutils literal notranslate"><span class="pre">[tool.poetry]</span></code> table instead.
+Also, the <a class="reference external" href="https://setuptools.pypa.io">setuptools</a> build backend supports both the <code class="docutils literal notranslate"><span class="pre">[project]</span></code> table,
+and the older format in <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> or <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.</p>
+<p>For new projects, use the <code class="docutils literal notranslate"><span class="pre">[project]</span></code> table, and keep <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> only if
+some programmatic configuration is needed (such as building C extensions),
+but the <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> and <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> formats are still valid. See
+<a class="reference internal" href="../discussions/setup-py-deprecated.html#setup-py-deprecated"><span class="std std-ref">setup.py 已被弃用吗？</span></a>.</p>
+</div>
+</div>
+</div>
+<section id="pyproject-guide-build-system-table">
+<span id="id1"></span><h2>声明构建后端<a class="headerlink" href="#pyproject-guide-build-system-table" title="Link to this heading">¶</a></h2>
+<p><strong>Declaring the build backend</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p><code class="docutils literal notranslate"><span class="pre">[build-system]</span></code> 表格包含一个 <code class="docutils literal notranslate"><span class="pre">build-backend</span></code> 键，用于指定要使用的构建后端。它还包含一个 <code class="docutils literal notranslate"><span class="pre">requires</span></code> 键，这是一个依赖项列表，列出了构建项目所需的依赖项——通常只是构建后端包，但也可能包含其他依赖项。你还可以约束版本，例如， <code class="docutils literal notranslate"><span class="pre">requires</span> <span class="pre">=</span> <span class="pre">[&quot;setuptools</span> <span class="pre">&gt;=</span> <span class="pre">61.0&quot;]</span></code>。</p>
+<p>通常，你只需复制构建后端文档中建议的内容（参见： <a class="reference internal" href="../tutorials/packaging-projects.html#choosing-build-backend"><span class="std std-ref">选择构建后端</span></a>）。以下是一些常见构建后端的配置示例：</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">Hatchling</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hatchling&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hatchling.build&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">setuptools</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;setuptools &gt;= 61.0&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;setuptools.build_meta&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--3" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--3">Flit</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;flit_core &gt;= 3.4&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;flit_core.buildapi&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--1-input--4" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--4">PDM</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pdm-backend&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pdm.backend&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>The <code class="docutils literal notranslate"><span class="pre">[build-system]</span></code> table contains a <code class="docutils literal notranslate"><span class="pre">build-backend</span></code> key, which specifies
+the build backend to be used. It also contains a <code class="docutils literal notranslate"><span class="pre">requires</span></code> key, which is a
+list of dependencies needed to build the project -- this is typically just the
+build backend package, but it may also contain additional dependencies. You can
+also constrain the versions, e.g., <code class="docutils literal notranslate"><span class="pre">requires</span> <span class="pre">=</span> <span class="pre">[&quot;setuptools</span> <span class="pre">&gt;=</span> <span class="pre">61.0&quot;]</span></code>.</p>
+<p>Usually, you'll just copy what your build backend's documentation
+suggests (after <a class="reference internal" href="../tutorials/packaging-projects.html#choosing-build-backend"><span class="std std-ref">choosing your build backend</span></a>).
+Here are the values for some common build backends:</p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">Hatchling</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hatchling&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hatchling.build&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">setuptools</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;setuptools &gt;= 61.0&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;setuptools.build_meta&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--2-input--3" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--3">Flit</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;flit_core &gt;= 3.4&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;flit_core.buildapi&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--2-input--4" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--4">PDM</label><div class="tab-content docutils container">
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pdm-backend&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pdm.backend&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h2>静态与动态元数据<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<p><strong>Static vs. dynamic metadata</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>本指南的其余部分将重点介绍 <code class="docutils literal notranslate"><span class="pre">[project]</span></code> 表格。</p>
+<p>大多数时候，你会直接写入 <code class="docutils literal notranslate"><span class="pre">[project]</span></code> 字段的值。例如： <code class="docutils literal notranslate"><span class="pre">requires-python</span> <span class="pre">=</span> <span class="pre">&quot;&gt;=</span> <span class="pre">3.8&quot;</span></code> ，或 <code class="docutils literal notranslate"><span class="pre">version</span> <span class="pre">=</span> <span class="pre">&quot;1.0&quot;</span></code> 。</p>
+<p>然而，在某些情况下，让构建后端为你计算元数据会更有用。例如：许多构建后端可以从代码中的 <code class="docutils literal notranslate"><span class="pre">__version__</span></code> 属性、Git 标签或类似的地方读取版本信息。在这种情况下，你应该使用如下方式将字段标记为动态：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">dynamic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>当一个字段是动态的时，填充该字段的责任就由构建后端来承担。请查阅构建后端的文档，了解它是如何处理的。</p>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>The rest of this guide is devoted to the <code class="docutils literal notranslate"><span class="pre">[project]</span></code> table.</p>
+<p>Most of the time, you will directly write the value of a <code class="docutils literal notranslate"><span class="pre">[project]</span></code>
+field. For example: <code class="docutils literal notranslate"><span class="pre">requires-python</span> <span class="pre">=</span> <span class="pre">&quot;&gt;=</span> <span class="pre">3.8&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">version</span> <span class="pre">=</span>
+<span class="pre">&quot;1.0&quot;</span></code>.</p>
+<p>However, in some cases, it is useful to let your build backend compute
+the metadata for you. For example: many build backends can read the
+version from a <code class="docutils literal notranslate"><span class="pre">__version__</span></code> attribute in your code, a Git tag, or
+similar. In such cases, you should mark the field as dynamic using, e.g.,</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">dynamic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>When a field is dynamic, it is the build backend's responsibility to
+fill it.  Consult your build backend's documentation to learn how it
+does it.</p>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2>基本信息<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<p><strong>Basic information</strong></p>
+<section id="name">
+<span id="setup-name"></span><h3><code class="docutils literal notranslate"><span class="pre">name</span></code><a class="headerlink" href="#name" title="Link to this heading">¶</a></h3>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p>在 PyPI 上注册你的项目名称。这个字段是必填的，并且是唯一一个不能标记为动态的字段。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spam-eggs&quot;</span>
+</pre></div>
+</div>
+<p>项目名称必须由 ASCII 字母、数字、下划线 &quot;<code class="docutils literal notranslate"><span class="pre">_</span></code>&quot;、连字符 &quot;<code class="docutils literal notranslate"><span class="pre">-</span></code>&quot; 和句点 &quot;<code class="docutils literal notranslate"><span class="pre">.</span></code>&quot; 组成。它不能以下划线、连字符或句点开始或结束。</p>
+<p>项目名称的比较不区分大小写，并且将连续的下划线、连字符和/或句点视为相等。例如，如果你注册了一个名为 <code class="docutils literal notranslate"><span class="pre">cool-stuff</span></code> 的项目，用户将能够通过以下任何一种拼写方式下载它或声明对其的依赖：<code class="docutils literal notranslate"><span class="pre">Cool-Stuff</span></code>、<code class="docutils literal notranslate"><span class="pre">cool.stuff</span></code>、<code class="docutils literal notranslate"><span class="pre">COOL_STUFF</span></code>、<code class="docutils literal notranslate"><span class="pre">CoOl__-.-__sTuFF</span></code>。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>Put the name of your project on PyPI. This field is required and is the
+only field that cannot be marked as dynamic.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spam-eggs&quot;</span>
+</pre></div>
+</div>
+<p>The project name must consist of ASCII letters, digits, underscores &quot;<code class="docutils literal notranslate"><span class="pre">_</span></code>&quot;,
+hyphens &quot;<code class="docutils literal notranslate"><span class="pre">-</span></code>&quot; and periods &quot;<code class="docutils literal notranslate"><span class="pre">.</span></code>&quot;. It must not start or end with an
+underscore, hyphen or period.</p>
+<p>Comparison of project names is case insensitive and treats arbitrarily long runs
+of underscores, hyphens, and/or periods as equal.  For example, if you register
+a project named <code class="docutils literal notranslate"><span class="pre">cool-stuff</span></code>, users will be able to download it or declare a
+dependency on it using any of the following spellings: <code class="docutils literal notranslate"><span class="pre">Cool-Stuff</span></code>,
+<code class="docutils literal notranslate"><span class="pre">cool.stuff</span></code>, <code class="docutils literal notranslate"><span class="pre">COOL_STUFF</span></code>, <code class="docutils literal notranslate"><span class="pre">CoOl__-.-__sTuFF</span></code>.</p>
+</div>
+</div>
+</section>
+<section id="version">
+<h3><code class="docutils literal notranslate"><span class="pre">version</span></code><a class="headerlink" href="#version" title="Link to this heading">¶</a></h3>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>填写你项目的版本。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;2020.0.0&quot;</span>
+</pre></div>
+</div>
+<p>一些更复杂的版本说明符，如 <code class="docutils literal notranslate"><span class="pre">2020.0.0a1</span></code> （表示一个 alpha 版本），也是可以的；详细信息请参阅 <a class="reference internal" href="../specifications/version-specifiers.html#version-specifiers"><span class="std std-ref">指定版本</span></a> 。</p>
+<p>此字段是必填的，尽管它通常会标记为动态，使用如下方式：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">dynamic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>这允许使用场景，例如从 <code class="docutils literal notranslate"><span class="pre">__version__</span></code> 属性或 Git 标签填充版本号。有关更多详细信息，请参阅 <a class="reference internal" href="../discussions/single-source-version.html#single-source-version"><span class="std std-ref">单一来源项目版本</span></a> 讨论。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>Put the version of your project.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;2020.0.0&quot;</span>
+</pre></div>
+</div>
+<p>Some more complicated version specifiers like <code class="docutils literal notranslate"><span class="pre">2020.0.0a1</span></code> (for an alpha
+release) are possible; see the <a class="reference internal" href="../specifications/version-specifiers.html#version-specifiers"><span class="std std-ref">specification</span></a>
+for full details.</p>
+<p>This field is required, although it is often marked as dynamic using</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">dynamic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This allows use cases such as filling the version from a <code class="docutils literal notranslate"><span class="pre">__version__</span></code>
+attribute or a Git tag. Consult the <a class="reference internal" href="../discussions/single-source-version.html#single-source-version"><span class="std std-ref">单一来源项目版本</span></a>
+discussion for more details.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="id4">
+<h2>依赖项和要求<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<p><strong>Dependencies and requirements</strong></p>
+<section id="dependencies-optional-dependencies">
+<h3><code class="docutils literal notranslate"><span class="pre">dependencies</span></code>/<code class="docutils literal notranslate"><span class="pre">optional-dependencies</span></code><a class="headerlink" href="#dependencies-optional-dependencies" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">dependencies</span></code>/<code class="docutils literal notranslate"><span class="pre">optional-dependencies</span></code></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--7-input--1" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--1">中文</label><div class="tab-content docutils container">
+<p>如果你的项目有依赖，按如下方式列出它们：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="s2">&quot;httpx&quot;</span><span class="p">,</span>
+<span class="s2">&quot;gidgethub[httpx]&gt;4.0.0&quot;</span><span class="p">,</span>
+<span class="s2">&quot;django&gt;2.1; os_name != &#39;nt&#39;&quot;</span><span class="p">,</span>
+<span class="s2">&quot;django&gt;2.0; os_name == &#39;nt&#39;&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>有关完整的版本约束语法，请参阅 <a class="reference internal" href="../specifications/dependency-specifiers.html#dependency-specifiers"><span class="std std-ref">指定依赖项</span></a>。</p>
+<p>如果某些依赖项仅用于包的特定功能，可以将它们设置为可选依赖。在这种情况下，将它们放在 <code class="docutils literal notranslate"><span class="pre">optional-dependencies</span></code> 中。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.optional-dependencies]</span>
+<span class="n">gui</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;PyQt5&quot;</span><span class="p">]</span>
+<span class="n">cli</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">   </span><span class="s2">&quot;rich&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;click&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>每个键定义一个“打包扩展”。在上面的例子中，可以使用例如 <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">your-project-name[gui]</span></code> 来安装支持 GUI 的项目，并添加 PyQt5 作为依赖。</p>
+</div>
+<input class="tab-input" id="tab-set--7-input--2" name="tab-set--7" type="radio"><label class="tab-label" for="tab-set--7-input--2">英文</label><div class="tab-content docutils container">
+<p>If your project has dependencies, list them like this:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="s2">&quot;httpx&quot;</span><span class="p">,</span>
+<span class="s2">&quot;gidgethub[httpx]&gt;4.0.0&quot;</span><span class="p">,</span>
+<span class="s2">&quot;django&gt;2.1; os_name != &#39;nt&#39;&quot;</span><span class="p">,</span>
+<span class="s2">&quot;django&gt;2.0; os_name == &#39;nt&#39;&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="../specifications/dependency-specifiers.html#dependency-specifiers"><span class="std std-ref">Dependency specifiers</span></a> for the full
+syntax you can use to constrain versions.</p>
+<p>You may want to make some of your dependencies optional, if they are
+only needed for a specific feature of your package. In that case, put
+them in <code class="docutils literal notranslate"><span class="pre">optional-dependencies</span></code>.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.optional-dependencies]</span>
+<span class="n">gui</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;PyQt5&quot;</span><span class="p">]</span>
+<span class="n">cli</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">   </span><span class="s2">&quot;rich&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;click&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Each of the keys defines a &quot;packaging extra&quot;. In the example above, one
+could use, e.g., <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">your-project-name[gui]</span></code> to install your
+project with GUI support, adding the PyQt5 dependency.</p>
+</div>
+</div>
+</section>
+<section id="python-requires">
+<span id="requires-python"></span><span id="id5"></span><h3><code class="docutils literal notranslate"><span class="pre">requires-python</span></code><a class="headerlink" href="#python-requires" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">requires-python</span></code></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--8-input--1" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--1">中文</label><div class="tab-content docutils container">
+<p>这让你声明你支持的 Python 最小版本。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">requires-python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;= 3.8&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--8-input--2" name="tab-set--8" type="radio"><label class="tab-label" for="tab-set--8-input--2">英文</label><div class="tab-content docutils container">
+<p>This lets you declare the minimum version of Python that you support
+<a href="#id17"><span class="problematic" id="id6">[#requires-python-upper-bounds]_</span></a>.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">requires-python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;= 3.8&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="console-scripts">
+<span id="id7"></span><h2>创建可执行脚本<a class="headerlink" href="#console-scripts" title="Link to this heading">¶</a></h2>
+<p><strong>Creating executable scripts</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--9-input--1" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--1">中文</label><div class="tab-content docutils container">
+<p>要将一个命令作为你包的一部分安装，请在 <code class="docutils literal notranslate"><span class="pre">[project.scripts]</span></code> 表中声明它。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.scripts]</span>
+<span class="n">spam-cli</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spam:main_cli&quot;</span>
+</pre></div>
+</div>
+<p>在这个例子中，安装你的项目后， <code class="docutils literal notranslate"><span class="pre">spam-cli</span></code> 命令将可用。执行该命令相当于执行 <code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">spam</span> <span class="pre">import</span> <span class="pre">main_cli;</span> <span class="pre">main_cli()</span></code> 。</p>
+<p>在 Windows 上，这种方式打包的脚本需要一个终端，因此，如果你从图形应用程序中启动它们，它们会弹出一个终端窗口。为了防止这种情况发生，可以使用 <code class="docutils literal notranslate"><span class="pre">[project.gui-scripts]</span></code> 表，而不是 <code class="docutils literal notranslate"><span class="pre">[project.scripts]</span></code>。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.gui-scripts]</span>
+<span class="n">spam-gui</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spam:main_gui&quot;</span>
+</pre></div>
+</div>
+<p>在这种情况下，从命令行启动脚本时将立即返回控制，将脚本置于后台运行。</p>
+<p><code class="docutils literal notranslate"><span class="pre">[project.scripts]</span></code> 和 <code class="docutils literal notranslate"><span class="pre">[project.gui-scripts]</span></code> 之间的区别仅在 Windows 上相关。</p>
+</div>
+<input class="tab-input" id="tab-set--9-input--2" name="tab-set--9" type="radio"><label class="tab-label" for="tab-set--9-input--2">英文</label><div class="tab-content docutils container">
+<p>To install a command as part of your package, declare it in the
+<code class="docutils literal notranslate"><span class="pre">[project.scripts]</span></code> table.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.scripts]</span>
+<span class="n">spam-cli</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spam:main_cli&quot;</span>
+</pre></div>
+</div>
+<p>In this example, after installing your project, a <code class="docutils literal notranslate"><span class="pre">spam-cli</span></code> command
+will be available. Executing this command will do the equivalent of
+<code class="docutils literal notranslate"><span class="pre">from</span> <span class="pre">spam</span> <span class="pre">import</span> <span class="pre">main_cli;</span> <span class="pre">main_cli()</span></code>.</p>
+<p>On Windows, scripts packaged this way need a terminal, so if you launch
+them from within a graphical application, they will make a terminal pop
+up. To prevent this from happening, use the <code class="docutils literal notranslate"><span class="pre">[project.gui-scripts]</span></code>
+table instead of <code class="docutils literal notranslate"><span class="pre">[project.scripts]</span></code>.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.gui-scripts]</span>
+<span class="n">spam-gui</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spam:main_gui&quot;</span>
+</pre></div>
+</div>
+<p>In that case, launching your script from the command line will give back
+control immediately, leaving the script to run in the background.</p>
+<p>The difference between <code class="docutils literal notranslate"><span class="pre">[project.scripts]</span></code> and
+<code class="docutils literal notranslate"><span class="pre">[project.gui-scripts]</span></code> is only relevant on Windows.</p>
+</div>
+</div>
+</section>
+<section id="id8">
+<h2>关于您的项目<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
+<p><strong>About your project</strong></p>
+<section id="authors-maintainers">
+<h3><code class="docutils literal notranslate"><span class="pre">authors</span></code>/<code class="docutils literal notranslate"><span class="pre">maintainers</span></code><a class="headerlink" href="#authors-maintainers" title="Link to this heading">¶</a></h3>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--10-input--1" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--1">中文</label><div class="tab-content docutils container">
+<p>这两个字段包含由姓名和/或电子邮件地址标识的人员列表。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">   </span><span class="p">{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Pradyun Gedam&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;pradyun@example.com&quot;</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Tzu-Ping Chung&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;tzu-ping@example.com&quot;</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Another person&quot;</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;different.person@example.com&quot;</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">maintainers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">   </span><span class="p">{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Brett Cannon&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;brett@example.com&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--10-input--2" name="tab-set--10" type="radio"><label class="tab-label" for="tab-set--10-input--2">英文</label><div class="tab-content docutils container">
+<p>Both of these fields contain lists of people identified by a name and/or
+an email address.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">   </span><span class="p">{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Pradyun Gedam&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;pradyun@example.com&quot;</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Tzu-Ping Chung&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;tzu-ping@example.com&quot;</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Another person&quot;</span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;different.person@example.com&quot;</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">maintainers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">   </span><span class="p">{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Brett Cannon&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;brett@example.com&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="description">
+<span id="id9"></span><h3><code class="docutils literal notranslate"><span class="pre">description</span></code><a class="headerlink" href="#description" title="Link to this heading">¶</a></h3>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--11-input--1" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--1">中文</label><div class="tab-content docutils container">
+<p>这应该是你项目的一行描述，用作项目页面在 PyPI 上的“标题” ( <a class="reference external" href="https://pypi.org/project/pip">example</a> )，以及其他地方，如搜索结果列表 ( <a class="reference external" href="https://pypi.org/search?q=pip">example</a> )。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Lovely Spam! Wonderful Spam!&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--11-input--2" name="tab-set--11" type="radio"><label class="tab-label" for="tab-set--11-input--2">英文</label><div class="tab-content docutils container">
+<p>This should be a one-line description of your project, to show as the &quot;headline&quot;
+of your project page on PyPI (<a class="reference external" href="https://pypi.org/project/pip">example</a>), and other places such as
+lists of search results (<a class="reference external" href="https://pypi.org/search?q=pip">example</a>).</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Lovely Spam! Wonderful Spam!&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="readme">
+<h3><code class="docutils literal notranslate"><span class="pre">readme</span></code><a class="headerlink" href="#readme" title="Link to this heading">¶</a></h3>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--12-input--1" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--1">中文</label><div class="tab-content docutils container">
+<p>这是你项目的更长描述，将显示在 PyPI 上的项目页面中。通常，你的项目会有一个 <code class="docutils literal notranslate"><span class="pre">README.md</span></code> 或 <code class="docutils literal notranslate"><span class="pre">README.rst</span></code> 文件，你只需要在这里写出该文件的文件名。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;README.md&quot;</span>
+</pre></div>
+</div>
+<p>README 的格式会根据扩展名自动检测：</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">README.md</span></code> → <a class="reference external" href="https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax">GitHub 风格的 Markdown</a>，</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">README.rst</span></code> → <a href="#id10"><span class="problematic" id="id11">`</span></a>reStructuredText &lt;<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html">rest</a>&gt;`_（没有 Sphinx 扩展）。</p></li>
+</ul>
+<p>你也可以显式指定格式，如下所示：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;README.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">content-type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;text/markdown&quot;</span><span class="p">}</span>
+<span class="c1"># 或者</span>
+<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;README.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">content-type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;text/x-rst&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--12-input--2" name="tab-set--12" type="radio"><label class="tab-label" for="tab-set--12-input--2">英文</label><div class="tab-content docutils container">
+<p>This is a longer description of your project, to display on your project
+page on PyPI. Typically, your project will have a <code class="docutils literal notranslate"><span class="pre">README.md</span></code> or
+<code class="docutils literal notranslate"><span class="pre">README.rst</span></code> file and you just put its file name here.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;README.md&quot;</span>
+</pre></div>
+</div>
+<p>The README's format is auto-detected from the extension:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">README.md</span></code> → <a class="reference external" href="https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax">GitHub-flavored Markdown</a>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">README.rst</span></code> → <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html">reStructuredText</a> (without Sphinx extensions).</p></li>
+</ul>
+<p>You can also specify the format explicitly, like this:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;README.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">content-type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;text/markdown&quot;</span><span class="p">}</span>
+<span class="c1"># or</span>
+<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;README.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">content-type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;text/x-rst&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="license">
+<h3><code class="docutils literal notranslate"><span class="pre">license</span></code><a class="headerlink" href="#license" title="Link to this heading">¶</a></h3>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--13-input--1" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--1">中文</label><div class="tab-content docutils container">
+<p>这可以有两种形式。你可以将许可证放在一个文件中，通常是 <code class="docutils literal notranslate"><span class="pre">LICENSE</span></code> 或 <code class="docutils literal notranslate"><span class="pre">LICENSE.txt</span></code>，然后在这里链接该文件：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;LICENSE&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>或者你也可以直接写出许可证的名称：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">text</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;MIT License&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>如果你使用的是标准的、知名的许可证，那么不需要使用这个字段。相反，你应该使用一个以 <code class="docutils literal notranslate"><span class="pre">License::</span></code> 开头的 <a class="reference internal" href="#classifiers"><span class="std std-ref">分类器</span></a>。 （一般来说，使用标准的、知名的许可证是一个好主意，既可以避免混淆，也因为一些组织会避免使用未获批准的许可证的软件。）</p>
+</div>
+<input class="tab-input" id="tab-set--13-input--2" name="tab-set--13" type="radio"><label class="tab-label" for="tab-set--13-input--2">英文</label><div class="tab-content docutils container">
+<p>This can take two forms. You can put your license in a file, typically
+<code class="docutils literal notranslate"><span class="pre">LICENSE</span></code> or <code class="docutils literal notranslate"><span class="pre">LICENSE.txt</span></code>, and link that file here:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;LICENSE&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>or you can write the name of the license:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">text</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;MIT License&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If you are using a standard, well-known license, it is not necessary to use this
+field. Instead, you should use one of the <a class="reference internal" href="#classifiers"><span class="std std-ref">classifiers</span></a> starting with <code class="docutils literal notranslate"><span class="pre">License</span>
+<span class="pre">::</span></code>. (As a general rule, it is a good idea to use a standard, well-known
+license, both to avoid confusion and because some organizations avoid software
+whose license is unapproved.)</p>
+</div>
+</div>
+</section>
+<section id="keywords">
+<h3><code class="docutils literal notranslate"><span class="pre">keywords</span></code><a class="headerlink" href="#keywords" title="Link to this heading">¶</a></h3>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--14-input--1" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--1">中文</label><div class="tab-content docutils container">
+<p>这将帮助 PyPI 的搜索框在用户搜索这些关键词时建议你的项目。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">keywords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;egg&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;bacon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;sausage&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;tomatoes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Lobster Thermidor&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--14-input--2" name="tab-set--14" type="radio"><label class="tab-label" for="tab-set--14-input--2">英文</label><div class="tab-content docutils container">
+<p>This will help PyPI's search box to suggest your project when people
+search for these keywords.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">keywords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;egg&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;bacon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;sausage&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;tomatoes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Lobster Thermidor&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="classifiers">
+<span id="id12"></span><h3><code class="docutils literal notranslate"><span class="pre">classifiers</span></code><a class="headerlink" href="#classifiers" title="Link to this heading">¶</a></h3>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--15-input--1" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--1">中文</label><div class="tab-content docutils container">
+<p>这是一个适用于你项目的 PyPI 分类器列表。查看 <a class="reference external" href="https://pypi.org/classifiers">完整的分类器列表</a> 。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">classifiers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">   </span><span class="c1"># 这个项目的成熟度如何？常见的值有：</span>
+<span class="w">   </span><span class="c1">#   3 - Alpha</span>
+<span class="w">   </span><span class="c1">#   4 - Beta</span>
+<span class="w">   </span><span class="c1">#   5 - 生产/稳定版</span>
+<span class="w">   </span><span class="s2">&quot;Development Status :: 4 - Beta&quot;</span><span class="p">,</span>
+
+<span class="w">   </span><span class="c1"># 指明你的项目面向的对象</span>
+<span class="w">   </span><span class="s2">&quot;Intended Audience :: Developers&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;Topic :: Software Development :: Build Tools&quot;</span><span class="p">,</span>
+
+<span class="w">   </span><span class="c1"># 根据需要选择你的许可证（也见上面的 &quot;license&quot; 字段）</span>
+<span class="w">   </span><span class="s2">&quot;License :: OSI Approved :: MIT License&quot;</span><span class="p">,</span>
+
+<span class="w">   </span><span class="c1"># 在这里指定你支持的 Python 版本。</span>
+<span class="w">   </span><span class="s2">&quot;Programming Language :: Python :: 3&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;Programming Language :: Python :: 3.6&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;Programming Language :: Python :: 3.7&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;Programming Language :: Python :: 3.8&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;Programming Language :: Python :: 3.9&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>虽然分类器列表常用于声明项目支持的 Python 版本，但这些信息仅用于 PyPI 上项目的搜索和浏览，并不会用于安装项目。要实际限制项目可以安装的 Python 版本，请使用 <a class="reference internal" href="#requires-python"><span class="std std-ref">requires-python</span></a> 参数。</p>
+<p>要防止一个包被上传到 PyPI，可以使用特殊的 <code class="docutils literal notranslate"><span class="pre">Private</span> <span class="pre">::</span> <span class="pre">Do</span> <span class="pre">Not</span> <span class="pre">Upload</span></code> 分类器。PyPI 将始终拒绝带有以 <code class="docutils literal notranslate"><span class="pre">Private</span> <span class="pre">::</span></code> 开头的分类器的包。</p>
+</div>
+<input class="tab-input" id="tab-set--15-input--2" name="tab-set--15" type="radio"><label class="tab-label" for="tab-set--15-input--2">英文</label><div class="tab-content docutils container">
+<p>A list of PyPI classifiers that apply to your project. Check the
+<a class="reference external" href="https://pypi.org/classifiers">full list of possibilities</a>.</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">classifiers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">   </span><span class="c1"># How mature is this project? Common values are</span>
+<span class="w">   </span><span class="c1">#   3 - Alpha</span>
+<span class="w">   </span><span class="c1">#   4 - Beta</span>
+<span class="w">   </span><span class="c1">#   5 - Production/Stable</span>
+<span class="w">   </span><span class="s2">&quot;Development Status :: 4 - Beta&quot;</span><span class="p">,</span>
+
+<span class="w">   </span><span class="c1"># Indicate who your project is intended for</span>
+<span class="w">   </span><span class="s2">&quot;Intended Audience :: Developers&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;Topic :: Software Development :: Build Tools&quot;</span><span class="p">,</span>
+
+<span class="w">   </span><span class="c1"># Pick your license as you wish (see also &quot;license&quot; above)</span>
+<span class="w">   </span><span class="s2">&quot;License :: OSI Approved :: MIT License&quot;</span><span class="p">,</span>
+
+<span class="w">   </span><span class="c1"># Specify the Python versions you support here.</span>
+<span class="w">   </span><span class="s2">&quot;Programming Language :: Python :: 3&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;Programming Language :: Python :: 3.6&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;Programming Language :: Python :: 3.7&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;Programming Language :: Python :: 3.8&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;Programming Language :: Python :: 3.9&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Although the list of classifiers is often used to declare what Python versions a
+project supports, this information is only used for searching and browsing
+projects on PyPI, not for installing projects. To actually restrict what Python
+versions a project can be installed on, use the <a class="reference internal" href="#requires-python"><span class="std std-ref">requires-python</span></a> argument.</p>
+<p>To prevent a package from being uploaded to PyPI, use the special <code class="docutils literal notranslate"><span class="pre">Private</span> <span class="pre">::</span>
+<span class="pre">Do</span> <span class="pre">Not</span> <span class="pre">Upload</span></code> classifier. PyPI will always reject packages with classifiers
+beginning with <code class="docutils literal notranslate"><span class="pre">Private</span> <span class="pre">::</span></code>.</p>
+</div>
+</div>
+</section>
+<section id="urls">
+<span id="writing-pyproject-toml-urls"></span><h3><code class="docutils literal notranslate"><span class="pre">urls</span></code><a class="headerlink" href="#urls" title="Link to this heading">¶</a></h3>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--16-input--1" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--1">中文</label><div class="tab-content docutils container">
+<p>这是与你项目相关的 URL 列表，将显示在 PyPI 项目页面的左侧边栏。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>请参阅 <a class="reference internal" href="../specifications/well-known-project-urls.html#well-known-labels"><span class="std std-ref">知名标签</span></a> 以查看 PyPI 和其他打包工具专门识别的标签列表，并查看 <a class="reference external" href="https://docs.pypi.org/project_metadata/#project-urls">PyPI 项目的元数据文档</a> 了解 PyPI 特定的 URL 处理方式。</p>
+</div>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.urls]</span>
+<span class="n">Homepage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://example.com&quot;</span>
+<span class="n">Documentation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://readthedocs.org&quot;</span>
+<span class="n">Repository</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/me/spam.git&quot;</span>
+<span class="n">Issues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/me/spam/issues&quot;</span>
+<span class="n">Changelog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/me/spam/blob/master/CHANGELOG.md&quot;</span>
+</pre></div>
+</div>
+<p>请注意，如果标签包含空格，则需要用引号括起来，例如：
+<code class="docutils literal notranslate"><span class="pre">Website</span> <span class="pre">=</span> <span class="pre">&quot;https://example.com&quot;</span></code>，但
+<code class="docutils literal notranslate"><span class="pre">&quot;Official</span> <span class="pre">Website&quot;</span> <span class="pre">=</span> <span class="pre">&quot;https://example.com&quot;</span></code>。</p>
+<p>建议用户在适当的情况下使用 <a class="reference internal" href="../specifications/well-known-project-urls.html#well-known-labels"><span class="std std-ref">知名标签</span></a> 作为项目的 URL，因为元数据的消费者（如包索引）可以根据这些标签调整展示方式。</p>
+<p>例如，在以下元数据中， <code class="docutils literal notranslate"><span class="pre">MyHomepage</span></code> 或 <code class="docutils literal notranslate"><span class="pre">&quot;Download</span> <span class="pre">Link&quot;</span></code> 都不是已知标签，因此它们将原样呈现：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.urls]</span>
+<span class="n">MyHomepage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://example.com&quot;</span>
+<span class="s2">&quot;Download Link&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://example.com/abc.tar.gz&quot;</span>
+</pre></div>
+</div>
+<p>而在这段元数据中， <code class="docutils literal notranslate"><span class="pre">HomePage</span></code> 和 <code class="docutils literal notranslate"><span class="pre">DOWNLOAD</span></code> 都有已知的等效标签（ <code class="docutils literal notranslate"><span class="pre">homepage</span></code> 和 <code class="docutils literal notranslate"><span class="pre">download</span></code>），因此它们可以根据这些语义进行展示（项目的主页和外部下载位置，分别）。</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.urls]</span>
+<span class="n">HomePage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://example.com&quot;</span>
+<span class="n">DOWNLOAD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://example.com/abc.tar.gz&quot;</span>
+</pre></div>
+</div>
+</div>
+<input class="tab-input" id="tab-set--16-input--2" name="tab-set--16" type="radio"><label class="tab-label" for="tab-set--16-input--2">英文</label><div class="tab-content docutils container">
+<p>A list of URLs associated with your project, displayed on the left
+sidebar of your PyPI project page.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>See <a class="reference internal" href="../specifications/well-known-project-urls.html#well-known-labels"><span class="std std-ref">知名标签</span></a> for a listing
+of labels that PyPI and other packaging tools are specifically aware of,
+and <a class="reference external" href="https://docs.pypi.org/project_metadata/#project-urls">PyPI's project metadata docs</a>
+for PyPI-specific URL processing.</p>
+</div>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.urls]</span>
+<span class="n">Homepage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://example.com&quot;</span>
+<span class="n">Documentation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://readthedocs.org&quot;</span>
+<span class="n">Repository</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/me/spam.git&quot;</span>
+<span class="n">Issues</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/me/spam/issues&quot;</span>
+<span class="n">Changelog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/me/spam/blob/master/CHANGELOG.md&quot;</span>
+</pre></div>
+</div>
+<p>Note that if the label contains spaces, it needs to be quoted, e.g.,
+<code class="docutils literal notranslate"><span class="pre">Website</span> <span class="pre">=</span> <span class="pre">&quot;https://example.com&quot;</span></code> but
+<code class="docutils literal notranslate"><span class="pre">&quot;Official</span> <span class="pre">Website&quot;</span> <span class="pre">=</span> <span class="pre">&quot;https://example.com&quot;</span></code>.</p>
+<p>Users are advised to use <a class="reference internal" href="../specifications/well-known-project-urls.html#well-known-labels"><span class="std std-ref">知名标签</span></a> for their project URLs
+where appropriate, since consumers of metadata (like package indices) can
+specialize their presentation.</p>
+<p>For example in the following metadata, neither <code class="docutils literal notranslate"><span class="pre">MyHomepage</span></code> nor
+<code class="docutils literal notranslate"><span class="pre">&quot;Download</span> <span class="pre">Link&quot;</span></code> is a well-known label, so they will be rendered verbatim:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.urls]</span>
+<span class="n">MyHomepage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://example.com&quot;</span>
+<span class="s2">&quot;Download Link&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://example.com/abc.tar.gz&quot;</span>
+</pre></div>
+</div>
+<p>Whereas in this metadata <code class="docutils literal notranslate"><span class="pre">HomePage</span></code> and <code class="docutils literal notranslate"><span class="pre">DOWNLOAD</span></code> both have
+well-known equivalents (<code class="docutils literal notranslate"><span class="pre">homepage</span></code> and <code class="docutils literal notranslate"><span class="pre">download</span></code>), and can be presented
+with those semantics in mind (the project's home page and its external
+download location, respectively).</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.urls]</span>
+<span class="n">HomePage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://example.com&quot;</span>
+<span class="n">DOWNLOAD</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://example.com/abc.tar.gz&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="id13">
+<h2>高级插件<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h2>
+<p><strong>Advanced plugins</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--17-input--1" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--1">中文</label><div class="tab-content docutils container">
+<p>一些包可以通过插件进行扩展。例如 <a class="reference external" href="https://pytest.org">Pytest</a> 和 <a class="reference external" href="https://pygments.org">Pygments</a> 。要创建这样的插件，你需要在 <code class="docutils literal notranslate"><span class="pre">[project.entry-points]</span></code> 的子表中声明它，如下所示：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.entry-points.</span><span class="s2">&quot;spam.magical&quot;</span><span class="k">]</span>
+<span class="n">tomatoes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spam:main_tomatoes&quot;</span>
+</pre></div>
+</div>
+<p>有关更多信息，请参阅 <a class="reference internal" href="creating-and-discovering-plugins.html#plugin-entry-points"><span class="std std-ref">插件指南</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--17-input--2" name="tab-set--17" type="radio"><label class="tab-label" for="tab-set--17-input--2">英文</label><div class="tab-content docutils container">
+<p>Some packages can be extended through plugins. Examples include <a class="reference external" href="https://pytest.org">Pytest</a>
+and <a class="reference external" href="https://pygments.org">Pygments</a>. To create such a plugin, you need to declare it in a subtable
+of <code class="docutils literal notranslate"><span class="pre">[project.entry-points]</span></code> like this:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project.entry-points.</span><span class="s2">&quot;spam.magical&quot;</span><span class="k">]</span>
+<span class="n">tomatoes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spam:main_tomatoes&quot;</span>
+</pre></div>
+</div>
+<p>See the <a class="reference internal" href="creating-and-discovering-plugins.html#plugin-entry-points"><span class="std std-ref">Plugin guide</span></a> for more information.</p>
+</div>
+</div>
+</section>
+<section id="id14">
+<h2>完整示例<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h2>
+<p><strong>A full example</strong></p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hatchling&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hatchling.build&quot;</span>
+
+<span class="k">[project]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spam-eggs&quot;</span>
+<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;2020.0.0&quot;</span>
+<span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;httpx&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;gidgethub[httpx]&gt;4.0.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;django&gt;2.1; os_name != &#39;nt&#39;&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;django&gt;2.0; os_name == &#39;nt&#39;&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">requires-python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=3.8&quot;</span>
+<span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Pradyun Gedam&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;pradyun@example.com&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Tzu-Ping Chung&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;tzu-ping@example.com&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Another person&quot;</span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;different.person@example.com&quot;</span><span class="p">},</span>
+<span class="p">]</span>
+<span class="n">maintainers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;Brett Cannon&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">email</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;brett@example.com&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+<span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Lovely Spam! Wonderful Spam!&quot;</span>
+<span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;README.rst&quot;</span>
+<span class="n">license</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;LICENSE.txt&quot;</span><span class="p">}</span>
+<span class="n">keywords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;egg&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;bacon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;sausage&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;tomatoes&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Lobster Thermidor&quot;</span><span class="p">]</span>
+<span class="n">classifiers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;Development Status :: 4 - Beta&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;Programming Language :: Python&quot;</span>
+<span class="p">]</span>
+
+<span class="k">[project.optional-dependencies]</span>
+<span class="n">gui</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;PyQt5&quot;</span><span class="p">]</span>
+<span class="n">cli</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s2">&quot;rich&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s2">&quot;click&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">[project.urls]</span>
+<span class="n">Homepage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://example.com&quot;</span>
+<span class="n">Documentation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://readthedocs.org&quot;</span>
+<span class="n">Repository</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/me/spam.git&quot;</span>
+<span class="s2">&quot;Bug Tracker&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/me/spam/issues&quot;</span>
+<span class="n">Changelog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/me/spam/blob/master/CHANGELOG.md&quot;</span>
+
+<span class="k">[project.scripts]</span>
+<span class="n">spam-cli</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spam:main_cli&quot;</span>
+
+<span class="k">[project.gui-scripts]</span>
+<span class="n">spam-gui</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spam:main_gui&quot;</span>
+
+<span class="k">[project.entry-points.</span><span class="s2">&quot;spam.magical&quot;</span><span class="k">]</span>
+<span class="n">tomatoes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;spam:main_tomatoes&quot;</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="requires-python-upper-bounds" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>在这里使用类似 <code class="docutils literal notranslate"><span class="pre">requires-python</span> <span class="pre">=</span> <span class="pre">&quot;&lt;=</span> <span class="pre">3.10&quot;</span></code> 的上限时要三思。<a class="reference external" href="https://iscinumpy.dev/post/bound-version-constraints/#pinning-the-python-version-is-special">这篇博客文章</a> 提供了一些有关可能问题的信息。</p>
+</aside>
+<aside class="footnote brackets" id="id15" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Think twice before applying an upper bound
+like <code class="docutils literal notranslate"><span class="pre">requires-python</span> <span class="pre">=</span> <span class="pre">&quot;&lt;=</span> <span class="pre">3.10&quot;</span></code> here. <a class="reference external" href="https://iscinumpy.dev/post/bound-version-constraints/#pinning-the-python-version-is-special">This blog post</a>
+contains some information regarding possible problems.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="distributing-packages-using-setuptools.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">打包和分发项目</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="section-build-and-publish.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">构建和发布</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2013–2020, PyPA
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2024 年 11 月 15 日</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a><ul>
+<li><a class="reference internal" href="#pyproject-guide-build-system-table">声明构建后端</a></li>
+<li><a class="reference internal" href="#id2">静态与动态元数据</a></li>
+<li><a class="reference internal" href="#id3">基本信息</a><ul>
+<li><a class="reference internal" href="#name"><code class="docutils literal notranslate"><span class="pre">name</span></code></a></li>
+<li><a class="reference internal" href="#version"><code class="docutils literal notranslate"><span class="pre">version</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id4">依赖项和要求</a><ul>
+<li><a class="reference internal" href="#dependencies-optional-dependencies"><code class="docutils literal notranslate"><span class="pre">dependencies</span></code>/<code class="docutils literal notranslate"><span class="pre">optional-dependencies</span></code></a></li>
+<li><a class="reference internal" href="#python-requires"><code class="docutils literal notranslate"><span class="pre">requires-python</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#console-scripts">创建可执行脚本</a></li>
+<li><a class="reference internal" href="#id8">关于您的项目</a><ul>
+<li><a class="reference internal" href="#authors-maintainers"><code class="docutils literal notranslate"><span class="pre">authors</span></code>/<code class="docutils literal notranslate"><span class="pre">maintainers</span></code></a></li>
+<li><a class="reference internal" href="#description"><code class="docutils literal notranslate"><span class="pre">description</span></code></a></li>
+<li><a class="reference internal" href="#readme"><code class="docutils literal notranslate"><span class="pre">readme</span></code></a></li>
+<li><a class="reference internal" href="#license"><code class="docutils literal notranslate"><span class="pre">license</span></code></a></li>
+<li><a class="reference internal" href="#keywords"><code class="docutils literal notranslate"><span class="pre">keywords</span></code></a></li>
+<li><a class="reference internal" href="#classifiers"><code class="docutils literal notranslate"><span class="pre">classifiers</span></code></a></li>
+<li><a class="reference internal" href="#urls"><code class="docutils literal notranslate"><span class="pre">urls</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id13">高级插件</a></li>
+<li><a class="reference internal" href="#id14">完整示例</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../_static/tabs.js?v=3ee01567"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=cb5fb026"></script>
+    <script src="../_static/translations.js?v=beaddf03"></script>
+    </body>
+</html>

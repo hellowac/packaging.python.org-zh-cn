@@ -1,0 +1,648 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="索引" href="genindex.html" /><link rel="search" title="搜索" href="search.html" /><link rel="next" title="教程" href="tutorials/index.html" /><link rel="prev" title="概述" href="overview.html" />
+
+    <link rel="shortcut icon" href="_static/py.png"/><!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
+        <title>打包流程 - Python Packaging User Guide</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Python Packaging User Guide</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">Python Packaging User Guide</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="搜索">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">概述</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">打包流程</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tutorials/index.html">教程</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of 教程</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/installing-packages.html">安装软件包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/managing-dependencies.html">管理依赖项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/packaging-projects.html">打包Python项目</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="guides/index.html">指南</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of 指南</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="guides/section-install.html">安装</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of 安装</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-using-pip-and-virtual-environments.html">使用 pip 和 venv 在虚拟环境中安装软件包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-using-virtualenv.html">使用虚拟环境安装包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-stand-alone-command-line-tools.html">安装独立的命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-using-linux-tools.html">使用 Linux 包管理器安装 pip/setuptools/wheel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/installing-scientific-packages.html">安装科学软件包</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="guides/section-build-and-publish.html">构建和发布</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of 构建和发布</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="guides/writing-pyproject-toml.html">编写你的 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/distributing-packages-using-setuptools.html">打包和分发项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/dropping-older-python-versions.html">放弃对旧版 Python 的支持</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/packaging-binary-extensions.html">打包二进制扩展</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/packaging-namespace-packages.html">打包命名空间包</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/creating-command-line-tools.html">创建和打包命令行工具</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/creating-and-discovering-plugins.html">创建和发现插件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/using-testpypi.html">使用 TestPyPI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/making-a-pypi-friendly-readme.html">制作适合 PyPI 的 README</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows.html">使用 GitHub Actions CI/CD 工作流发布软件包分发版本</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/modernize-setup-py-project.html">如何使基于 <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 的项目现代化？</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="guides/section-hosting.html">托管</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of 托管</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="guides/index-mirrors-and-caches.html">包索引镜像和缓存</a></li>
+<li class="toctree-l3"><a class="reference internal" href="guides/hosting-your-own-index.html">托管您自己的简单存储库</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="guides/tool-recommendations.html">工具推荐</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guides/analyzing-pypi-package-downloads.html">分析 PyPI 软件包下载</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="discussions/index.html">讨论</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of 讨论</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="discussions/versioning.html">版本控制</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/deploying-python-applications.html">部署 Python 应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/pip-vs-easy-install.html">pip vs easy_install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/install-requires-vs-requirements.html">install_requires 与需求文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/distribution-package-vs-import-package.html">分发包与导入包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/package-formats.html">软件包格式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/src-layout-vs-flat-layout.html">src 布局与平面布局</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/setup-py-deprecated.html"><code class="docutils literal notranslate"><span class="pre">setup.py</span></code> 已被弃用吗？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="discussions/single-source-version.html">单一来源项目版本</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="specifications/index.html">PyPA 规范</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of PyPA 规范</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="specifications/section-distribution-metadata.html">包分发元数据</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of 包分发元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="specifications/name-normalization.html">名称和规范化</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/core-metadata.html">核心元数据规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/version-specifiers.html">版本标识符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/dependency-specifiers.html">依赖说明符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/pyproject-toml.html"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/inline-script-metadata.html">内联脚本元数据</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/platform-compatibility-tags.html">平台兼容性标签</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/well-known-project-urls.html">元数据中的知名项目 URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="specifications/section-installation-metadata.html">包安装元数据</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of 包安装元数据</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="specifications/recording-installed-packages.html">记录已安装的项目</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/entry-points.html">入口点规范</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/direct-url.html">记录已安装发行版的直接 URL 来源</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/direct-url-data-structure.html">直接 URL 数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/virtual-environments.html">Python 虚拟环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/externally-managed-environments.html">外部管理环境</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="specifications/section-distribution-formats.html">包分发文件格式</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of 包分发文件格式</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="specifications/source-distribution-format.html">源分发格式</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/binary-distribution-format.html">二进制分发格式</a></li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="specifications/section-package-indices.html">包索引接口</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of 包索引接口</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="specifications/pypirc.html"><code class="file docutils literal notranslate"><span class="pre">.pypirc</span></code> 文件</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifications/simple-repository-api.html">Simple 仓库 API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="key_projects.html">项目摘要</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">如何获取支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">为本指南做出贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">新闻</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/flow.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="id1">
+<h1>打包流程<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
+<p><strong>The Packaging Flow</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--0-input--1" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--1">中文</label><div class="tab-content docutils container">
+<p>本文档旨在概述发布/分发 <a class="reference internal" href="glossary.html#term-Distribution-Package"><span class="xref std std-term">分发包</span></a> 的流程，通常是将其发布到 <a class="reference external" href="https://pypi.org/">Python 包索引（PyPI）</a>。本文面向包的发布者，假设读者是包的作者。</p>
+<p>虽然 <a class="reference internal" href="tutorials/packaging-projects.html"><span class="doc">教程</span></a> 介绍了准备简单包发布的过程，但它并没有完全列出所需的步骤和文件，以及它们的目的。</p>
+<p>发布包需要从作者的源代码到最终用户的 Python 环境的一个流程。实现这一目标的步骤如下：</p>
+<ul class="simple">
+<li><p>拥有一个包含包的源代码树。通常，这是从版本控制系统（VCS）中检出的代码。</p></li>
+<li><p>准备一个描述包元数据（如名称、版本等）以及如何创建构建产物的配置文件。对于大多数包来说，这通常是一个手动维护的 <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 文件，保存在源代码树中。</p></li>
+<li><p>创建要发送到包分发服务（通常是 PyPI）的构建产物。这些通常是 <a class="reference internal" href="glossary.html#term-Source-Distribution-or-sdist"><span class="xref std std-term">源分发包 (&quot;sdist&quot;)</span></a> 和一个或多个 <a class="reference internal" href="glossary.html#term-Built-Distribution"><span class="xref std std-term">已构建分发包 (&quot;wheels&quot;)</span></a>。这些构建产物是通过构建工具，使用上一步的配置文件生成的。通常，对于纯 Python 包来说，只有一个通用的 wheel 文件。</p></li>
+<li><p>将构建产物上传到包分发服务。</p></li>
+</ul>
+<p>此时，包已经存在于包分发服务上。要使用该包，最终用户需要：</p>
+<ul class="simple">
+<li><p>从包分发服务下载包的某个构建产物。</p></li>
+<li><p>将其安装到他们的 Python 环境中，通常是安装到其 <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> 目录中。此步骤可能涉及构建/编译步骤，如果需要，必须在包的元数据中描述该步骤。</p></li>
+</ul>
+<p>这最后两个步骤通常由 <a class="reference internal" href="key_projects.html#pip"><span class="std std-ref">pip</span></a> 执行，当最终用户运行 <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> 时。</p>
+<p>下面将更详细地描述这些步骤。</p>
+</div>
+<input class="tab-input" id="tab-set--0-input--2" name="tab-set--0" type="radio"><label class="tab-label" for="tab-set--0-input--2">英文</label><div class="tab-content docutils container">
+<p>The document aims to outline the flow involved in publishing/distributing a <a class="reference internal" href="glossary.html#term-Distribution-Package"><span class="xref std std-term">distribution package</span></a>, usually to the <a class="reference external" href="https://pypi.org/">Python Package Index (PyPI)</a>. It is written for package publishers, who are assumed to be the package author.</p>
+<p>While the <a class="reference internal" href="tutorials/packaging-projects.html"><span class="doc">tutorial</span></a> walks through the process of preparing a simple package for release, it does not fully enumerate what steps and files are required, and for what purpose.</p>
+<p>Publishing a package requires a flow from the author's source code to an end user's Python environment. The steps to achieve this are:</p>
+<ul class="simple">
+<li><p>Have a source tree containing the package. This is typically a checkout from a version control system (VCS).</p></li>
+<li><p>Prepare a configuration file describing the package metadata (name, version and so forth) and how to create the build artifacts. For most packages, this will be a <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file, maintained manually in the source tree.</p></li>
+<li><p>Create build artifacts to be sent to the package distribution service (usually PyPI); these will normally be a <a class="reference internal" href="glossary.html#term-Source-Distribution-or-sdist"><span class="xref std std-term">source distribution (&quot;sdist&quot;)</span></a> and one or more <a class="reference internal" href="glossary.html#term-Built-Distribution"><span class="xref std std-term">built distributions (&quot;wheels&quot;)</span></a>. These are made by a build tool using the configuration file from the previous step. Often there is just one generic wheel for a pure Python package.</p></li>
+<li><p>Upload the build artifacts to the package distribution service.</p></li>
+</ul>
+<p>At that point, the package is present on the package distribution service. To use the package, end users must:</p>
+<ul class="simple">
+<li><p>Download one of the package's build artifacts from the package distribution service.</p></li>
+<li><p>Install it in their Python environment, usually in its <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> directory. This step may involve a build/compile step which, if needed, must be described by the package metadata.</p></li>
+</ul>
+<p>These last 2 steps are typically performed by <a class="reference internal" href="key_projects.html#pip"><span class="std std-ref">pip</span></a> when an end user runs <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>.</p>
+<p>The steps above are described in more detail below.</p>
+</div>
+</div>
+<section id="id2">
+<h2>源代码树<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<p><strong>The source tree</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--1-input--1" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--1">中文</label><div class="tab-content docutils container">
+<p>源代码树包含包的源代码，通常是从版本控制系统（VCS）中检出的。用于创建构建产物的特定代码版本通常是基于与版本关联的标签的检出版本。</p>
+</div>
+<input class="tab-input" id="tab-set--1-input--2" name="tab-set--1" type="radio"><label class="tab-label" for="tab-set--1-input--2">英文</label><div class="tab-content docutils container">
+<p>The source tree contains the package source code, usually a checkout from a
+VCS. The particular version of the code used to create the build artifacts
+will typically be a checkout based on a tag associated with the version.</p>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2>配置文件<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<p><strong>The configuration file</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--2-input--1" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--1">中文</label><div class="tab-content docutils container">
+<p>配置文件依赖于用于创建构建产物的工具。标准做法是使用 <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 文件，格式为 <a class="reference external" href="https://github.com/toml-lang/toml">TOML format</a>。</p>
+<p>至少，<code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 文件需要一个 <code class="docutils literal notranslate"><span class="pre">[build-system]</span></code> 表格来指定你的构建工具。有许多可用的构建工具，包括但不限于 <a class="reference internal" href="key_projects.html#flit"><span class="std std-ref">flit</span></a>、<a class="reference internal" href="key_projects.html#hatch"><span class="std std-ref">hatch</span></a>、<a class="reference internal" href="key_projects.html#pdm"><span class="std std-ref">pdm</span></a>、<a class="reference internal" href="key_projects.html#poetry"><span class="std std-ref">poetry</span></a>、<a class="reference internal" href="key_projects.html#setuptools"><span class="std std-ref">Setuptools</span></a>、<a class="reference external" href="https://pypi.org/project/trampolim/">trampolim</a> 和 <a class="reference external" href="https://pypi.org/project/whey/">whey</a>。每个工具的文档会说明需要在 <code class="docutils literal notranslate"><span class="pre">[build-system]</span></code> 表格中填写什么内容。</p>
+<p>例如，以下是使用 <a class="reference internal" href="key_projects.html#hatch"><span class="std std-ref">hatch</span></a> 的表格示例：</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hatchling&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hatchling.build&quot;</span>
+</pre></div>
+</div>
+<p>在 <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 文件中包含这样的表格后，一个 &quot;<a class="reference internal" href="glossary.html#term-Build-Frontend"><span class="xref std std-term">frontend</span></a>&quot; 工具，例如 <a class="reference internal" href="key_projects.html#build"><span class="std std-ref">build</span></a>，可以运行你选择的构建工具的 &quot;<a class="reference internal" href="glossary.html#term-Build-Backend"><span class="xref std std-term">backend</span></a>&quot;，以创建构建产物。你的构建工具也可能提供自己的前端。像 <a class="reference internal" href="key_projects.html#pip"><span class="std std-ref">pip</span></a> 这样的安装工具也充当前端，当它运行你的构建工具的后端从源分发中进行安装时。</p>
+<p>你选择的具体构建工具决定了 <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 文件中需要包含的额外信息。例如，你可能需要指定：</p>
+<ul class="simple">
+<li><p>一个 <code class="docutils literal notranslate"><span class="pre">[project]</span></code> 表格，包含项目的 <a class="reference internal" href="specifications/core-metadata.html"><span class="doc">核心元数据</span></a> （如名称、版本、作者等），</p></li>
+<li><p>一个 <code class="docutils literal notranslate"><span class="pre">[tool]</span></code> 表格，包含工具特定的配置选项。</p></li>
+</ul>
+<p>请参阅 <a class="reference internal" href="guides/writing-pyproject-toml.html#writing-pyproject-toml"><span class="std std-ref">pyproject.toml guide</span></a> 获取有关 <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> 配置的完整指南。</p>
+</div>
+<input class="tab-input" id="tab-set--2-input--2" name="tab-set--2" type="radio"><label class="tab-label" for="tab-set--2-input--2">英文</label><div class="tab-content docutils container">
+<p>The configuration file depends on the tool used to create the build artifacts.
+The standard practice is to use a <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file in the <a class="reference external" href="https://github.com/toml-lang/toml">TOML
+format</a>.</p>
+<p>At a minimum, the <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file needs a <code class="docutils literal notranslate"><span class="pre">[build-system]</span></code> table
+specifying your build tool. There are many build tools available, including
+but not limited to <a class="reference internal" href="key_projects.html#flit"><span class="std std-ref">flit</span></a>, <a class="reference internal" href="key_projects.html#hatch"><span class="std std-ref">hatch</span></a>, <a class="reference internal" href="key_projects.html#pdm"><span class="std std-ref">pdm</span></a>, <a class="reference internal" href="key_projects.html#poetry"><span class="std std-ref">poetry</span></a>,
+<a class="reference internal" href="key_projects.html#setuptools"><span class="std std-ref">Setuptools</span></a>, <a class="reference external" href="https://pypi.org/project/trampolim/">trampolim</a>, and <a class="reference external" href="https://pypi.org/project/whey/">whey</a>. Each tool's documentation will
+show what to put in the <code class="docutils literal notranslate"><span class="pre">[build-system]</span></code> table.</p>
+<p>For example, here is a table for using <a class="reference internal" href="key_projects.html#hatch"><span class="std std-ref">hatch</span></a>:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[build-system]</span>
+<span class="n">requires</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hatchling&quot;</span><span class="p">]</span>
+<span class="n">build-backend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hatchling.build&quot;</span>
+</pre></div>
+</div>
+<p>With such a table in the <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file,
+a &quot;<a class="reference internal" href="glossary.html#term-Build-Frontend"><span class="xref std std-term">frontend</span></a>&quot; tool like
+<a class="reference internal" href="key_projects.html#build"><span class="std std-ref">build</span></a> can run your chosen
+build tool's &quot;<a class="reference internal" href="glossary.html#term-Build-Backend"><span class="xref std std-term">backend</span></a>&quot;
+to create the build artifacts.
+Your build tool may also provide its own frontend. An install tool
+like <a class="reference internal" href="key_projects.html#pip"><span class="std std-ref">pip</span></a> also acts as a frontend when it runs your build tool's backend
+to install from a source distribution.</p>
+<p>The particular build tool you choose dictates what additional information is
+required in the <code class="file docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file. For example, you might specify:</p>
+<ul class="simple">
+<li><p>a <code class="docutils literal notranslate"><span class="pre">[project]</span></code> table containing project
+<a class="reference internal" href="specifications/core-metadata.html"><span class="doc">Core Metadata</span></a>
+(name, version, author and so forth),</p></li>
+<li><p>a <code class="docutils literal notranslate"><span class="pre">[tool]</span></code> table containing tool-specific configuration options.</p></li>
+</ul>
+<p>Refer to the <a class="reference internal" href="guides/writing-pyproject-toml.html#writing-pyproject-toml"><span class="std std-ref">pyproject.toml guide</span></a> for a
+complete guide to <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> configuration.</p>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>构建工件<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<p><strong>Build artifacts</strong></p>
+<section id="sdist">
+<h3>源代码分发 (sdist)<a class="headerlink" href="#sdist" title="Link to this heading">¶</a></h3>
+<p><strong>The source distribution (sdist)</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--3-input--1" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--1">中文</label><div class="tab-content docutils container">
+<p>源分发包含足够的信息，用于从源代码在最终用户的 Python 环境中安装该包。因此，它需要包含包的源代码，并且可能还包括测试和文档。这些对于希望开发源代码的最终用户以及需要某些本地编译步骤的用户系统（例如 C 扩展）非常有用。</p>
+<p><a class="reference internal" href="key_projects.html#build"><span class="std std-ref">build</span></a> 包知道如何调用你的构建工具来创建其中之一：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>--sdist<span class="w"> </span>源代码目录
+</pre></div>
+</div>
+<p>或者，你的构建工具也可能提供自己的接口来创建源分发（sdist）。</p>
+</div>
+<input class="tab-input" id="tab-set--3-input--2" name="tab-set--3" type="radio"><label class="tab-label" for="tab-set--3-input--2">英文</label><div class="tab-content docutils container">
+<p>A source distribution contains enough to install the package from source in an
+end user's Python environment. As such, it needs the package source, and may
+also include tests and documentation. These are useful for end users wanting
+to develop your sources, and for end user systems where some local compilation
+step is required (such as a C extension).</p>
+<p>The <a class="reference internal" href="key_projects.html#build"><span class="std std-ref">build</span></a> package knows how to invoke your build tool to create one of
+these:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>--sdist<span class="w"> </span>source-tree-directory
+</pre></div>
+</div>
+<p>Or, your build tool may provide its own interface for creating an sdist.</p>
+</div>
+</div>
+</section>
+<section id="wheels">
+<h3>构建的分发 (wheels)<a class="headerlink" href="#wheels" title="Link to this heading">¶</a></h3>
+<p><strong>The built distributions (wheels)</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--4-input--1" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--1">中文</label><div class="tab-content docutils container">
+<p>构建分发仅包含最终用户 Python 环境所需的文件。安装过程中不需要编译步骤，wheel 文件可以直接解压到 <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> 目录中。这使得安装过程对最终用户来说更加快速和方便。</p>
+<p>一个纯 Python 包通常只需要一个“通用” wheel 文件。一个带有编译二进制扩展的包则需要为其支持的每种 Python 解释器、操作系统和 CPU 架构组合创建一个 wheel 文件。如果没有合适的 wheel 文件，像 <a class="reference internal" href="key_projects.html#pip"><span class="std std-ref">pip</span></a> 这样的工具将回退到安装源分发（source distribution）。</p>
+<p><a class="reference internal" href="key_projects.html#build"><span class="std std-ref">build</span></a> 包知道如何调用你的构建工具来创建其中之一：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>--wheel<span class="w"> </span>源代码目录
+</pre></div>
+</div>
+<p>或者，你的构建工具也可能提供自己的接口来创建 wheel 文件。</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p><a class="reference internal" href="key_projects.html#build"><span class="std std-ref">build</span></a> 的默认行为是从当前目录的源代码创建一个源分发和一个 wheel 文件；上述示例故意进行了具体化。</p>
+</div>
+</div>
+<input class="tab-input" id="tab-set--4-input--2" name="tab-set--4" type="radio"><label class="tab-label" for="tab-set--4-input--2">英文</label><div class="tab-content docutils container">
+<p>A built distribution contains only the files needed for an end user's Python
+environment. No compilation steps are required during the install, and the
+wheel file can simply be unpacked into the <code class="docutils literal notranslate"><span class="pre">site-packages</span></code> directory. This
+makes the install faster and more convenient for end users.</p>
+<p>A pure Python package typically needs only one &quot;generic&quot; wheel. A package with
+compiled binary extensions needs a wheel for each supported combination of
+Python interpreter, operating system, and CPU architecture that it supports.
+If a suitable wheel file is not available, tools like <a class="reference internal" href="key_projects.html#pip"><span class="std std-ref">pip</span></a> will fall
+back to installing the source distribution.</p>
+<p>The <a class="reference internal" href="key_projects.html#build"><span class="std std-ref">build</span></a> package knows how to invoke your build tool to create one of
+these:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>build<span class="w"> </span>--wheel<span class="w"> </span>source-tree-directory
+</pre></div>
+</div>
+<p>Or, your build tool may provide its own interface for creating a wheel.</p>
+<div class="admonition note">
+<p class="admonition-title">备注</p>
+<p>The default behaviour of <a class="reference internal" href="key_projects.html#build"><span class="std std-ref">build</span></a> is to make both an sdist and a wheel
+from the source in the current directory; the above examples are
+deliberately specific.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="id5">
+<h2>上传到包分发服务<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
+<p><strong>Upload to the package distribution service</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--5-input--1" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--1">中文</label><div class="tab-content docutils container">
+<p><a class="reference internal" href="key_projects.html#twine"><span class="std std-ref">twine</span></a> 工具可以将构建产物上传到 PyPI 进行分发，使用如下命令：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>twine<span class="w"> </span>upload<span class="w"> </span>dist/package-name-version.tar.gz<span class="w"> </span>dist/package-name-version-py3-none-any.whl
+</pre></div>
+</div>
+<p>或者，你的构建工具也可能提供自己的接口来进行上传。</p>
+</div>
+<input class="tab-input" id="tab-set--5-input--2" name="tab-set--5" type="radio"><label class="tab-label" for="tab-set--5-input--2">英文</label><div class="tab-content docutils container">
+<p>The <a class="reference internal" href="key_projects.html#twine"><span class="std std-ref">twine</span></a> tool can upload build artifacts to PyPI for distribution,
+using a command like:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>twine<span class="w"> </span>upload<span class="w"> </span>dist/package-name-version.tar.gz<span class="w"> </span>dist/package-name-version-py3-none-any.whl
+</pre></div>
+</div>
+<p>Or, your build tool may provide its own interface for uploading.</p>
+</div>
+</div>
+</section>
+<section id="id6">
+<h2>下载并安装<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
+<p><strong>Download and install</strong></p>
+<div class="tab-set docutils container">
+<input checked="True" class="tab-input" id="tab-set--6-input--1" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--1">中文</label><div class="tab-content docutils container">
+<p>现在包已经发布，最终用户可以下载并将包安装到他们的 Python 环境中。通常，这可以通过 <a class="reference internal" href="key_projects.html#pip"><span class="std std-ref">pip</span></a> 完成，使用如下命令：</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>package-name
+</pre></div>
+</div>
+<p>最终用户也可以使用其他工具，如 <a class="reference internal" href="key_projects.html#pipenv"><span class="std std-ref">Pipenv</span></a>、<a class="reference internal" href="key_projects.html#poetry"><span class="std std-ref">poetry</span></a> 或 <a class="reference internal" href="key_projects.html#pdm"><span class="std std-ref">pdm</span></a>。</p>
+</div>
+<input class="tab-input" id="tab-set--6-input--2" name="tab-set--6" type="radio"><label class="tab-label" for="tab-set--6-input--2">英文</label><div class="tab-content docutils container">
+<p>Now that the package is published, end users can download and install the package into their Python environment. Typically this is done with <a class="reference internal" href="key_projects.html#pip"><span class="std std-ref">pip</span></a>, using a command like:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>package-name
+</pre></div>
+</div>
+<p>End users may also use other tools like <a class="reference internal" href="key_projects.html#pipenv"><span class="std std-ref">Pipenv</span></a>, <a class="reference internal" href="key_projects.html#poetry"><span class="std std-ref">poetry</span></a>, or <a class="reference internal" href="key_projects.html#pdm"><span class="std std-ref">pdm</span></a>.</p>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="tutorials/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">教程</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="overview.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">概述</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2013–2020, PyPA
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            <div class="last-updated">
+              Last updated on 2024 年 11 月 15 日</div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">打包流程</a><ul>
+<li><a class="reference internal" href="#id2">源代码树</a></li>
+<li><a class="reference internal" href="#id3">配置文件</a></li>
+<li><a class="reference internal" href="#id4">构建工件</a><ul>
+<li><a class="reference internal" href="#sdist">源代码分发 (sdist)</a></li>
+<li><a class="reference internal" href="#wheels">构建的分发 (wheels)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id5">上传到包分发服务</a></li>
+<li><a class="reference internal" href="#id6">下载并安装</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=7d86a446"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="_static/tabs.js?v=3ee01567"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=cb5fb026"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    </body>
+</html>
