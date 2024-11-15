@@ -1,5 +1,5 @@
 ==================
-How to Get Support
+如何获取支持
 ==================
 
 **How to Get Support**

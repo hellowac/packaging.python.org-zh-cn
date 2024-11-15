@@ -1,12 +1,8 @@
 ========================
-Package Index Interfaces
+包索引接口
 ========================
 
-.. tab:: 中文
-
-
-
-.. tab:: 英文
+Package Index Interfaces
 
 .. toctree::
    :titlesonly:

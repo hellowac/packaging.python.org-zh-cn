@@ -1,12 +1,8 @@
 =============================
-Package Installation Metadata
+包安装元数据
 =============================
 
-.. tab:: 中文
-
-
-
-.. tab:: 英文
+**Package Installation Metadata**
 
 .. toctree::
    :titlesonly:
